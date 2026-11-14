@@ -5,8 +5,11 @@ import { prisma } from "@/lib/prisma";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SafeImage } from "@/components/SafeImage";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export async function generateMetadata(props: { params: Promise<{ id: string }> }) {
+  await requireAdminPage();
+
   const { id } = await props.params;
   const user = await prisma.user.findUnique({ where: { id }, select: { name: true, email: true } });
   return { title: `${user?.name || user?.email || "Customer"} · Admin` };
@@ -38,6 +41,8 @@ function formatDate(date: Date) {
 export default async function CustomerDetailPage(props: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdminPage();
+
   const { id } = await props.params;
 
   const customer = await prisma.user.findUnique({

@@ -1,11 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { InquiriesTable } from "@/components/admin/InquiriesTable";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Inquiries | Admin Dashboard",
 };
 
 export default async function InquiriesPage() {
+  await requireAdminPage();
+
   const inquiries = await prisma.inquiry.findMany({
     orderBy: { createdAt: "desc" },
   });

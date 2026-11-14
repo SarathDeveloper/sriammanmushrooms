@@ -1,11 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { CategoriesTable } from "@/components/admin/CategoriesTable";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Categories · Admin",
 };
 
 export default async function AdminCategoriesPage() {
+  await requireAdminPage();
+
   const categories = await prisma.category.findMany({
     include: {
       _count: { select: { products: true } },

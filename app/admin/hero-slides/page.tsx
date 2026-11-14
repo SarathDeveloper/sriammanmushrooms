@@ -1,11 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { HeroSlidesTable } from "@/components/admin/HeroSlidesTable";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Hero Slides · Admin",
 };
 
 export default async function AdminHeroSlidesPage() {
+  await requireAdminPage();
+
   const slides = await prisma.heroSlide.findMany({
     orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
   });

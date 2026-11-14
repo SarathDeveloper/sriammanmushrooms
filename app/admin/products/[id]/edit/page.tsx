@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { isCloudinarySrc, toCloudinaryPublicId } from "@/lib/cloudinary-utils";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Edit Product · Admin",
@@ -10,6 +11,8 @@ export const metadata = {
 export default async function EditProductPage(props: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdminPage();
+
   const { id } = await props.params;
 
   const [product, categories] = await Promise.all([

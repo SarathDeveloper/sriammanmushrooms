@@ -16,6 +16,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { Badge } from "@/components/ui/badge";
 import { SafeImage } from "@/components/SafeImage";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -138,6 +139,8 @@ const statusVariant: Record<
 };
 
 export default async function AdminDashboardPage() {
+  await requireAdminPage();
+
   const data = await getDashboardData();
 
   const hasAlerts =
