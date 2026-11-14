@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { CONTACT_EMAIL } from "@/lib/site";
+import { CONTACT_EMAIL, OPENING_HOURS } from "@/lib/site";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -47,7 +47,7 @@ const contactItems = [
   {
     icon: Clock,
     label: "Open Hours",
-    value: "Monday–Saturday: 8:00 AM – 6:00 PM\nSunday: Closed",
+    value: OPENING_HOURS,
   },
 ];
 

@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { serializeJsonLd } from "@/lib/seo";
-import { CONTACT_EMAIL, FARM_LOCATION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { CONTACT_EMAIL, FARM_LOCATION, OPENING_HOURS_SCHEMA, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const effra = localFont({
   src: [
@@ -88,7 +88,7 @@ export default function RootLayout({
                 latitude: FARM_LOCATION.lat,
                 longitude: FARM_LOCATION.lng,
               },
-              openingHours: "Mo-Sa 08:00-18:00",
+              openingHours: OPENING_HOURS_SCHEMA,
             }),
           }}
         />

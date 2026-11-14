@@ -39,7 +39,7 @@ const sections = [
   },
   {
     title: "8. Contact Us",
-    body: "For any shipping or delivery-related queries, please contact us at sriammanmushrooms@gmail.com or call +91 93855 26105. Our team is available Monday–Saturday, 8:00 AM – 6:00 PM.",
+    body: "For any shipping or delivery-related queries, please contact us at sriammanmushrooms@gmail.com or call +91 93855 26105. Our team is available Monday–Sunday, 6:00 AM – 8:00 PM.",
   },
 ];
 
