@@ -11,7 +11,7 @@ export default function NotFound() {
         <div className="relative mx-auto mb-8 h-16 w-16 overflow-hidden rounded-full ring-1 ring-[var(--color-primary-dark)]/20">
           <Image
             src="/gallery/brand-logo.png"
-            alt="Sri Amman Mushroom Farms"
+            alt="Sri Amman Mushroom Farm"
             fill
             sizes="64px"
             className="object-cover"

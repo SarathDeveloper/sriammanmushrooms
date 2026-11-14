@@ -50,7 +50,7 @@ export function WhatsAppWidget() {
             </div>
             <div className="px-4 pb-3">
               <button
-                onClick={() => sendMessage("Hi! I have a question about Sri Amman Mushroom Farms.")}
+                onClick={() => sendMessage("Hi! I have a question about Sri Amman Mushroom Farm.")}
                 className="w-full py-2.5 rounded-xl bg-whatsapp text-white text-base font-semibold hover:bg-whatsapp-hover transition-colors"
               >
                 Start a Conversation

@@ -41,7 +41,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
             <div className="relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105">
               <Image
                 src="/gallery/brand-logo.png"
-                alt="Sri Amman Mushroom Farms"
+                alt="Sri Amman Mushroom Farm"
                 fill
                 sizes="56px"
                 className="object-cover"
@@ -53,7 +53,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
                 Sri Amman
               </span>
               <span className="block font-sans text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-primary/90 mt-1">
-                Mushroom Farms
+                Mushroom Farm
               </span>
               <svg className="w-7 h-1.5 text-primary/40 mt-1 transition-all duration-300 group-hover:w-11 group-hover:text-primary" viewBox="0 0 32 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 4.5C8 2 24 1.5 31 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

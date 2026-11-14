@@ -39,7 +39,7 @@ export default function NavbarMobileSheet() {
                 Sri Amman
               </span>
               <span className="block font-sans text-[10px] font-semibold tracking-[0.22em] uppercase text-primary/70 mt-0.5">
-                Mushroom Farms
+                Mushroom Farm
               </span>
             </span>
           </SheetTitle>

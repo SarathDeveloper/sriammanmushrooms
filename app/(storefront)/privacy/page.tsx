@@ -4,7 +4,7 @@ import { PageHero } from "@/components/PageHero";
 export const metadata = {
   alternates: { canonical: "/privacy" },
   title: "Privacy Policy",
-  description: "How Sri Amman Mushroom Farms collects, uses, and protects your personal information.",
+  description: "How Sri Amman Mushroom Farm collects, uses, and protects your personal information.",
 };
 
 const sections = [

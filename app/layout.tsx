@@ -35,8 +35,8 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Sri Amman Mushroom Farms | Fresh Farm Mushrooms",
-    template: "%s | Sri Amman Mushroom Farms",
+    default: "Sri Amman Mushroom Farm | Fresh Farm Mushrooms",
+    template: "%s | Sri Amman Mushroom Farm",
   },
   description: "Fresh mushrooms from the Kalvarayan Hills with delivery, pre-orders, and mushroom farming training.",
   alternates: { canonical: "/" },
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "/",
     siteName: SITE_NAME,
-    title: "Sri Amman Mushroom Farms | Fresh Farm Mushrooms",
+    title: "Sri Amman Mushroom Farm | Fresh Farm Mushrooms",
     description: "Fresh mushrooms from the Kalvarayan Hills with delivery, pre-orders, and farming training.",
   },
 };
@@ -70,7 +70,7 @@ export default function RootLayout({
             __html: serializeJsonLd({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              name: "Sri Amman Mushroom Farms",
+              name: "Sri Amman Mushroom Farm",
               description: "Fresh mushrooms grown and packed in the Kalvarayan Hills, Tamil Nadu",
               url: SITE_URL,
               telephone: "+919385526105",

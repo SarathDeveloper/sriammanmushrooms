@@ -4,13 +4,13 @@ import { PageHero } from "@/components/PageHero";
 export const metadata = {
   alternates: { canonical: "/terms" },
   title: "Terms of Service",
-  description: "The terms and conditions governing your use of the Sri Amman Mushroom Farms website and services.",
+  description: "The terms and conditions governing your use of the Sri Amman Mushroom Farm website and services.",
 };
 
 const sections = [
   {
     title: "1. Acceptance of Terms",
-    body: "By accessing or using the Sri Amman Mushroom Farms website, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, please do not use our website.",
+    body: "By accessing or using the Sri Amman Mushroom Farm website, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, please do not use our website.",
   },
   {
     title: "2. Orders & Payments",
@@ -34,11 +34,11 @@ const sections = [
   },
   {
     title: "7. Intellectual Property",
-    body: "All content on this website, including text, images, logos, and graphics, is the property of Sri Amman Mushroom Farms and is protected by applicable intellectual property laws. You may not reproduce or distribute this content without our written permission.",
+    body: "All content on this website, including text, images, logos, and graphics, is the property of Sri Amman Mushroom Farm and is protected by applicable intellectual property laws. You may not reproduce or distribute this content without our written permission.",
   },
   {
     title: "8. Limitation of Liability",
-    body: "Sri Amman Mushroom Farms shall not be liable for any indirect, incidental, or consequential damages arising from your use of our website or products, to the fullest extent permitted by law.",
+    body: "Sri Amman Mushroom Farm shall not be liable for any indirect, incidental, or consequential damages arising from your use of our website or products, to the fullest extent permitted by law.",
   },
   {
     title: "9. Governing Law",

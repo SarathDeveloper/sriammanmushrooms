@@ -6,7 +6,7 @@ import { PreOrderSection } from "@/components/PreOrderSection";
 export const metadata: Metadata = {
   title: "Pre-Order Fresh Mushrooms",
   description:
-    "Pre-order seasonal and specialty mushrooms from Sri Amman Mushroom Farms. Send your order on WhatsApp and we'll confirm availability.",
+    "Pre-order seasonal and specialty mushrooms from Sri Amman Mushroom Farm. Send your order on WhatsApp and we'll confirm availability.",
   alternates: { canonical: "/pre-order" },
 };
 

@@ -10,7 +10,7 @@ import { queryProducts } from "@/lib/shop";
 export const metadata: Metadata = {
   title: "Our Mushrooms",
   description:
-    "Fresh oyster and button mushrooms grown and hand-picked at Sri Amman Mushroom Farms in the Kalvarayan Hills. Enquire on WhatsApp for today's price.",
+    "Fresh oyster and button mushrooms grown and hand-picked at Sri Amman Mushroom Farm in the Kalvarayan Hills. Enquire on WhatsApp for today's price.",
   alternates: { canonical: "/products" },
 };
 

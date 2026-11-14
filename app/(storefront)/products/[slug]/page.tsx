@@ -82,7 +82,7 @@ export default async function ProductDetailPage(props: {
   const recipes = recipesByCategory[product.category] || recipesByCategory.Oyster;
   const reviews = getReviewsForProduct(product.slug);
   const hasReviews = reviews.length > 0;
-  const shareText = `Check out ${product.name} from Sri Amman Mushroom Farms! ${absoluteUrl(`/products/${product.slug}`)}`;
+  const shareText = `Check out ${product.name} from Sri Amman Mushroom Farm! ${absoluteUrl(`/products/${product.slug}`)}`;
   const breadcrumbs = [
     { name: "Home", path: "/" },
     { name: "Our Mushrooms", path: "/products" },

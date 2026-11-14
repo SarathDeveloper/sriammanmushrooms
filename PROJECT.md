@@ -1,6 +1,6 @@
-# Sri Amman Mushroom Farms: project notes
+# Sri Amman Mushroom Farm: project notes
 
-Showcase website for **Sri Amman Mushroom Farms** (Tamil Nadu): product catalogue,
+Showcase website for **Sri Amman Mushroom Farm** (Tamil Nadu): product catalogue,
 farming training, farm story, and enquiries/pre-orders handed off to WhatsApp.
 
 Brand site: [vellimalaifarms.in](https://vellimalaifarms.in)

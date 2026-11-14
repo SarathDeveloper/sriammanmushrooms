@@ -71,7 +71,7 @@ describe("message builders", () => {
     );
     expect(message).toBe(
       [
-        "Hi Sri Amman Mushroom Farms! I'd like to enquire about a product.",
+        "Hi Sri Amman Mushroom Farm! I'd like to enquire about a product.",
         "",
         "Product: Shiitake Exotic (200g)",
         "Quantity: 2 packs",
@@ -107,7 +107,7 @@ describe("message builders", () => {
     );
     expect(message).toBe(
       [
-        "Hi Sri Amman Mushroom Farms! I have an enquiry.",
+        "Hi Sri Amman Mushroom Farm! I have an enquiry.",
         "",
         "Enquiry: Wholesale",
         "Name: Anita",

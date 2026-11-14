@@ -1,6 +1,6 @@
-# Sri Amman Mushroom Farms: showcase site
+# Sri Amman Mushroom Farm: showcase site
 
-Public website for Sri Amman Mushroom Farms (Kallakurichi, Tamil Nadu). It shows the
+Public website for Sri Amman Mushroom Farm (Kallakurichi, Tamil Nadu). It shows the
 product catalogue, farming training and farm information. Every enquiry and pre-order
 goes to the farm's WhatsApp. There is no database, login, cart or payment on this
 version.

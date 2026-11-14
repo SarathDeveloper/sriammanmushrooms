@@ -15,7 +15,7 @@ export function AboutPreview() {
           
           <SafeImage
             src="/gallery/mathesh-owner.png"
-            alt="Mathesh — Owner & Head Farmer at Sri Amman Mushroom Farms"
+            alt="Mathesh — Owner & Head Farmer at Sri Amman Mushroom Farm"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover object-top brightness-[0.97] contrast-[1.05] saturate-[1.03] transition-transform duration-700 group-hover/image:scale-[1.02]"

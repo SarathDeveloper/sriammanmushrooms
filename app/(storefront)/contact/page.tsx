@@ -11,14 +11,14 @@ import { whatsappLink } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Call, WhatsApp or message Sri Amman Mushroom Farms about fresh mushrooms, bulk orders, farm visits and mushroom farming training.",
+    "Call, WhatsApp or message Sri Amman Mushroom Farm about fresh mushrooms, bulk orders, farm visits and mushroom farming training.",
   alternates: { canonical: "/contact" },
 };
 
 const PHONE = "+91 93855 26105";
 const ADDITIONAL_PHONES = ["+91 89031 56142", "+91 63833 61207"];
 const EMAIL = CONTACT_EMAIL;
-const ADDRESS_LINE = "Sari Amman Oyster Mushroom Farm, Vellimalai, Melsathanur, Kallakurichi - 606 209, Tamil Nadu, India";
+const ADDRESS_LINE = "Sri Amman Mushroom Farm, Vellimalai, Melsathanur, Kallakurichi - 606 209, Tamil Nadu, India";
 const MAPS_EMBED_URL = FARM_MAPS_EMBED_URL;
 const MAPS_LINK = FARM_MAPS_LINK;
 
@@ -111,17 +111,17 @@ export default function ContactPage() {
                   <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
                   <div>
                     <p className="font-semibold text-base text-foreground">
-                      Sari Amman Oyster Mushroom Farm
+                      Sri Amman Mushroom Farm
                     </p>
                     <p className="text-base text-muted-foreground">
-                      {ADDRESS_LINE.replace("Sari Amman Oyster Mushroom Farm, ", "")}
+                      {ADDRESS_LINE.replace("Sri Amman Mushroom Farm, ", "")}
                     </p>
                   </div>
                 </div>
 
                 <div className="rounded-xl overflow-hidden border border-border h-56 sm:h-64">
                   <iframe
-                    title="Sri Amman Mushroom Farms location"
+                    title="Sri Amman Mushroom Farm location"
                     src={MAPS_EMBED_URL}
                     className="w-full h-full border-0"
                     loading="lazy"

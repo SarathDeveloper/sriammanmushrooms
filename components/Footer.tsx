@@ -42,7 +42,7 @@ const contactItems = [
   {
     icon: MapPin,
     label: "Our Location",
-    value: "Sari Amman Oyster Mushroom Farm\nVellimalai, Melsathanur\nKallakurichi – 606 209, Tamil Nadu",
+    value: "Sri Amman Mushroom Farm\nVellimalai, Melsathanur\nKallakurichi – 606 209, Tamil Nadu",
   },
   {
     icon: Clock,
@@ -62,7 +62,7 @@ export default function Footer() {
               <div className="relative h-20 w-20 overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/gallery/brand-logo.png"
-                  alt="Sri Amman Mushroom Farms"
+                  alt="Sri Amman Mushroom Farm"
                   fill
                   sizes="80px"
                   className="object-cover"
@@ -73,7 +73,7 @@ export default function Footer() {
                   Sri Amman
                 </span>
                 <span className="block font-sans text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase text-white/60 mt-1.5">
-                  Mushroom Farms
+                  Mushroom Farm
                 </span>
                 <svg className="w-8 h-2 text-white/30 mt-2 transition-all duration-300 group-hover:w-12 group-hover:text-[#2B7A5D]" viewBox="0 0 32 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 4.5C8 2 24 1.5 31 3.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
@@ -251,7 +251,7 @@ export default function Footer() {
 
         <div className="mt-16 border-t border-white/10 pt-8 flex items-center justify-center text-sm text-white/45">
           <p className="text-center">
-            &copy; {new Date().getFullYear()} Sri Amman Mushroom Farms. All rights
+            &copy; {new Date().getFullYear()} Sri Amman Mushroom Farm. All rights
             reserved. FSSAI Lic: 22424356000315
           </p>
         </div>

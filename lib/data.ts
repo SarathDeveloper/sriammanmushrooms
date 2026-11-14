@@ -21,7 +21,7 @@ export const testimonials: Testimonial[] = [
   {
     name: "Rahul Menon",
     role: "Restaurant Owner",
-    review: "Consistent quality and reliable delivery. Sri Amman Mushroom Farms is our trusted partner.",
+    review: "Consistent quality and reliable delivery. Sri Amman Mushroom Farm is our trusted partner.",
     avatar: "https://i.pravatar.cc/150?img=12",
   },
   {
