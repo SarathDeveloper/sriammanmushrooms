@@ -3,20 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SafeImage } from "@/components/SafeImage";
-import { Heart, Star, ShoppingCart, Minus, Plus, Clock, MessageSquareText } from "lucide-react";
+import { Heart, Star, Minus, Plus, Clock, MessageSquareText } from "lucide-react";
 import toast from "react-hot-toast";
-import type { Product } from "@/lib/data";
-import { useCartStore, useWishlistStore } from "@/lib/store";
-import { ORDERS_ENABLED } from "@/lib/features";
-import { EnquireButton } from "@/components/ProductEnquiryDialog";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
-function stockLabel(stock: number) {
-  if (stock <= 0) return { text: "Out of Stock", tone: "out" as const };
-  if (stock <= 20) return { text: "Low Stock", tone: "low" as const };
-  return { text: "In Stock", tone: "in" as const };
-}
+import { EnquireButton } from "@/components/ProductEnquiryDialog";
+import type { Product } from "@/lib/content";
+import { useWishlistStore } from "@/lib/store";
+import { cn } from "@/lib/utils";
 
 export function ProductCard({
   product,
@@ -25,25 +18,16 @@ export function ProductCard({
   product: Product;
   priority?: boolean;
 }) {
-  const addItem = useCartStore((s) => s.addItem);
   const wished = useWishlistStore((s) => s.has(product.id));
   const toggleWish = useWishlistStore((s) => s.toggle);
   const [qty, setQty] = useState(1);
 
-  const stock = stockLabel(product.stock);
   const highlights = product.highlights ?? [];
   const tags = [
     ...(product.tag ? [product.tag] : []),
     ...highlights.filter(Boolean).slice(0, product.tag ? 3 : 4),
   ];
-  const outOfStock = product.stock <= 0;
-
-  const handleAddToCart = () => {
-    if (outOfStock) return;
-    addItem(product, qty);
-    toast.success(`${qty} × ${product.name} added to cart`);
-    setQty(1);
-  };
+  const outOfStock = !product.inStock;
 
   const handleWishlist = () => {
     toggleWish(product.id);
@@ -69,12 +53,10 @@ export function ProductCard({
         <span
           className={cn(
             "absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold text-white shadow-sm",
-            stock.tone === "in" && "bg-primary",
-            stock.tone === "low" && "bg-[#E5B06D]",
-            stock.tone === "out" && "bg-[#E56D6D]"
+            outOfStock ? "bg-[#E56D6D]" : "bg-primary"
           )}
         >
-          {stock.text}
+          {outOfStock ? "Unavailable" : "Available"}
         </span>
 
         <button
@@ -168,9 +150,7 @@ export function ProductCard({
             </span>
             <button
               type="button"
-              onClick={() =>
-                setQty((q) => Math.min(Math.max(product.stock, 1), q + 1))
-              }
+              onClick={() => setQty((q) => Math.min(999, q + 1))}
               disabled={outOfStock}
               aria-label="Increase quantity"
               className="w-9 h-full flex items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40"
@@ -179,29 +159,15 @@ export function ProductCard({
             </button>
           </div>
 
-          {ORDERS_ENABLED ? (
-            <Button
-              onClick={handleAddToCart}
-              disabled={outOfStock}
-              aria-label={`Add ${product.name} to cart`}
-              className="flex-1 min-w-0 h-8 sm:h-9 rounded-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base font-semibold gap-1 sm:gap-1.5 disabled:opacity-50 px-2"
-            >
-              <ShoppingCart size={14} className="sm:hidden" />
-              <ShoppingCart size={15} className="hidden sm:block" />
-              <span className="hidden sm:inline">Add to Cart</span>
-              <span className="sm:hidden">Add</span>
-            </Button>
-          ) : (
-            <EnquireButton
-              product={product}
-              quantity={qty}
-              size="sm"
-              className="flex-1 min-w-0 h-8 sm:h-9 rounded-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base font-semibold gap-1 sm:gap-1.5 px-2"
-            >
-              <MessageSquareText size={15} />
-              Enquire
-            </EnquireButton>
-          )}
+          <EnquireButton
+            product={product}
+            quantity={qty}
+            size="sm"
+            className="flex-1 min-w-0 h-8 sm:h-9 rounded-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base font-semibold gap-1 sm:gap-1.5 px-2"
+          >
+            <MessageSquareText size={15} />
+            Enquire
+          </EnquireButton>
         </div>
       </div>
     </div>

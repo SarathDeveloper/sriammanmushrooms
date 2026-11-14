@@ -1,44 +1,40 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SafeImage } from "@/components/SafeImage";
-import { Search, ArrowRight, TrendingUp, Clock, Loader2 } from "lucide-react";
+import { Search, ArrowRight, TrendingUp, Clock } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { searchProducts } from "@/app/admin/products/actions";
-import { ORDERS_ENABLED } from "@/lib/features";
+import type { SearchItem } from "@/lib/content";
+import { filterSearchItems } from "@/lib/search";
 
 const popularSearches = ["Oyster", "Milky Mushroom", "Shiitake", "Combo Pack", "Fresh"];
 
 const quickLinks = [
   { label: "Pre-Order Mushrooms", href: "/pre-order" },
   { label: "Compare Nutrition", href: "/compare" },
-  ...(ORDERS_ENABLED ? [{ label: "Track Order", href: "/track-order" }] : []),
   { label: "Training Programs", href: "/training" },
 ];
 
-type SearchResult = {
-  id: string;
-  name: string;
-  slug: string;
-  price: number;
-  image: string;
-};
-
-export function SearchDialog() {
+export function SearchDialog({ items }: { items: SearchItem[] }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const router = useRouter();
+  const results = useMemo(() => filterSearchItems(items, query), [items, query]);
+  const hasSearched = query.trim().length >= 2;
+
+  // Each open starts with an empty search box.
+  const changeOpen = (next: boolean) => {
+    setQuery("");
+    setOpen(next);
+  };
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
+        setQuery("");
         setOpen((prev) => !prev);
       }
       if (e.key === "Escape") setOpen(false);
@@ -47,44 +43,8 @@ export function SearchDialog() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    if (!open) {
-      setQuery("");
-      setResults([]);
-      setHasSearched(false);
-    }
-  }, [open]);
-
-  const doSearch = useCallback(async (q: string) => {
-    if (q.length < 2) {
-      setResults([]);
-      setHasSearched(false);
-      setIsSearching(false);
-      return;
-    }
-
-    setIsSearching(true);
-    const result = await searchProducts(q);
-    setIsSearching(false);
-    setHasSearched(true);
-
-    if (result.success && result.data) {
-      setResults(result.data);
-    } else {
-      setResults([]);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => doSearch(query), 300);
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
-  }, [query, doSearch]);
-
   const goTo = (path: string) => {
-    setOpen(false);
+    changeOpen(false);
     router.push(path);
   };
 
@@ -95,24 +55,20 @@ export function SearchDialog() {
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => changeOpen(true)}
         aria-label="Search products (Ctrl+K)"
         className="text-muted-foreground hover:text-primary transition-colors"
       >
         <Search size={20} />
       </button>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={changeOpen}>
         <DialogContent
           showCloseButton={false}
           className="top-[12%] max-w-xl translate-y-0 rounded-2xl p-0 gap-0 overflow-hidden sm:max-w-xl"
         >
           <DialogTitle className="sr-only">Search products and recipes</DialogTitle>
           <div className="flex items-center gap-3 border-b border-border px-4">
-            {isSearching ? (
-              <Loader2 size={18} className="text-primary animate-spin shrink-0" />
-            ) : (
-              <Search size={18} className="text-muted-foreground shrink-0" />
-            )}
+            <Search size={18} className="text-muted-foreground shrink-0" />
             <Input
               autoFocus
               value={query}
@@ -171,7 +127,7 @@ export function SearchDialog() {
                     </h4>
                     {results.map((product) => (
                       <button
-                        key={product.id}
+                        key={product.slug}
                         onClick={() => goTo(`/shop/${product.slug}`)}
                         className="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-secondary/50 text-left transition-colors group"
                       >
@@ -187,7 +143,7 @@ export function SearchDialog() {
                   </div>
                 )}
 
-                {hasSearched && !isSearching && results.length === 0 && (
+                {hasSearched && results.length === 0 && (
                   <div className="text-center py-10">
                     <p className="text-base text-muted-foreground">
                       No results for &ldquo;{query}&rdquo;

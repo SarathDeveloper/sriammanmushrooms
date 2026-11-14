@@ -7,8 +7,9 @@ import { FadeIn } from "@/components/FadeIn";
 import { Button } from "@/components/ui/button";
 import { useWishlistStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";
+import type { Product } from "@/lib/content";
 
-export function WishlistClient({ products }: { products: any[] }) {
+export function WishlistClient({ products }: { products: Product[] }) {
   const mounted = useHasMounted();
   const productIds = useWishlistStore((s) => s.productIds);
   const wishlistedProducts = products.filter((p) => productIds.includes(p.id));
@@ -32,7 +33,6 @@ export function WishlistClient({ products }: { products: any[] }) {
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
           {wishlistedProducts.map((product, i) => (
             <FadeIn key={product.id} delay={i * 0.08}>
-              {/* @ts-ignore */}
               <ProductCard product={product} />
             </FadeIn>
           ))}
