@@ -26,9 +26,6 @@ import { whatsappLink } from "@/lib/whatsapp";
 const FarmToTable = dynamic(() =>
   import("@/components/FarmToTable").then((m) => ({ default: m.FarmToTable })),
 );
-const SuccessStories = dynamic(() =>
-  import("@/components/SuccessStories").then((m) => ({ default: m.SuccessStories })),
-);
 const HomeContactSection = dynamic(() =>
   import("@/components/HomeContactSection").then((m) => ({ default: m.HomeContactSection })),
 );
@@ -110,11 +107,6 @@ export default function Home() {
 
       {/* Press & Recognition */}
       <PressAndRecognition compact />
-
-      <SectionDivider variant="leaf" />
-
-      {/* SUCCESS STORIES */}
-      <SuccessStories />
 
       <SectionDivider variant="leaf" />
 
