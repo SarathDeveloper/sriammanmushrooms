@@ -1,11 +1,15 @@
+import type { Metadata } from "next";
+
 import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/privacy" },
+export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
-  description: "How Sri Amman Mushroom Farm collects, uses, and protects your personal information.",
-};
+  description:
+    "How Sri Amman Mushroom Farm collects, uses, and protects your personal information.",
+  path: "/privacy",
+});
 
 const sections = [
   {

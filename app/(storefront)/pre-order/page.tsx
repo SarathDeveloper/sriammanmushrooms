@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 
 import { PageHero } from "@/components/PageHero";
 import { PreOrderSection } from "@/components/PreOrderSection";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Pre-Order Fresh Mushrooms",
   description:
-    "Pre-order seasonal and specialty mushrooms from Sri Amman Mushroom Farm. Send your order on WhatsApp and we'll confirm availability.",
-  alternates: { canonical: "/pre-order" },
-};
+    "Pre-order fresh oyster and button mushrooms from Sri Amman Mushroom Farm in the Kalvarayan Hills. Send your order on WhatsApp and we'll confirm availability and delivery.",
+  path: "/pre-order",
+});
 
 export default function PreOrderPage() {
   return (

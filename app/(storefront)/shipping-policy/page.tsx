@@ -1,12 +1,15 @@
+import type { Metadata } from "next";
+
 import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/shipping-policy" },
+export const metadata: Metadata = pageMetadata({
   title: "Shipping & Delivery Policy",
   description:
     "Shipping charges, delivery timelines, and delivery terms for Sri Amman Mushroom Farm.",
-};
+  path: "/shipping-policy",
+});
 
 const sections = [
   {

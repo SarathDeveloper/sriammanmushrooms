@@ -16,8 +16,8 @@ import {
   getRelatedProducts,
   getReviewsForProduct,
 } from "@/lib/content";
-import { absoluteImageUrl, breadcrumbJsonLd, serializeJsonLd } from "@/lib/seo";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteImageUrl, breadcrumbJsonLd, pageMetadata, serializeJsonLd } from "@/lib/seo";
+import { absoluteUrl, SITE_NAME } from "@/lib/site";
 import { packSizeLabel } from "@/lib/utils";
 
 // Every product page is generated at build time; unknown slugs are a 404.
@@ -34,18 +34,12 @@ export async function generateMetadata(props: {
   const product = getProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
   const image = absoluteImageUrl(product.image);
-  return {
+  return pageMetadata({
     title: product.name,
     description: product.description,
-    alternates: { canonical: `/products/${product.slug}` },
-    openGraph: {
-      type: "website",
-      title: product.name,
-      description: product.description,
-      url: `/products/${product.slug}`,
-      ...(image ? { images: [{ url: image, alt: product.name }] } : {}),
-    },
-  };
+    path: `/products/${product.slug}`,
+    image: image ? { url: image, alt: `${product.name} from ${SITE_NAME}` } : null,
+  });
 }
 
 const nutritionData: Record<string, { calories: number; protein: string; fiber: string; vitD: string; iron: string }> = {

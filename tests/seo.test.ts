@@ -36,7 +36,12 @@ describe("robots", () => {
   it("allows crawling and points at the sitemap", () => {
     const result = robots();
     expect(result.sitemap).toBe(`${SITE_URL}/sitemap.xml`);
-    expect(result.rules).toMatchObject({ userAgent: "*", allow: "/" });
+    const rules = Array.isArray(result.rules) ? result.rules : [result.rules];
+    expect(rules).toContainEqual({ userAgent: "*", allow: "/" });
+    expect(rules.some((rule) => rule.disallow)).toBe(false);
+    const aiRule = rules.find((rule) => Array.isArray(rule.userAgent));
+    expect(aiRule?.userAgent).toEqual(expect.arrayContaining(["GPTBot", "ClaudeBot", "PerplexityBot", "Google-Extended"]));
+    expect(aiRule?.allow).toBe("/");
   });
 });
 

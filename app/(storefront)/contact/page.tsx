@@ -5,15 +5,16 @@ import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 import { CONTACT_EMAIL, FARM_MAPS_EMBED_URL, FARM_MAPS_LINK } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact Us",
   description:
     "Call, WhatsApp or message Sri Amman Mushroom Farm about fresh mushrooms, bulk orders, farm visits and mushroom farming training.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 const PHONE = "+91 93855 26105";
 const ADDITIONAL_PHONES = ["+91 89031 56142", "+91 63833 61207"];

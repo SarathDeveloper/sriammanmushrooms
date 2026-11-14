@@ -131,6 +131,7 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
           {data.map((slide, i) => {
             const isActive = i === activeIndex;
             const hasVideo = !!slide.video;
+            const Headline = i === 0 ? "h1" : "h2";
 
             return (
               <div
@@ -176,8 +177,9 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
                       {slide.badge}
                     </div>
 
-                    {/* Headline */}
-                    <h1
+                    {/* Headline: only the first slide is the page's <h1>; the
+                        other slides use <h2> so the home page has one main heading. */}
+                    <Headline
                       className={cn(
                         "text-5xl sm:text-6xl md:text-7xl font-extrabold font-sans text-white leading-[1.1] mb-4 sm:mb-6 tracking-tight whitespace-pre-line transition-all duration-700",
                         isActive
@@ -189,7 +191,7 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
                       }}
                     >
                       {slide.headline}
-                    </h1>
+                    </Headline>
 
                     {/* Subtitle */}
                     <p

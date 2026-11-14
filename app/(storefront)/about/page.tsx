@@ -1,4 +1,5 @@
 import { ArrowRight, Award, Droplets, HeartHandshake, Leaf, Quote, Users } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Certifications } from "@/components/Certifications";
@@ -7,12 +8,14 @@ import { PageHero } from "@/components/PageHero";
 import { PressAndRecognition } from "@/components/PressAndRecognition";
 import { SafeImage } from "@/components/SafeImage";
 import { Button } from "@/components/ui/button";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/about" },
+export const metadata: Metadata = pageMetadata({
   title: "About Us",
-  description: "Know about Sri Amman Mushroom Farm. We grow natural mushrooms in Kalvarayan Hills and teach farmers how to grow.",
-};
+  description:
+    "Know about Sri Amman Mushroom Farm. We grow natural mushrooms in Kalvarayan Hills and teach farmers how to grow.",
+  path: "/about",
+});
 
 const values = [
   { icon: Leaf, title: "Natural First", desc: "We always ask: Is this good for the soil? Good for mushrooms? Good for our customers?" },

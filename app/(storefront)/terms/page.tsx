@@ -1,11 +1,15 @@
+import type { Metadata } from "next";
+
 import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/terms" },
+export const metadata: Metadata = pageMetadata({
   title: "Terms of Service",
-  description: "The terms and conditions governing your use of the Sri Amman Mushroom Farm website and services.",
-};
+  description:
+    "The terms and conditions governing your use of the Sri Amman Mushroom Farm website and services.",
+  path: "/terms",
+});
 
 const sections = [
   {

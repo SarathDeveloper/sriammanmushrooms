@@ -9,6 +9,7 @@ import {
   TrendingUp,
   CheckCircle2,
 } from "lucide-react";
+import type { Metadata } from "next";
 
 import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
@@ -18,6 +19,7 @@ import { SafeImage } from "@/components/SafeImage";
 import { TrainingJourneySection } from "@/components/TrainingJourneySection";
 import { TrainingOrderFlowSection } from "@/components/TrainingOrderFlowSection";
 import { Button } from "@/components/ui/button";
+import { pageMetadata } from "@/lib/seo";
 
 const subsidySteps = [
   "Complete training and get your certificate",
@@ -35,12 +37,12 @@ const stats = [
   { icon: Users, value: "100+", label: "Farmers in Network" },
 ];
 
-export const metadata = {
-  alternates: { canonical: "/training" },
+export const metadata: Metadata = pageMetadata({
   title: "Mushroom Farming Support — From Setup to Earning",
   description:
     "We don't just teach mushroom farming. Mathesh helps you with setup, bags, customer orders, and understanding available government schemes.",
-};
+  path: "/training",
+});
 
 export default async function TrainingPage() {
   return (

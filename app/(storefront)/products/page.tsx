@@ -5,14 +5,15 @@ import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
 import { ProductCard } from "@/components/ProductCard";
 import { getProducts } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 import { queryProducts } from "@/lib/shop";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Our Mushrooms",
   description:
     "Fresh oyster and button mushrooms grown and hand-picked at Sri Amman Mushroom Farm in the Kalvarayan Hills. Enquire on WhatsApp for today's price.",
-  alternates: { canonical: "/products" },
-};
+  path: "/products",
+});
 
 export default async function ProductsPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;

@@ -1,12 +1,15 @@
+import type { Metadata } from "next";
+
 import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/refund-policy" },
+export const metadata: Metadata = pageMetadata({
   title: "Refund & Cancellation Policy",
   description:
     "Refund, return, and order cancellation policy for Sri Amman Mushroom Farm.",
-};
+  path: "/refund-policy",
+});
 
 const sections = [
   {

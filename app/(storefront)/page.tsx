@@ -1,4 +1,5 @@
 import { ArrowRight, ShieldCheck, Clock, Truck, Send } from "lucide-react";
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -17,6 +18,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { WhatsAppUpdatesButton } from "@/components/WhatsAppUpdatesButton";
 import { getFeaturedProducts, getHeroSlides } from "@/lib/content";
+import { HOME_FAQ } from "@/lib/faq";
+import { faqPageJsonLd, pageMetadata, serializeJsonLd } from "@/lib/seo";
+import { SITE_DESCRIPTION } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
 
 const FarmToTable = dynamic(() =>
@@ -32,12 +36,18 @@ const PreOrderSection = dynamic(() =>
   import("@/components/PreOrderSection").then((m) => ({ default: m.PreOrderSection })),
 );
 
+export const metadata: Metadata = pageMetadata({ description: SITE_DESCRIPTION, path: "/" });
+
 export default function Home() {
   const featuredProducts = getFeaturedProducts(3);
   const heroSlides = getHeroSlides();
 
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqPageJsonLd(HOME_FAQ)) }}
+      />
 
       <HomeHero slides={heroSlides.length > 0 ? heroSlides : undefined} />
 
@@ -151,36 +161,12 @@ export default function Home() {
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading mb-6 sm:mb-8">Common Questions</h2>
               <Accordion className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">Are mushrooms fresh when I get them?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    Yes! We pick mushrooms in the early morning and send them the same day. We pack them in cool boxes so they stay fresh until you get them.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">How do you grow your mushrooms?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    We follow natural growing practices at our farm and pack each harvest with care. Contact us if you need details about a particular variety or batch.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">How long is the training?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    We have 1-day short course and 2-week full course. Choose what works for you. See our Training page for more details.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-4">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">Where do you deliver?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    We deliver to Salem, Namakkal, Erode, Coimbatore, Trichy, Madurai, Chennai, and Bangalore. Check your pincode on the product page to see if we deliver to your area.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-5">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">Can I get mushrooms every week?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    Yes! Message us on WhatsApp to set up a regular weekly, fortnightly or monthly supply. You can stop anytime.
-                  </AccordionContent>
-                </AccordionItem>
+                {HOME_FAQ.map((item, i) => (
+                  <AccordionItem key={item.question} value={`faq-${i}`}>
+                    <AccordionTrigger className="text-sm sm:text-base font-medium">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-[var(--color-body)] text-sm">{item.answer}</AccordionContent>
+                  </AccordionItem>
+                ))}
               </Accordion>
             </FadeIn>
 
