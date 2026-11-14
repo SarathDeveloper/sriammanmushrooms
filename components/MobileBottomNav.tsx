@@ -2,39 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { Heart, Home, MessageSquareText, ShoppingBag, ShoppingCart, User } from "lucide-react";
-import { useCartStore } from "@/lib/store";
-import { useHasMounted } from "@/lib/useHasMounted";
-import { cn } from "@/lib/utils";
-import { ORDERS_ENABLED } from "@/lib/features";
+import { Heart, Home, MessageSquareText, ShoppingBag } from "lucide-react";
 
-const baseTabs = [
+import { cn } from "@/lib/utils";
+
+const tabs = [
   { href: "/", icon: Home, label: "Home" },
   { href: "/shop", icon: ShoppingBag, label: "Shop" },
-  { href: "/cart", icon: ShoppingCart, label: "Cart" },
+  { href: "/wishlist", icon: Heart, label: "Wishlist" },
+  { href: "/contact", icon: MessageSquareText, label: "Enquire" },
 ];
 
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const { data: session } = useSession();
-  const mounted = useHasMounted();
-  const cartCount = useCartStore((s) => s.totalItems());
-  const tabs = ORDERS_ENABLED
-    ? [
-        ...baseTabs,
-        {
-          href: session?.user ? "/account" : "/login",
-          icon: User,
-          label: "Account",
-        },
-      ]
-    : [
-        baseTabs[0],
-        baseTabs[1],
-        { href: "/wishlist", icon: Heart, label: "Wishlist" },
-        { href: "/contact", icon: MessageSquareText, label: "Enquire" },
-      ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card/95 backdrop-blur-lg border-t border-border safe-area-bottom">
@@ -50,14 +30,7 @@ export function MobileBottomNav() {
                 isActive ? "text-primary" : "text-muted-foreground"
               )}
             >
-              <div className="relative">
-                <tab.icon size={22} strokeWidth={isActive ? 2 : 1.5} />
-                {tab.label === "Cart" && mounted && cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
-                    {cartCount > 9 ? "9+" : cartCount}
-                  </span>
-                )}
-              </div>
+              <tab.icon size={22} strokeWidth={isActive ? 2 : 1.5} />
               <span className="text-sm font-medium">{tab.label}</span>
               {isActive && (
                 <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-primary" />

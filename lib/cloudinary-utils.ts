@@ -1,6 +1,3 @@
-/** Folder used when uploading product / farm media. */
-export const CLOUDINARY_FOLDER = "mushroom-farm";
-
 /**
  * True when `src` is a Cloudinary public ID or a res.cloudinary.com URL.
  * Local paths (`/…`) and other remote URLs fall through to next/image.
@@ -29,32 +26,4 @@ export function toCloudinaryPublicId(src: string): string {
   } catch {
     return src;
   }
-}
-
-/**
- * Normalize a list of image refs to Cloudinary public IDs.
- * Accepts public IDs and res.cloudinary.com delivery URLs.
- * Drops empty strings and rejects non-Cloudinary remote URLs.
- */
-export function normalizeCloudinaryImages(images: string[]): {
-  ok: true;
-  publicIds: string[];
-} | {
-  ok: false;
-  error: string;
-} {
-  const publicIds: string[] = [];
-
-  for (const raw of images) {
-    const src = typeof raw === "string" ? raw.trim() : "";
-    if (!src) continue;
-
-    publicIds.push(toCloudinaryPublicId(src));
-  }
-
-  if (publicIds.length === 0) {
-    return { ok: false, error: "At least one image is required." };
-  }
-
-  return { ok: true, publicIds };
 }

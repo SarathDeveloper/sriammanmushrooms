@@ -7,9 +7,6 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck,
-  Leaf,
-  Clock,
   ShoppingBag,
   Check
 } from "lucide-react";
@@ -106,9 +103,10 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
     setActiveIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
+  // activeIndex starts at 0, which is Embla's initial slide, so we only need
+  // to follow later "select" events.
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
     emblaApi.on("select", onSelect);
     return () => {
       emblaApi.off("select", onSelect);

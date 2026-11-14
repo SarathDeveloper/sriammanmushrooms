@@ -1,25 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { ORDERS_ENABLED, whatsappLink } from "@/lib/features";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const quickMessages = [
-  { label: "Order Mushrooms", message: "Hi! I'd like to place an order for fresh mushrooms." },
+  { label: "Buy Mushrooms", message: "Hi! I'd like to buy fresh mushrooms. What's available today?" },
   { label: "Pre-Order Enquiry", message: "Hi! I'd like to pre-order fresh mushrooms." },
   { label: "Training Info", message: "Hi! I'd like to know about your mushroom farming training programs." },
-  ...(ORDERS_ENABLED
-    ? [{ label: "Track My Order", message: "Hi! I'd like to track my order. My order ID is: " }]
-    : []),
+  { label: "Bulk / Wholesale", message: "Hi! I'm interested in bulk or wholesale mushroom supply." },
 ];
 
 export function WhatsAppWidget() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const isCartPage = pathname === "/cart";
 
   const sendMessage = (message: string) => {
     window.open(whatsappLink(message), "_blank");
@@ -27,7 +22,7 @@ export function WhatsAppWidget() {
   };
 
   return (
-    <div className={`fixed right-4 z-50 md:bottom-8 md:right-8 ${isCartPage ? "bottom-36" : "bottom-20"}`}>
+    <div className="fixed right-4 bottom-20 z-50 md:bottom-8 md:right-8">
       <AnimatePresence>
         {open && (
           <motion.div

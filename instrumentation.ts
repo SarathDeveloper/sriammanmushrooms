@@ -7,7 +7,9 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
     await import("./sentry.server.config");
     const { validateEnv } = await import("./lib/env");
-    validateEnv();
+    for (const warning of validateEnv().warnings) {
+      console.warn(`[env] ${warning}`);
+    }
   }
 
   if (process.env.NEXT_RUNTIME === "edge") {
@@ -15,5 +17,5 @@ export async function register() {
   }
 }
 
-// Reports errors from Server Components, Route Handlers and Server Actions.
+// Reports errors from Server Components and route rendering.
 export const onRequestError = Sentry.captureRequestError;

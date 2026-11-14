@@ -25,4 +25,7 @@ Sentry.init({
   ],
 });
 
+// eslint-plugin-import resolves @sentry/nextjs to its server typings, which
+// don't list this client-only export; it exists in the browser build.
+// eslint-disable-next-line import/namespace
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

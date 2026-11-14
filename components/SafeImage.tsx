@@ -11,12 +11,16 @@ import { isCloudinarySrc, toCloudinaryPublicId } from "@/lib/cloudinary-utils";
  * Wraps next/image (or CldImage for Cloudinary assets) with a graceful
  * fallback so a missing or rate-limited remote image never shows a broken icon.
  */
+// Inlined at build time. Without it Cloudinary images can't be addressed, so
+// they render the placeholder instead of crashing the page.
+const CLOUDINARY_CONFIGURED = Boolean(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
+
 export function SafeImage({ className, fill, alt, src, width, height, sizes, ...props }: ImageProps) {
   const [failed, setFailed] = useState(false);
   const srcString = typeof src === "string" ? src : undefined;
   const useCloudinary = Boolean(srcString && isCloudinarySrc(srcString));
 
-  if (failed || !srcString) {
+  if (failed || !srcString || (useCloudinary && !CLOUDINARY_CONFIGURED)) {
     return (
       <div
         role="img"
