@@ -1,18 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarCheck, CheckCircle2, Loader2, MailCheck, Package, Sprout } from "lucide-react";
-import toast from "react-hot-toast";
+import { CalendarCheck, CheckCircle2, Package, Sprout } from "lucide-react";
+
 import { FadeIn } from "@/components/FadeIn";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FieldError, WhatsAppHandoff } from "@/components/WhatsAppHandoff";
+import {
+  buildPreOrderMessage,
+  fieldErrors,
+  openWhatsApp,
+  preOrderSchema,
+  whatsappLink,
+} from "@/lib/whatsapp";
 
 const benefits = [
   {
     icon: Sprout,
     title: "Get the Freshest Batch",
-    desc: "Lock in mushrooms when they're at their freshest — before limited batches sell out.",
+    desc: "Lock in mushrooms when they're at their freshest, before limited batches sell out.",
   },
   {
     icon: CalendarCheck,
@@ -22,7 +31,7 @@ const benefits = [
   {
     icon: Package,
     title: "Confirmed Availability",
-    desc: "We'll confirm stock and get in touch before you need to arrange payment.",
+    desc: "We'll confirm stock on WhatsApp before you need to arrange payment.",
   },
 ];
 
@@ -37,37 +46,40 @@ const initialForm = {
   notes: "",
 };
 
+type Field = keyof typeof initialForm;
+
 export function PreOrderSection() {
   const [form, setForm] = useState(initialForm);
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [handoff, setHandoff] = useState<{ url: string; blocked: boolean } | null>(null);
 
-  const handleChange = (field: keyof typeof initialForm, value: string) => {
+  const handleChange = (field: Field, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch("/api/pre-orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.message ?? "Could not submit your pre-order.");
-        return;
-      }
-      setSubmitted(true);
-      toast.success("Pre-order submitted! We'll confirm shortly.");
-    } catch {
-      toast.error("Something went wrong. Please try again later.");
-    } finally {
-      setLoading(false);
+    const parsed = preOrderSchema.safeParse(form);
+    if (!parsed.success) {
+      setErrors(fieldErrors(parsed.error));
+      return;
     }
+    setErrors({});
+    const url = whatsappLink(buildPreOrderMessage(parsed.data));
+    // Open synchronously inside the submit handler so popup blockers allow it.
+    const opened = openWhatsApp(url);
+    setHandoff({ url, blocked: !opened });
   };
+
+  const fieldProps = (field: Field) => ({
+    id: `preorder-${field}`,
+    value: form[field],
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleChange(field, e.target.value),
+    "aria-invalid": !!errors[field],
+    "aria-describedby": errors[field] ? `preorder-${field}-error` : undefined,
+  });
+
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <section className="py-12 sm:py-16 bg-background grain-overlay">
@@ -82,7 +94,7 @@ export function PreOrderSection() {
             Pre-Order Fresh Mushrooms
           </h2>
           <p className="text-[var(--color-body)] max-w-2xl mx-auto mt-3 text-base sm:text-lg">
-            Seasonal mushrooms sell out fast. Place your order before harvest and we&apos;ll confirm availability.
+            Seasonal mushrooms sell out fast. Send us your pre-order on WhatsApp and we&apos;ll confirm availability.
           </p>
         </FadeIn>
 
@@ -113,32 +125,18 @@ export function PreOrderSection() {
           </div>
 
           <FadeIn direction="left" className="lg:col-span-2">
-            {submitted ? (
-              <div className="h-full flex flex-col items-center justify-center text-center bg-card rounded-2xl p-8 sm:p-12 border border-border">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-success)]/15 text-[var(--color-success)] flex items-center justify-center mb-6">
-                  <MailCheck size={32} />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold font-heading text-foreground mb-2">
-                  Pre-Order Received!
-                </h3>
-                <p className="text-[var(--color-body)] max-w-sm mb-6 text-sm sm:text-base">
-                  Thank you. Our team will confirm availability and contact you within 24 hours
-                  about the next steps.
-                </p>
-                <Button
-                  variant="outline"
-                  className="rounded-full"
-                  onClick={() => {
-                    setForm(initialForm);
-                    setSubmitted(false);
-                  }}
-                >
-                  Submit Another Pre-Order
-                </Button>
-              </div>
+            {handoff ? (
+              <WhatsAppHandoff
+                url={handoff.url}
+                blocked={handoff.blocked}
+                title="Send Your Pre-Order"
+                className="h-full p-8 sm:p-12"
+                onReset={() => setHandoff(null)}
+              />
             ) : (
               <form
                 onSubmit={handleSubmit}
+                noValidate
                 className="bg-card rounded-2xl p-6 sm:p-8 border border-border space-y-5"
               >
                 <h2 className="text-lg sm:text-xl font-bold font-heading text-foreground">
@@ -146,89 +144,61 @@ export function PreOrderSection() {
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input
-                      id="name"
-                      required
-                      value={form.name}
-                      onChange={(e) => handleChange("name", e.target.value)}
-                      placeholder="Your name"
-                      className="h-11 bg-white"
-                    />
+                    <Label htmlFor="preorder-name">Full Name</Label>
+                    <Input {...fieldProps("name")} autoComplete="name" maxLength={80} placeholder="Your name" className="h-11 bg-white" />
+                    <FieldError id="preorder-name-error" message={errors.name} />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="preorder-phone">Mobile / WhatsApp Number</Label>
                     <Input
-                      id="phone"
+                      {...fieldProps("phone")}
                       type="tel"
-                      required
-                      value={form.phone}
-                      onChange={(e) => handleChange("phone", e.target.value)}
-                      placeholder="+91 93855 26105"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      maxLength={16}
+                      placeholder="10-digit mobile number"
                       className="h-11 bg-white"
                     />
+                    <FieldError id="preorder-phone-error" message={errors.phone} />
                   </div>
                   <div className="space-y-1.5 sm:col-span-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="preorder-email">Email (optional)</Label>
                     <Input
-                      id="email"
+                      {...fieldProps("email")}
                       type="email"
-                      required
-                      value={form.email}
-                      onChange={(e) => handleChange("email", e.target.value)}
+                      autoComplete="email"
+                      maxLength={120}
                       placeholder="you@email.com"
                       className="h-11 bg-white"
                     />
+                    <FieldError id="preorder-email-error" message={errors.email} />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="product">Product(s)</Label>
-                    <Input
-                      id="product"
-                      required
-                      value={form.product}
-                      onChange={(e) => handleChange("product", e.target.value)}
-                      placeholder="e.g. Shiitake, Oyster"
-                      className="h-11 bg-white"
-                    />
+                    <Label htmlFor="preorder-product">Product(s)</Label>
+                    <Input {...fieldProps("product")} maxLength={120} placeholder="e.g. Shiitake, Oyster" className="h-11 bg-white" />
+                    <FieldError id="preorder-product-error" message={errors.product} />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="quantity">Quantity</Label>
-                    <Input
-                      id="quantity"
-                      required
-                      value={form.quantity}
-                      onChange={(e) => handleChange("quantity", e.target.value)}
-                      placeholder="e.g. 2kg"
-                      className="h-11 bg-white"
-                    />
+                    <Label htmlFor="preorder-quantity">Quantity</Label>
+                    <Input {...fieldProps("quantity")} maxLength={40} placeholder="e.g. 2kg" className="h-11 bg-white" />
+                    <FieldError id="preorder-quantity-error" message={errors.quantity} />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="preferredDate">Preferred Date</Label>
-                    <Input
-                      id="preferredDate"
-                      type="date"
-                      required
-                      value={form.preferredDate}
-                      onChange={(e) => handleChange("preferredDate", e.target.value)}
-                      className="h-11 bg-white"
-                    />
+                    <Label htmlFor="preorder-preferredDate">Preferred Date</Label>
+                    <Input {...fieldProps("preferredDate")} type="date" min={today} className="h-11 bg-white" />
+                    <FieldError id="preorder-preferredDate-error" message={errors.preferredDate} />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="location">Delivery Location</Label>
-                    <Input
-                      id="location"
-                      required
-                      value={form.location}
-                      onChange={(e) => handleChange("location", e.target.value)}
-                      placeholder="City, Area"
-                      className="h-11 bg-white"
-                    />
+                    <Label htmlFor="preorder-location">Delivery Location</Label>
+                    <Input {...fieldProps("location")} maxLength={120} placeholder="City, Area" className="h-11 bg-white" />
+                    <FieldError id="preorder-location-error" message={errors.location} />
                   </div>
                   <div className="space-y-1.5 sm:col-span-2">
-                    <Label htmlFor="notes">Notes (optional)</Label>
+                    <Label htmlFor="preorder-notes">Notes (optional)</Label>
                     <textarea
-                      id="notes"
+                      id="preorder-notes"
                       value={form.notes}
+                      maxLength={1000}
                       onChange={(e) => handleChange("notes", e.target.value)}
                       placeholder="Pickup preference, packaging notes, or anything else..."
                       rows={4}
@@ -239,16 +209,16 @@ export function PreOrderSection() {
 
                 <div className="flex items-center gap-2 text-base text-muted-foreground">
                   <CheckCircle2 size={16} className="text-primary shrink-0" />
-                  Pre-orders are confirmed by our team before payment.
+                  We confirm every pre-order on WhatsApp before payment.
                 </div>
 
                 <Button
                   type="submit"
-                  disabled={loading}
                   size="lg"
-                  className="w-full sm:w-auto rounded-full h-12 px-10"
+                  className="w-full sm:w-auto rounded-full h-12 px-10 bg-whatsapp hover:bg-whatsapp-hover text-white"
                 >
-                  {loading ? <Loader2 size={18} className="animate-spin" /> : "Submit Pre-Order"}
+                  <WhatsAppIcon className="size-5 mr-2" />
+                  Send Pre-Order on WhatsApp
                 </Button>
               </form>
             )}

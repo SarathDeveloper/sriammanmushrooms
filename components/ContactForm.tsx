@@ -1,189 +1,164 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, MailCheck } from "lucide-react";
+
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import toast from "react-hot-toast";
-import { submitInquiry } from "@/app/actions/contact";
-
-export const INQUIRY_TYPES = [
-  "Products",
-  "Training",
-  "Farm Visit",
-  "Wholesale",
-  "Other",
-];
-
-export const CONTACT_METHODS = ["WhatsApp", "Phone", "Email"] as const;
-type ContactMethod = (typeof CONTACT_METHODS)[number];
+import { FieldError, WhatsAppHandoff } from "@/components/WhatsAppHandoff";
+import {
+  buildContactMessage,
+  contactEnquirySchema,
+  fieldErrors,
+  INQUIRY_TYPES,
+  openWhatsApp,
+  whatsappLink,
+} from "@/lib/whatsapp";
 
 interface ContactFormProps {
+  /** Pre-selects the enquiry type and hides the selector. */
   defaultInquiryType?: string;
   showCompany?: boolean;
   showLocation?: boolean;
   showEmail?: boolean;
   showMessage?: boolean;
-  compact?: boolean;
-  successTitle?: string;
-  successMessage?: string;
+  title?: string;
+  description?: string;
+  /** Prefix for input ids so two forms can share a page. */
+  idPrefix?: string;
 }
 
+const selectStyle = {
+  backgroundImage:
+    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c6370' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "right 12px center",
+  paddingRight: "2.5rem",
+};
+
+/** General enquiry form. Validates in the browser, then opens WhatsApp with the details. */
 export function ContactForm({
   defaultInquiryType = "",
   showCompany = false,
   showLocation = false,
   showEmail = false,
   showMessage = false,
-  compact = false,
-  successTitle = "Message Sent!",
-  successMessage = "Thank you for reaching out. We will reply to you within 24 hours.",
+  title = "Send Us a Message",
+  description = "Fill in your details and we'll open WhatsApp with your message ready to send.",
+  idPrefix = "contact",
 }: ContactFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const [form, setForm] = useState({
+  const initialForm = {
     name: "",
     email: "",
     phone: "",
     location: "",
     company: "",
     inquiryType: defaultInquiryType,
-    preferredContact: "WhatsApp" as ContactMethod,
     message: "",
-  });
+  };
+  const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [handoff, setHandoff] = useState<{ url: string; blocked: boolean } | null>(null);
 
-  const set = (field: keyof typeof form, value: string) =>
+  const id = (field: string) => `${idPrefix}-${field}`;
+  const set = (field: keyof typeof initialForm, value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));
+  const describedBy = (field: string) => (errors[field] ? id(`${field}-error`) : undefined);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-
-    const result = await submitInquiry(null, formData);
-
-    setLoading(false);
-
-    if (result.success) {
-      setSubmitted(true);
-      toast.success("Request sent successfully!");
-    } else {
-      toast.error(result.message || "Failed to submit request.");
+    const parsed = contactEnquirySchema.safeParse(form);
+    if (!parsed.success) {
+      setErrors(fieldErrors(parsed.error));
+      return;
     }
+    setErrors({});
+    const url = whatsappLink(buildContactMessage(parsed.data));
+    // Open synchronously inside the submit handler so popup blockers allow it.
+    const opened = openWhatsApp(url);
+    setHandoff({ url, blocked: !opened });
   };
 
-  if (submitted) {
+  if (handoff) {
     return (
-      <div className={`flex flex-col items-center justify-center text-center bg-card rounded-2xl border border-border ${compact ? "p-8" : "p-8 sm:p-12 min-h-[520px]"}`}>
-        <div className="w-16 h-16 rounded-full bg-[var(--color-success)]/15 text-[var(--color-success)] flex items-center justify-center mb-6">
-          <MailCheck size={32} />
-        </div>
-        <h3 className="text-3xl font-bold font-heading text-foreground mb-2">
-          {successTitle}
-        </h3>
-        <p className="text-[var(--color-body)] max-w-sm mb-6 text-base leading-relaxed">
-          {successMessage}
-        </p>
-        <Button
-          variant="outline"
-          className="rounded-full px-6"
-          onClick={() => {
-            setForm({
-              name: "",
-              email: "",
-              phone: "",
-              location: "",
-              company: "",
-              inquiryType: defaultInquiryType,
-              preferredContact: "WhatsApp",
-              message: "",
-            });
-            setSubmitted(false);
-          }}
-        >
-          Send Another Request
-        </Button>
-      </div>
+      <WhatsAppHandoff
+        url={handoff.url}
+        blocked={handoff.blocked}
+        className="p-8 sm:p-12 min-h-[420px]"
+        onReset={() => setHandoff(null)}
+      />
     );
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className={`bg-card rounded-2xl border border-border space-y-5 ${compact ? "p-6 sm:p-8" : "p-6 sm:p-8"}`}
+      noValidate
+      className="bg-card rounded-2xl border border-border space-y-5 p-6 sm:p-8"
     >
-      {!compact && (
-        <div>
-          <h2 className="text-xl font-bold font-heading text-foreground">
-            Send Us a Message
-          </h2>
-          <p className="text-base text-muted-foreground mt-0.5">
-            Tell us what you need and we will reply within 24 hours.
-          </p>
-        </div>
-      )}
-
-      {compact && (
-        <div className="mb-2">
-          <h3 className="font-bold text-xl text-foreground font-heading mb-1">
-            Register Your Interest
-          </h3>
-          <p className="text-base text-[var(--color-body)]">
-            Fill your details. Mathesh will contact you within 24 hours.
-          </p>
-        </div>
-      )}
+      <div>
+        <h2 className="text-xl font-bold font-heading text-foreground">{title}</h2>
+        <p className="text-base text-muted-foreground mt-0.5">{description}</p>
+      </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="contact-name">Full Name</Label>
+        <Label htmlFor={id("name")}>Full Name</Label>
         <Input
-          id="contact-name"
-          required
+          id={id("name")}
+          autoComplete="name"
+          maxLength={80}
           value={form.name}
           onChange={(e) => set("name", e.target.value)}
           placeholder="Your Full Name"
+          aria-invalid={!!errors.name}
+          aria-describedby={describedBy("name")}
         />
+        <FieldError id={id("name-error")} message={errors.name} />
       </div>
 
-      <div className={`grid ${!compact && showEmail ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"} gap-4`}>
+      <div className={`grid ${showEmail ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"} gap-4`}>
+        <div className="space-y-1.5">
+          <Label htmlFor={id("phone")}>Mobile / WhatsApp Number</Label>
+          <Input
+            id={id("phone")}
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            maxLength={16}
+            value={form.phone}
+            onChange={(e) => set("phone", e.target.value)}
+            placeholder="10-digit mobile number"
+            aria-invalid={!!errors.phone}
+            aria-describedby={describedBy("phone")}
+          />
+          <FieldError id={id("phone-error")} message={errors.phone} />
+        </div>
         {showEmail && (
           <div className="space-y-1.5">
-            <Label htmlFor="contact-email">Email Address</Label>
+            <Label htmlFor={id("email")}>Email (optional)</Label>
             <Input
-              id="contact-email"
+              id={id("email")}
               type="email"
-              required={!compact}
+              autoComplete="email"
+              maxLength={120}
               value={form.email}
               onChange={(e) => set("email", e.target.value)}
               placeholder="you@example.com"
+              aria-invalid={!!errors.email}
+              aria-describedby={describedBy("email")}
             />
+            <FieldError id={id("email-error")} message={errors.email} />
           </div>
         )}
-        <div className="space-y-1.5">
-          <Label htmlFor="contact-phone">Mobile / WhatsApp Number</Label>
-          <Input
-            id="contact-phone"
-            type="tel"
-            required
-            value={form.phone}
-            onChange={(e) => set("phone", e.target.value)}
-            placeholder="+91 93855 26105"
-          />
-        </div>
       </div>
 
       {showLocation && (
         <div className="space-y-1.5">
-          <Label htmlFor="contact-location">Your Village / Town</Label>
+          <Label htmlFor={id("location")}>Your Village / Town (optional)</Label>
           <Input
-            id="contact-location"
-            required={compact}
+            id={id("location")}
+            maxLength={80}
             value={form.location}
             onChange={(e) => set("location", e.target.value)}
             placeholder="e.g. Vellimalai, Kallakurichi"
@@ -193,9 +168,10 @@ export function ContactForm({
 
       {showCompany && (
         <div className="space-y-1.5">
-          <Label htmlFor="contact-company">Company Name (if any)</Label>
+          <Label htmlFor={id("company")}>Company Name (if any)</Label>
           <Input
-            id="contact-company"
+            id={id("company")}
+            maxLength={120}
             value={form.company}
             onChange={(e) => set("company", e.target.value)}
             placeholder="Company Name"
@@ -205,20 +181,15 @@ export function ContactForm({
 
       {!defaultInquiryType && (
         <div className="space-y-1.5">
-          <Label htmlFor="contact-inquiry-type">What do you need?</Label>
+          <Label htmlFor={id("inquiry-type")}>What do you need?</Label>
           <select
-            id="contact-inquiry-type"
-            required
+            id={id("inquiry-type")}
             value={form.inquiryType}
             onChange={(e) => set("inquiryType", e.target.value)}
+            aria-invalid={!!errors.inquiryType}
+            aria-describedby={describedBy("inquiryType")}
             className="h-11 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-base outline-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-primary/20 text-foreground appearance-none"
-            style={{
-              backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c6370' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "right 12px center",
-              paddingRight: "2.5rem",
-            }}
+            style={selectStyle}
           >
             <option value="" disabled className="text-muted-foreground">
               Choose one...
@@ -229,61 +200,33 @@ export function ContactForm({
               </option>
             ))}
           </select>
-        </div>
-      )}
-
-      {!compact && (
-        <div className="space-y-2">
-          <Label>How should we contact you?</Label>
-          <div className="flex gap-2">
-            {CONTACT_METHODS.map((method) => {
-              const active = form.preferredContact === method;
-              return (
-                <button
-                  key={method}
-                  type="button"
-                  onClick={() => set("preferredContact", method)}
-                  className={`rounded-full px-4 py-1.5 text-base font-medium border transition-colors ${
-                    active
-                      ? "bg-primary text-white border-primary"
-                      : "bg-card text-foreground border-border hover:bg-secondary"
-                  }`}
-                >
-                  {method}
-                </button>
-              );
-            })}
-          </div>
+          <FieldError id={id("inquiryType-error")} message={errors.inquiryType} />
         </div>
       )}
 
       {showMessage && (
         <div className="space-y-1.5">
-          <Label htmlFor="contact-message">Your Message (optional)</Label>
+          <Label htmlFor={id("message")}>Your Message (optional)</Label>
           <textarea
-            id="contact-message"
+            id={id("message")}
             value={form.message}
+            maxLength={2000}
             onChange={(e) => set("message", e.target.value)}
             placeholder="Tell us more about what you need..."
             rows={4}
             className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-base outline-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-primary/20 resize-none"
           />
+          <FieldError id={id("message-error")} message={errors.message} />
         </div>
       )}
 
       <Button
         type="submit"
-        disabled={loading}
-        size={compact ? "default" : "lg"}
-        className={`w-full rounded-full ${compact ? "h-11 mt-2" : "h-12 mt-4"}`}
+        size="lg"
+        className="w-full rounded-full h-12 mt-4 bg-whatsapp hover:bg-whatsapp-hover text-white"
       >
-        {loading ? (
-          <Loader2 size={compact ? 16 : 18} className="animate-spin" />
-        ) : compact ? (
-          "Start My Journey"
-        ) : (
-          "Send Message"
-        )}
+        <WhatsAppIcon className="size-5 mr-2" />
+        Send on WhatsApp
       </Button>
     </form>
   );
