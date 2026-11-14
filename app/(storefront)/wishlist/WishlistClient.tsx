@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight, Heart } from "lucide-react";
-import { ProductCard } from "@/components/ProductCard";
+import Link from "next/link";
+
 import { FadeIn } from "@/components/FadeIn";
+import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
+import type { Product } from "@/lib/content";
 import { useWishlistStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";
-import type { Product } from "@/lib/content";
 
 export function WishlistClient({ products }: { products: Product[] }) {
   const mounted = useHasMounted();

@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
 import { Heart, Search } from "lucide-react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import type { SearchItem } from "@/lib/content";

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Minus, Plus, Heart } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 import { EnquireButton } from "@/components/ProductEnquiryDialog";

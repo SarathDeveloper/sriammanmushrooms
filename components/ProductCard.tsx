@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { SafeImage } from "@/components/SafeImage";
 import { Heart, Star, Minus, Plus, Clock, MessageSquareText } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 import { EnquireButton } from "@/components/ProductEnquiryDialog";
+import { SafeImage } from "@/components/SafeImage";
 import type { Product } from "@/lib/content";
 import { useWishlistStore } from "@/lib/store";
 import { cn } from "@/lib/utils";

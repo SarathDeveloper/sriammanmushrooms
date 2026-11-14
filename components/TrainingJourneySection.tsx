@@ -6,6 +6,7 @@ import {
   Users,
   Landmark,
 } from "lucide-react";
+
 import { FadeIn } from "@/components/FadeIn";
 
 const journeySteps = [

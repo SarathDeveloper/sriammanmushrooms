@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, Heart } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import { useWishlistStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";
 import { cn } from "@/lib/utils";

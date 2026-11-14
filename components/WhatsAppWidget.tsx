@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { useState } from "react";
+
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { whatsappLink } from "@/lib/whatsapp";
 

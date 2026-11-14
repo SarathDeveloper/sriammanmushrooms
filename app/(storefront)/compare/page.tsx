@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { ArrowRight, Award, Dumbbell, Heart, Shield, Zap } from "lucide-react";
-import { PageHero } from "@/components/PageHero";
+import Link from "next/link";
+
 import { FadeIn } from "@/components/FadeIn";
+import { PageHero } from "@/components/PageHero";
 import { SafeImage } from "@/components/SafeImage";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   alternates: { canonical: "/compare" },

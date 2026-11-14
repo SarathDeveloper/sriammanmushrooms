@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import { FadeIn } from "@/components/FadeIn";
 import { SafeImage } from "@/components/SafeImage";
 

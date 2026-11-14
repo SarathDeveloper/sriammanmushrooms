@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { ArrowRight, Award, Droplets, HeartHandshake, Leaf, Quote, Users } from "lucide-react";
-import { PageHero } from "@/components/PageHero";
-import { FadeIn } from "@/components/FadeIn";
-import { SafeImage } from "@/components/SafeImage";
+import Link from "next/link";
+
 import { Certifications } from "@/components/Certifications";
+import { FadeIn } from "@/components/FadeIn";
+import { PageHero } from "@/components/PageHero";
 import { PressAndRecognition } from "@/components/PressAndRecognition";
+import { SafeImage } from "@/components/SafeImage";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {

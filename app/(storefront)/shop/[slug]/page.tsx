@@ -1,7 +1,7 @@
+import { ChevronRight, Star, Truck, ShieldCheck, RotateCcw, Clock, Share2, Timer } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { ChevronRight, Star, Truck, ShieldCheck, RotateCcw, Clock, Share2, Timer } from "lucide-react";
 
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { MessageSquareText } from "lucide-react";
+import { useState } from "react";
 
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Button } from "@/components/ui/button";

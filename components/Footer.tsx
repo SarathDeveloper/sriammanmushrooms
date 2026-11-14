@@ -1,6 +1,7 @@
-import Link from "next/link";
-import Image from "next/image";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 const navigationLinks = [

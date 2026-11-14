@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
 import { MapPin, Phone, Mail, ExternalLink } from "lucide-react";
+import type { Metadata } from "next";
+
+import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 import { whatsappLink } from "@/lib/whatsapp";
 

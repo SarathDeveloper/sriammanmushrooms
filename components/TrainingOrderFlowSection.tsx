@@ -6,6 +6,7 @@ import {
   Sprout,
   Users,
 } from "lucide-react";
+
 import { FadeIn } from "@/components/FadeIn";
 
 const orderFlow = [

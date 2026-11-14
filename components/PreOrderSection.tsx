@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { CalendarCheck, CheckCircle2, Package, Sprout } from "lucide-react";
+import { useState } from "react";
 
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";

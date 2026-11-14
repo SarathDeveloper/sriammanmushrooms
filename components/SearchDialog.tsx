@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { SafeImage } from "@/components/SafeImage";
 import { Search, ArrowRight, TrendingUp, Clock } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+
+import { SafeImage } from "@/components/SafeImage";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { SearchItem } from "@/lib/content";

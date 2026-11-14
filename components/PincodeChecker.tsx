@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { MapPin, Check, X, Loader2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const SERVICEABLE_PINCODES: Record<string, { area: string; days: number }> = {
   "636001": { area: "Salem", days: 1 },
