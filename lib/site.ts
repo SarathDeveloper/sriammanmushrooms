@@ -65,11 +65,14 @@ export const FARM_MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=$
 export const OPENING_HOURS = "Monday–Sunday: 6:00 AM – 8:00 PM";
 export const OPENING_HOURS_SCHEMA = "Mo-Su 06:00-20:00";
 
+/** Instagram profile, shown on the contact sections and in the footer. */
+export const INSTAGRAM = {
+  handle: "sriammanmushrooms",
+  url: "https://www.instagram.com/sriammanmushrooms/",
+} as const;
+
 /** Official social profiles (also linked in the footer); used as schema.org sameAs. */
-export const SOCIAL_PROFILES = [
-  "https://instagram.com/vellimalaifarms",
-  "https://youtube.com/@vellimalaifarms",
-] as const;
+export const SOCIAL_PROFILES = [INSTAGRAM.url, "https://youtube.com/@vellimalaifarms"] as const;
 
 /** Towns the farm delivers to (same list as the home page FAQ). */
 export const DELIVERY_AREAS = [

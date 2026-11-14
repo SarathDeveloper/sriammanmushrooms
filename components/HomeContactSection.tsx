@@ -5,8 +5,9 @@ import Link from "next/link";
 
 import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { CONTACT_EMAIL, FARM_MAPS_EMBED_URL, FARM_MAPS_LINK } from "@/lib/site";
+import { CONTACT_EMAIL, FARM_MAPS_EMBED_URL, FARM_MAPS_LINK, INSTAGRAM } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
 
 const PHONE = "+91 93855 26105";
@@ -75,6 +76,17 @@ export function HomeContactSection() {
                 >
                   <Mail size={15} />
                   {EMAIL}
+                </a>
+
+                <a
+                  href={INSTAGRAM.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Instagram @${INSTAGRAM.handle}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-base font-medium text-foreground hover:bg-secondary hover:text-[#E4405F] transition-colors"
+                >
+                  <InstagramIcon className="size-4 shrink-0" />
+                  @{INSTAGRAM.handle}
                 </a>
               </div>
               <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-base text-muted-foreground">
