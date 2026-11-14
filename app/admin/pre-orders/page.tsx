@@ -1,12 +1,15 @@
 import { CalendarCheck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { PreOrdersTable } from "@/components/admin/PreOrdersTable";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Pre Orders · Admin",
 };
 
 export default async function AdminPreOrdersPage() {
+  await requireAdminPage();
+
   const preOrders = await prisma.preOrder.findMany({
     orderBy: { createdAt: "desc" },
   });

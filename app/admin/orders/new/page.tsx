@@ -2,12 +2,15 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { ManualOrderForm } from "@/components/admin/ManualOrderForm";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Create Order · Admin",
 };
 
 export default async function NewOrderPage() {
+  await requireAdminPage();
+
   const [customers, products] = await Promise.all([
     prisma.user.findMany({
       where: { role: "USER" },

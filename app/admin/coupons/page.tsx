@@ -2,6 +2,7 @@ import { Ticket } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { CouponsTable } from "@/components/admin/CouponsTable";
 import { Pagination } from "@/components/admin/Pagination";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Coupons · Admin",
@@ -10,6 +11,8 @@ export const metadata = {
 export default async function AdminCouponsPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  await requireAdminPage();
+
   const searchParams = await props.searchParams;
   const page = Math.max(1, Number(searchParams?.page) || 1);
   const perPage = 20;

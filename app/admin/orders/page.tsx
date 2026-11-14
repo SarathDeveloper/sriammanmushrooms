@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { OrderFilters } from "@/components/admin/OrderFilters";
 import { OrderBulkActions } from "@/components/admin/OrderBulkActions";
 import { Pagination } from "@/components/admin/Pagination";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Orders · Admin",
@@ -21,6 +22,8 @@ function parseShippingAddress(json: string): { city?: string } {
 export default async function AdminOrdersPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  await requireAdminPage();
+
   const searchParams = await props.searchParams;
   const statusFilter = searchParams?.status as string | undefined;
   const dateFilter = searchParams?.date as string | undefined;

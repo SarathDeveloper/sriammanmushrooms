@@ -8,8 +8,11 @@ import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
 import { PaymentStatusSelect } from "@/components/admin/PaymentStatusSelect";
 import { OrderActions } from "@/components/admin/OrderActions";
 import { OrderNotes } from "@/components/admin/OrderNotes";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export async function generateMetadata(props: { params: Promise<{ id: string }> }) {
+  await requireAdminPage();
+
   const { id } = await props.params;
   return { title: `Order #${id.slice(0, 8).toUpperCase()} · Admin` };
 }
@@ -35,6 +38,8 @@ function parseShippingAddress(json: string) {
 export default async function OrderDetailPage(props: {
   params: Promise<{ id: string }>;
 }) {
+  await requireAdminPage();
+
   const { id } = await props.params;
 
   const order = await prisma.order.findUnique({
