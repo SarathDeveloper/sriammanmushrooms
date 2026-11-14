@@ -88,7 +88,7 @@ npm test                                            # unit tests only
 TEST_DATABASE_URL=postgresql://... npm test         # + integration (disposable, migrated DB!)
 ```
 
-The integration suite (`tests/integration/orders.test.ts`) runs the real order routes and admin actions: server-side pricing, the last unit selling exactly once under concurrent checkouts, stock release on cancel, Razorpay signature checks and replay protection, and the rate limiter under concurrency. CI (`.github/workflows/ci.yml`) runs migrations, lint, typecheck, all tests and a build against Postgres 16.
+The integration suite (`tests/integration/orders.test.ts`) runs the real order routes and admin actions: server-side pricing, the last unit selling exactly once under concurrent checkouts, stock release on cancel, Razorpay signature checks and replay protection, and the rate limiter under concurrency. A ready GitHub Actions workflow is in [docs/ci-workflow.yml](docs/ci-workflow.yml): it runs migrations, a schema-drift check, lint, typecheck, all tests and a build against Postgres 16. To enable it, add it as `.github/workflows/ci.yml` (GitHub web UI: *Add file → Create new file*, paste it in). Pushing workflow files from the command line needs a token with the `workflow` scope.
 
 > Prisma's local dev server (PGlite) can drop connections under the concurrent integration tests; if you see "Connection terminated unexpectedly", restart it or use a real Postgres.
 
