@@ -24,3 +24,5 @@ Sentry.init({
     /^ChunkLoadError/,
   ],
 });
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

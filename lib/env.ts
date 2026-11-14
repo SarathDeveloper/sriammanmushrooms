@@ -1,55 +1,92 @@
 import { z } from "zod";
 
-const envSchema = z.object({
-  DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
-  NEXTAUTH_SECRET: z.string().min(1, "NEXTAUTH_SECRET is required"),
-  NEXTAUTH_URL: z.string().url().optional(),
-  
-  RAZORPAY_KEY_ID: z.string().optional(),
-  RAZORPAY_KEY_SECRET: z.string().optional(),
-  NEXT_PUBLIC_RAZORPAY_KEY_ID: z.string().optional(),
-  
-  CLOUDINARY_CLOUD_NAME: z.string().optional(),
-  CLOUDINARY_API_KEY: z.string().optional(),
-  CLOUDINARY_API_SECRET: z.string().optional(),
-  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().optional(),
-  
-  SENTRY_DSN: z.string().optional(),
-  NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
-  
-  FIREBASE_PROJECT_ID: z.string().optional(),
-  FIREBASE_CLIENT_EMAIL: z.string().optional(),
-  FIREBASE_PRIVATE_KEY: z.string().optional(),
-  
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-});
+/**
+ * Server environment validation. Runs once at server start (see
+ * instrumentation.ts). In production a missing required variable stops the
+ * server instead of failing later on the first request that needs it.
+ */
+const envSchema = z
+  .object({
+    NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+
+    // Always required: catalogue reads and admin login.
+    DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
+    NEXTAUTH_SECRET: z.string().min(1, "NEXTAUTH_SECRET is required"),
+    NEXTAUTH_URL: z.string().url().optional(),
+    NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
+
+    // Admin image uploads (signed). The API key is read by next-cloudinary in
+    // the browser, so it is NEXT_PUBLIC_; only the secret must stay server-side.
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().optional(),
+    NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string().optional(),
+    NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: z.string().optional(),
+    CLOUDINARY_API_SECRET: z.string().optional(),
+
+    SENTRY_DSN: z.string().optional(),
+    NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
+
+    // Only needed when online ordering is switched on.
+    NEXT_PUBLIC_ORDERS_ENABLED: z.string().optional(),
+    RAZORPAY_KEY_ID: z.string().optional(),
+    RAZORPAY_KEY_SECRET: z.string().optional(),
+    NEXT_PUBLIC_RAZORPAY_KEY_ID: z.string().optional(),
+    TWILIO_ACCOUNT_SID: z.string().optional(),
+    TWILIO_AUTH_TOKEN: z.string().optional(),
+    TWILIO_SMS_FROM: z.string().optional(),
+  })
+  .superRefine((env, ctx) => {
+    if (env.NEXT_PUBLIC_ORDERS_ENABLED !== "true") return;
+    const needed = [
+      "RAZORPAY_KEY_ID",
+      "RAZORPAY_KEY_SECRET",
+      "NEXT_PUBLIC_RAZORPAY_KEY_ID",
+      "TWILIO_ACCOUNT_SID",
+      "TWILIO_AUTH_TOKEN",
+      "TWILIO_SMS_FROM",
+    ] as const;
+    for (const key of needed) {
+      if (!env[key]) {
+        ctx.addIssue({
+          code: "custom",
+          path: [key],
+          message: `${key} is required when NEXT_PUBLIC_ORDERS_ENABLED=true`,
+        });
+      }
+    }
+  });
 
 export type Env = z.infer<typeof envSchema>;
 
-function validateEnv(): Env {
-  const parsed = envSchema.safeParse(process.env);
-  
+const OPTIONAL_WARNINGS: Array<[keyof Env, string]> = [
+  ["CLOUDINARY_API_SECRET", "admin image uploads will fail"],
+  ["NEXT_PUBLIC_CLOUDINARY_API_KEY", "admin image uploads will fail"],
+  ["SENTRY_DSN", "server errors will not be reported"],
+];
+
+export function validateEnv(source: NodeJS.ProcessEnv = process.env): Env {
+  const parsed = envSchema.safeParse(source);
+
   if (!parsed.success) {
-    const errors = parsed.error.flatten().fieldErrors;
-    const missingVars = Object.entries(errors)
-      .map(([key, messages]) => `  ${key}: ${messages?.join(", ")}`)
+    const lines = parsed.error.issues
+      .map((issue) => `  ${issue.path.join(".")}: ${issue.message}`)
       .join("\n");
-    
-    console.error("❌ Invalid environment variables:\n" + missingVars);
-    
-    if (process.env.NODE_ENV === "production") {
-      throw new Error("Invalid environment variables");
+    const message = `Invalid environment variables:\n${lines}`;
+
+    if (source.NODE_ENV === "production") {
+      throw new Error(message);
+    }
+    console.error(`[env] ${message}`);
+    return source as unknown as Env;
+  }
+
+  if (parsed.data.NODE_ENV === "production") {
+    if (parsed.data.NEXTAUTH_SECRET.length < 32) {
+      console.warn("[env] NEXTAUTH_SECRET is shorter than 32 characters; generate a longer one with `openssl rand -base64 32`.");
+    }
+    for (const [key, effect] of OPTIONAL_WARNINGS) {
+      if (!parsed.data[key]) console.warn(`[env] ${key} is not set: ${effect}.`);
     }
   }
-  
-  return parsed.data as Env;
-}
 
-export const env = validateEnv();
-
-export function getBaseUrl(): string {
-  if (typeof window !== "undefined") return "";
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  if (process.env.NEXTAUTH_URL) return process.env.NEXTAUTH_URL;
-  return "http://localhost:3000";
+  return parsed.data;
 }
