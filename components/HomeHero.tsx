@@ -55,7 +55,7 @@ const fallbackSlides: HeroSlideData[] = [
       "Some mushrooms are available only in certain seasons. Book early so you don't miss out.",
     primaryCtaLabel: "Book Now",
     primaryCtaHref: "/pre-order",
-    secondaryCtaLabel: "See All",
+    secondaryCtaLabel: "Our Mushrooms",
     secondaryCtaHref: "/products",
     image: "/gallery/farm/growing-shed-interior.png",
   },

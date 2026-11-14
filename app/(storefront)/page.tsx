@@ -60,14 +60,9 @@ export default function Home() {
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading">Today&apos;s Fresh Mushrooms</h2>
               <p className="text-[var(--color-body)] text-sm mt-1.5">Picked this morning. Order fresh on WhatsApp.</p>
             </div>
-            <div className="sm:absolute sm:right-0 sm:bottom-1">
-              <Link href="/products" className="group inline-flex items-center gap-2 text-primary font-semibold text-base hover:text-primary/80 transition-colors">
-                See All <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
           </FadeIn>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
             {featuredProducts.map((product, i) => (
               <FadeIn key={product.id} delay={i * 0.1} className="h-full">
                 <ProductCard product={product} priority={i === 0} />
