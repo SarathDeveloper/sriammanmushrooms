@@ -5,19 +5,12 @@ import { Button } from "@/components/ui/button";
 import { OrderFilters } from "@/components/admin/OrderFilters";
 import { OrderBulkActions } from "@/components/admin/OrderBulkActions";
 import { Pagination } from "@/components/admin/Pagination";
+import { readShippingAddress } from "@/lib/shipping-address";
 import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Orders · Admin",
 };
-
-function parseShippingAddress(json: string): { city?: string } {
-  try {
-    return JSON.parse(json);
-  } catch {
-    return {};
-  }
-}
 
 export default async function AdminOrdersPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -88,7 +81,7 @@ export default async function AdminOrdersPage(props: {
   let filtered = orders;
   if (cityFilter && cityFilter !== "all") {
     filtered = filtered.filter((o) => {
-      const addr = parseShippingAddress(o.shippingAddress);
+      const addr = readShippingAddress(o.shippingAddress);
       return addr.city?.toLowerCase().includes(cityFilter.toLowerCase());
     });
   }
@@ -97,7 +90,7 @@ export default async function AdminOrdersPage(props: {
   const cities = [
     ...new Set(
       orders
-        .map((o) => parseShippingAddress(o.shippingAddress).city)
+        .map((o) => readShippingAddress(o.shippingAddress).city)
         .filter((city): city is string => Boolean(city))
     ),
   ];
@@ -132,7 +125,7 @@ export default async function AdminOrdersPage(props: {
     paymentStatus: o.paymentStatus,
     totalAmount: o.totalAmount as number,
     createdAt: o.createdAt.toISOString(),
-    shippingAddress: o.shippingAddress,
+    shippingAddress: readShippingAddress(o.shippingAddress),
     user: o.user ? { name: o.user.name, email: o.user.email, phone: o.user.phone } : null,
     orderItems: o.orderItems.map((item: any) => ({ id: item.id })),
   }));

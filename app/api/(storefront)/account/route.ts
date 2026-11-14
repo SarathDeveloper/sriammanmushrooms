@@ -4,8 +4,11 @@ import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { errorResponse } from "@/lib/api-utils";
+import { ORDERS_ENABLED } from "@/lib/features";
 
 export async function GET() {
+  if (!ORDERS_ENABLED) return errorResponse("Not found.", 404);
+
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return errorResponse("Unauthorized", 401);
@@ -48,6 +51,8 @@ const updateProfileSchema = z.object({
 });
 
 export async function PATCH(request: Request) {
+  if (!ORDERS_ENABLED) return errorResponse("Not found.", 404);
+
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return errorResponse("Unauthorized", 401);

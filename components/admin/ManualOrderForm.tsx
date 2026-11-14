@@ -86,15 +86,15 @@ export function ManualOrderForm({
     }
 
     startTransition(async () => {
-      const shippingAddress = JSON.stringify({
-        name: selectedCustomer.name,
-        street: address.street,
+      const shippingAddress = {
+        fullName: selectedCustomer.name ?? undefined,
+        address: address.street,
         city: address.city,
         state: address.state,
         pincode: address.pincode,
-        phone: address.phone || selectedCustomer.phone,
+        phone: address.phone || selectedCustomer.phone || undefined,
         country: "India",
-      });
+      };
 
       const res = await createManualOrder({
         userId: selectedCustomer.id,

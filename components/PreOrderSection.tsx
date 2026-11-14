@@ -35,6 +35,7 @@ const initialForm = {
   preferredDate: "",
   location: "",
   notes: "",
+  website: "", // honeypot: real visitors never see or fill this
 };
 
 export function PreOrderSection() {
@@ -144,6 +145,16 @@ export function PreOrderSection() {
                 <h2 className="text-lg sm:text-xl font-bold font-heading text-foreground">
                   Place a Pre-Order
                 </h2>
+                <div aria-hidden="true" className="absolute -left-[9999px] w-px h-px overflow-hidden">
+                  <label htmlFor="pre-website">Website</label>
+                  <input
+                    id="pre-website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={form.website}
+                    onChange={(e) => handleChange("website", e.target.value)}
+                  />
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <Label htmlFor="name">Full Name</Label>

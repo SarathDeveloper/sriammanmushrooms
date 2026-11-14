@@ -8,6 +8,7 @@ import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
 import { PaymentStatusSelect } from "@/components/admin/PaymentStatusSelect";
 import { OrderActions } from "@/components/admin/OrderActions";
 import { OrderNotes } from "@/components/admin/OrderNotes";
+import { readShippingAddress } from "@/lib/shipping-address";
 import { requireAdminPage } from "@/lib/admin-guard";
 
 export async function generateMetadata(props: { params: Promise<{ id: string }> }) {
@@ -25,14 +26,6 @@ function formatDate(date: Date) {
     hour: "2-digit",
     minute: "2-digit",
   });
-}
-
-function parseShippingAddress(json: string) {
-  try {
-    return JSON.parse(json);
-  } catch {
-    return {};
-  }
 }
 
 export default async function OrderDetailPage(props: {
@@ -57,7 +50,7 @@ export default async function OrderDetailPage(props: {
 
   if (!order) notFound();
 
-  const addr = parseShippingAddress(order.shippingAddress);
+  const addr = readShippingAddress(order.shippingAddress);
 
   return (
     <div className="p-4 sm:p-6 lg:p-10 max-w-5xl">
@@ -146,8 +139,9 @@ export default async function OrderDetailPage(props: {
               <MapPin size={18} /> Shipping Address
             </h2>
             <div className="text-[var(--color-body)] space-y-1">
-              {addr.name && <p className="font-semibold text-foreground">{addr.name}</p>}
-              {addr.street && <p>{addr.street}</p>}
+              {addr.fullName && <p className="font-semibold text-foreground">{addr.fullName}</p>}
+              {addr.address && <p>{addr.address}</p>}
+              {addr.raw && <p>{addr.raw}</p>}
               <p>
                 {[addr.city, addr.state, addr.pincode].filter(Boolean).join(", ")}
               </p>

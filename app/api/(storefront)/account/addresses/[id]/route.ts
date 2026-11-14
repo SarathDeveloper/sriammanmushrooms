@@ -4,6 +4,7 @@ import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { errorResponse } from "@/lib/api-utils";
+import { ORDERS_ENABLED } from "@/lib/features";
 
 const updateAddressSchema = z.object({
   type: z.enum(["HOME", "WORK", "OTHER"]).optional(),
@@ -18,6 +19,8 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!ORDERS_ENABLED) return errorResponse("Not found.", 404);
+
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return errorResponse("Unauthorized", 401);
@@ -65,6 +68,8 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!ORDERS_ENABLED) return errorResponse("Not found.", 404);
+
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return errorResponse("Unauthorized", 401);

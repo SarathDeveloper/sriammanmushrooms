@@ -7,7 +7,11 @@ import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
 import { createAndStoreOtp, sendOtpSms } from "@/lib/otp";
 import { errorResponse } from "@/lib/api-utils";
 import { ORDERS_ENABLED } from "@/lib/features";
-import { withRateLimit, apiLimits } from "@/lib/rate-limit";
+import { consumeRateLimit, withRateLimit, apiLimits } from "@/lib/rate-limit";
+
+// Every OTP is a paid SMS, so cap per number as well as per IP: someone
+// rotating IPs still can't flood one phone or run up the Twilio bill.
+const OTP_PER_PHONE_PER_HOUR = 5;
 
 const schema = z.object({
   phone: z.string().min(1),
@@ -40,6 +44,11 @@ export async function POST(request: Request) {
       const phoneErr = indianMobileError(phone);
       if (phoneErr) {
         return errorResponse(phoneErr, 400);
+      }
+
+      const perPhone = await consumeRateLimit(`otp-phone:${phone}`, OTP_PER_PHONE_PER_HOUR, 60 * 60 * 1000);
+      if (!perPhone.success) {
+        return errorResponse("Too many OTP requests for this number. Please try again in an hour.", 429);
       }
 
       try {

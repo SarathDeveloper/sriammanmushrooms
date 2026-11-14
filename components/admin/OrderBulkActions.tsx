@@ -10,6 +10,7 @@ import { bulkUpdateOrderStatus } from "@/app/admin/actions";
 import { formatCurrency } from "@/lib/utils";
 import toast from "react-hot-toast";
 import type { OrderStatus } from "@/lib/status-types";
+import type { ShippingAddress } from "@/lib/shipping-address";
 
 type OrderData = {
   id: string;
@@ -17,7 +18,7 @@ type OrderData = {
   paymentStatus: string;
   totalAmount: number;
   createdAt: string;
-  shippingAddress: string;
+  shippingAddress: ShippingAddress;
   user: { name: string | null; email: string | null; phone: string | null } | null;
   orderItems: { id: string }[];
 };
@@ -53,14 +54,6 @@ function formatDate(date: string) {
     month: "short",
     year: "numeric",
   });
-}
-
-function parseCity(json: string): string {
-  try {
-    return JSON.parse(json).city || "—";
-  } catch {
-    return "—";
-  }
 }
 
 export function OrderBulkActions({ orders }: Props) {
@@ -193,7 +186,7 @@ export function OrderBulkActions({ orders }: Props) {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-[var(--color-body)]">
-                    {parseCity(order.shippingAddress)}
+                    {order.shippingAddress.city || "—"}
                   </td>
                   <td className="px-6 py-4 text-[var(--color-body)]">
                     {formatDate(order.createdAt)}

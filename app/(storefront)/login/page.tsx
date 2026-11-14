@@ -28,7 +28,11 @@ export default function LoginPage() {
         password: form.password,
       });
       if (result?.error) {
-        toast.error("Invalid mobile number or password.");
+        toast.error(
+          result.error.startsWith("Too many")
+            ? result.error
+            : "Invalid mobile number or password."
+        );
       } else {
         toast.success("Welcome back!");
         router.push("/");

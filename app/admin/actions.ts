@@ -5,11 +5,18 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { notifyOrderStatusUpdate, parseShippingContact } from "@/lib/notifications";
+import { readShippingAddress, type ShippingAddress } from "@/lib/shipping-address";
 import type {
   OrderStatus,
   PaymentStatus,
   TrainingStatus,
 } from "@/lib/status-types";
+
+class ManualOrderStockError extends Error {
+  constructor(public productId: string) {
+    super(`Not enough stock for ${productId}`);
+  }
+}
 
 type ActionResult<T = unknown> = {
   success: boolean;
@@ -52,14 +59,28 @@ async function setOrderStatusWithStock(orderId: string, status: OrderStatus) {
     if (changed.count === 0 || (!cancelling && !reopening)) return;
 
     for (const item of current.orderItems) {
-      await tx.product.update({
-        where: { id: item.productId },
-        data: {
-          stock: cancelling ? { increment: item.quantity } : { decrement: item.quantity },
-        },
+      if (cancelling) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stock: { increment: item.quantity } },
+        });
+        continue;
+      }
+      // Re-opening takes the stock again, but only if it is still there; the
+      // throw rolls back the status change too.
+      const reserved = await tx.product.updateMany({
+        where: { id: item.productId, stock: { gte: item.quantity } },
+        data: { stock: { decrement: item.quantity } },
       });
+      if (reserved.count === 0) throw new ReopenStockError();
     }
   });
+}
+
+class ReopenStockError extends Error {
+  constructor() {
+    super("Not enough stock to re-open this order");
+  }
 }
 
 export async function updateOrderStatus(
@@ -104,6 +125,9 @@ export async function updateOrderStatus(
     if (error instanceof Error && error.message === "Unauthorized") {
       return { success: false, error: "Unauthorized" };
     }
+    if (error instanceof ReopenStockError) {
+      return { success: false, error: "Not enough stock to re-open this order. Restock the products first." };
+    }
     console.error("updateOrderStatus error:", error);
     return { success: false, error: "Failed to update order status." };
   }
@@ -115,11 +139,19 @@ export async function bulkUpdateOrderStatus(
 ): Promise<ActionResult> {
   try {
     await requireAdmin();
+    const updated: string[] = [];
+    let skipped = 0;
     for (const orderId of orderIds) {
-      await setOrderStatusWithStock(orderId, status);
+      try {
+        await setOrderStatusWithStock(orderId, status);
+        updated.push(orderId);
+      } catch (error) {
+        if (!(error instanceof ReopenStockError)) throw error;
+        skipped++;
+      }
     }
     const orders = await prisma.order.findMany({
-      where: { id: { in: orderIds } },
+      where: { id: { in: updated } },
       select: { id: true, status: true, shippingAddress: true },
     });
     await Promise.allSettled(
@@ -137,6 +169,12 @@ export async function bulkUpdateOrderStatus(
     revalidatePath("/admin/orders");
     revalidatePath("/orders");
     revalidatePath("/track-order");
+    if (skipped > 0) {
+      return {
+        success: false,
+        error: `${skipped} order(s) couldn't be re-opened because there isn't enough stock. The rest were updated.`,
+      };
+    }
     return { success: true };
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
@@ -805,39 +843,52 @@ export async function toggleAdminActive(
 export async function createManualOrder(data: {
   userId: string;
   items: { productId: string; quantity: number; price: number }[];
-  shippingAddress: string;
+  shippingAddress: ShippingAddress;
   paymentStatus?: string;
 }): Promise<ActionResult<{ id: string }>> {
   try {
     await requireAdmin();
+    if (data.items.length === 0) {
+      return { success: false, error: "Add at least one product." };
+    }
+    if (data.items.some((i) => !Number.isInteger(i.quantity) || i.quantity < 1 || !(i.price >= 0))) {
+      return { success: false, error: "Each item needs a whole quantity and a valid price." };
+    }
+    const shippingAddress = readShippingAddress(data.shippingAddress);
     const totalAmount = data.items.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    const order = await prisma.order.create({
-      data: {
-        userId: data.userId,
-        totalAmount,
-        status: "PENDING",
-        paymentStatus: (data.paymentStatus as "PENDING" | "COMPLETED") || "PENDING",
-        shippingAddress: data.shippingAddress,
-        orderItems: {
-          create: data.items.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
-            price: item.price,
-          })),
-        },
-      },
-    });
 
-    // Decrement stock
-    for (const item of data.items) {
-      await prisma.product.update({
-        where: { id: item.productId },
-        data: { stock: { decrement: item.quantity } },
+    // Reserve stock with the order, like checkout does, so a manual order can't
+    // take stock below zero.
+    const order = await prisma.$transaction(async (tx) => {
+      for (const item of data.items) {
+        const reserved = await tx.product.updateMany({
+          where: { id: item.productId, stock: { gte: item.quantity } },
+          data: { stock: { decrement: item.quantity } },
+        });
+        if (reserved.count === 0) {
+          throw new ManualOrderStockError(item.productId);
+        }
+      }
+      return tx.order.create({
+        data: {
+          userId: data.userId,
+          totalAmount,
+          status: "PENDING",
+          paymentStatus: data.paymentStatus === "COMPLETED" ? "COMPLETED" : "PENDING",
+          shippingAddress,
+          orderItems: {
+            create: data.items.map((item) => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+          },
+        },
       });
-    }
+    });
 
     revalidatePath("/admin/orders");
     revalidatePath("/admin");
@@ -845,6 +896,9 @@ export async function createManualOrder(data: {
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return { success: false, error: "Unauthorized" };
+    }
+    if (error instanceof ManualOrderStockError) {
+      return { success: false, error: "Not enough stock for one of the products. Refresh and try again." };
     }
     console.error("createManualOrder error:", error);
     return { success: false, error: "Failed to create order." };

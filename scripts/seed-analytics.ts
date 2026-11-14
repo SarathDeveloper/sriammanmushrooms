@@ -79,13 +79,13 @@ async function main() {
         totalAmount,
         status: orderStatus,
         paymentStatus,
-        shippingAddress: JSON.stringify({
-          name: "Test Customer",
-          street: "123 Mushroom St",
+        shippingAddress: {
+          fullName: "Test Customer",
+          address: "123 Mushroom St",
           city: "Chennai",
           state: "Tamil Nadu",
           pincode: "600001"
-        }),
+        },
         createdAt,
         updatedAt: createdAt,
         orderItems: {

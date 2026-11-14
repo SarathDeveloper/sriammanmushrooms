@@ -1,3 +1,5 @@
+import { readShippingAddress } from "@/lib/shipping-address";
+
 type NotificationMode = "sms" | "whatsapp" | "dev" | "disabled";
 
 type NotificationResult = {
@@ -55,16 +57,9 @@ function warnMissingTwilio(channel: string): void {
   );
 }
 
-export function parseShippingContact(shippingAddress: string): ShippingContact {
-  try {
-    const parsed = JSON.parse(shippingAddress) as {
-      phone?: string;
-      fullName?: string;
-    };
-    return { phone: parsed.phone, fullName: parsed.fullName };
-  } catch {
-    return {};
-  }
+export function parseShippingContact(shippingAddress: unknown): ShippingContact {
+  const { phone, fullName } = readShippingAddress(shippingAddress);
+  return { phone, fullName };
 }
 
 async function sendTwilioMessage(params: {

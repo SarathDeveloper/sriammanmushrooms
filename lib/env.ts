@@ -15,9 +15,10 @@ const envSchema = z
     NEXTAUTH_URL: z.string().url().optional(),
     NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
 
+    // Every product image renders through Cloudinary, so pages fail without it.
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1, "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME is required (product images)"),
     // Admin image uploads (signed). The API key is read by next-cloudinary in
     // the browser, so it is NEXT_PUBLIC_; only the secret must stay server-side.
-    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().optional(),
     NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string().optional(),
     NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: z.string().optional(),
     CLOUDINARY_API_SECRET: z.string().optional(),

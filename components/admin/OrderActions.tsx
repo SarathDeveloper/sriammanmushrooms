@@ -3,6 +3,17 @@
 import { Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import type { ShippingAddress } from "@/lib/shipping-address";
+
+// Customer-entered text goes into the print window's HTML, so escape it.
+function esc(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 type OrderActionsProps = {
   order: {
@@ -16,15 +27,7 @@ type OrderActionsProps = {
       product: { name: string; weight: string };
     }>;
   };
-  address: {
-    name?: string;
-    street?: string;
-    city?: string;
-    state?: string;
-    pincode?: string;
-    phone?: string;
-    deliverySlot?: string;
-  };
+  address: ShippingAddress;
 };
 
 export function OrderActions({ order, address }: OrderActionsProps) {
@@ -32,7 +35,7 @@ export function OrderActions({ order, address }: OrderActionsProps) {
     const printContent = `
       <html>
         <head>
-          <title>Order #${order.id.slice(0, 8).toUpperCase()}</title>
+          <title>Order #${esc(order.id.slice(0, 8).toUpperCase())}</title>
           <style>
             body { font-family: system-ui, sans-serif; padding: 20px; max-width: 400px; margin: 0 auto; }
             h1 { font-size: 18px; margin-bottom: 5px; }
@@ -48,12 +51,12 @@ export function OrderActions({ order, address }: OrderActionsProps) {
         </head>
         <body>
           <h1>Sri Amman Mushroom Farms</h1>
-          <p class="meta">Order #${order.id.slice(0, 8).toUpperCase()} · ${order.status}</p>
+          <p class="meta">Order #${esc(order.id.slice(0, 8).toUpperCase())} · ${esc(order.status)}</p>
           
           <h2>Items</h2>
           ${order.orderItems.map((item) => `
             <div class="item">
-              <span class="item-name">${item.product.name} (${item.product.weight}) × ${item.quantity}</span>
+              <span class="item-name">${esc(item.product.name)} (${esc(item.product.weight)}) × ${esc(item.quantity)}</span>
               <span>₹${item.price * item.quantity}</span>
             </div>
           `).join("")}
@@ -64,12 +67,13 @@ export function OrderActions({ order, address }: OrderActionsProps) {
           
           <h2>Deliver To</h2>
           <div class="address">
-            ${address.name ? `<strong>${address.name}</strong><br>` : ""}
-            ${address.street ? `${address.street}<br>` : ""}
-            ${[address.city, address.state, address.pincode].filter(Boolean).join(", ")}<br>
-            ${address.phone ? `📞 ${address.phone}` : ""}
+            ${address.fullName ? `<strong>${esc(address.fullName)}</strong><br>` : ""}
+            ${address.address ? `${esc(address.address)}<br>` : ""}
+            ${address.raw ? `${esc(address.raw)}<br>` : ""}
+            ${esc([address.city, address.state, address.pincode].filter(Boolean).join(", "))}<br>
+            ${address.phone ? `📞 ${esc(address.phone)}` : ""}
           </div>
-          ${address.deliverySlot ? `<div class="slot">🕐 ${address.deliverySlot}</div>` : ""}
+          ${address.deliverySlot ? `<div class="slot">🕐 ${esc(address.deliverySlot)}</div>` : ""}
         </body>
       </html>
     `;
@@ -88,8 +92,9 @@ export function OrderActions({ order, address }: OrderActionsProps) {
       .join("\n");
 
     const addressLine = [
-      address.name,
-      address.street,
+      address.fullName,
+      address.address,
+      address.raw,
       [address.city, address.state, address.pincode].filter(Boolean).join(", "),
     ]
       .filter(Boolean)

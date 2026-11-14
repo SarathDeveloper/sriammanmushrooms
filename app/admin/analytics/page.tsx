@@ -76,9 +76,9 @@ export default async function AdminAnalyticsPage() {
   ]);
 
   const stats = {
-    totalRevenue: totalRevenue._sum.totalAmount || 0,
+    totalRevenue: Number(totalRevenue._sum.totalAmount ?? 0),
     totalOrders,
-    avgOrderValue: Math.round(avgOrderValue._avg.totalAmount || 0),
+    avgOrderValue: Math.round(Number(avgOrderValue._avg.totalAmount ?? 0)),
     last30Revenue: recentOrders.reduce((sum, o) => sum + o.totalAmount, 0),
   };
 

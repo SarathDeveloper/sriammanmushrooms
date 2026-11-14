@@ -99,11 +99,11 @@ export async function POST(request: Request) {
   const shipping = shippingFor(itemSubtotal, await getDeliveryRule(addressFields.pincode));
   const total = Math.max(0, itemSubtotal + shipping - discount);
 
-  const shippingAddress = JSON.stringify({
+  const shippingAddress = {
     ...addressFields,
     email: session.user.email ?? "",
     paymentMethod,
-  });
+  };
 
   try {
     const isCod = paymentMethod === "cod";

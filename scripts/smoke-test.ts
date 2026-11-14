@@ -35,7 +35,7 @@ async function runSmokeTest() {
       data: {
         userId: user.id,
         totalAmount: 100,
-        shippingAddress: "{}"
+        shippingAddress: {}
       }
     });
     console.log("Created user & order:", order.id);

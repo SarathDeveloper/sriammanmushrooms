@@ -62,7 +62,7 @@ export default async function AdminCustomersPage(props: {
   const stats = {
     total: totalCount,
     withOrders,
-    totalRevenue: totalRevenue._sum.totalAmount || 0,
+    totalRevenue: Number(totalRevenue._sum.totalAmount ?? 0),
   };
 
   return (

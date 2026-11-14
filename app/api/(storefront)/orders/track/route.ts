@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { errorResponse } from "@/lib/api-utils";
 import { ORDERS_ENABLED } from "@/lib/features";
+import { readShippingAddress } from "@/lib/shipping-address";
 
 export async function GET(request: Request) {
   if (!ORDERS_ENABLED) return errorResponse("Not found.", 404);
@@ -36,11 +37,7 @@ export async function GET(request: Request) {
     return errorResponse("Order not found.", 404);
   }
 
-  let city = "";
-  try {
-    const addr = JSON.parse(order.shippingAddress);
-    city = addr.city ?? "";
-  } catch { /* non-JSON address */ }
+  const city = readShippingAddress(order.shippingAddress).city ?? "";
 
   return NextResponse.json({
     id: order.id,

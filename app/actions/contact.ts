@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
-import { rateLimit } from "@/lib/rate-limit";
+import { consumeRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const inquirySchema = z.object({
   name: z.string().trim().min(2, "Name is too short").max(80, "Name is too long"),
@@ -18,13 +18,8 @@ const inquirySchema = z.object({
 });
 
 // 5 enquiries per 10 minutes per IP is plenty for a real visitor.
-const inquiryLimiter = rateLimit({ interval: 10 * 60 * 1000, uniqueTokenPerInterval: 500 });
 const INQUIRY_LIMIT = 5;
-
-async function clientIp() {
-  const h = await headers();
-  return h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
-}
+const INQUIRY_WINDOW_MS = 10 * 60 * 1000;
 
 export async function submitInquiry(prevState: any, formData: FormData) {
   try {
@@ -34,7 +29,8 @@ export async function submitInquiry(prevState: any, formData: FormData) {
       return { success: true, message: "Inquiry submitted successfully" };
     }
 
-    if (!inquiryLimiter.check(`inquiry:${await clientIp()}`, INQUIRY_LIMIT).success) {
+    const ip = getClientIp(await headers());
+    if (!(await consumeRateLimit(`inquiry:${ip}`, INQUIRY_LIMIT, INQUIRY_WINDOW_MS)).success) {
       return {
         success: false,
         message: "Too many enquiries from this connection. Please try again later or WhatsApp us.",

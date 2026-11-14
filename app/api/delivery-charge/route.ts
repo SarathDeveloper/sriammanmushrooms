@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
+import { errorResponse } from "@/lib/api-utils";
+import { ORDERS_ENABLED } from "@/lib/features";
 import { getDeliveryRule } from "@/lib/order-pricing";
 
 export async function GET(request: Request) {
+  if (!ORDERS_ENABLED) return errorResponse("Not found.", 404);
+
   const { searchParams } = new URL(request.url);
   const pincode = searchParams.get("pincode")?.trim();
 
