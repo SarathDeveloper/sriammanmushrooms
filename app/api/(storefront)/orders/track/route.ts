@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+
 import { errorResponse } from "@/lib/api-utils";
 import { ORDERS_ENABLED } from "@/lib/features";
+import { prisma } from "@/lib/prisma";
 import { readShippingAddress } from "@/lib/shipping-address";
 
 export async function GET(request: Request) {

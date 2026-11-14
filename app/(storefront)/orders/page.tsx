@@ -1,13 +1,14 @@
+import { PackageSearch, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { PackageSearch, ArrowRight } from "lucide-react";
+
+import { FadeIn } from "@/components/FadeIn";
+import { PageHero } from "@/components/PageHero";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { PageHero } from "@/components/PageHero";
-import { FadeIn } from "@/components/FadeIn";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 export const metadata = {
   title: "My Orders",
@@ -62,7 +63,7 @@ export default async function OrdersPage() {
             </FadeIn>
           ) : (
             <div className="space-y-3 sm:space-y-4">
-              {orders.map((order: any) => (
+              {orders.map((order) => (
                 <Link key={order.id} href={`/track-order?id=${order.id}`}>
                   <FadeIn className="p-4 sm:p-5 rounded-2xl border border-border bg-card hover:border-primary/30 transition-colors">
                     <div className="flex items-start sm:items-center justify-between gap-3">

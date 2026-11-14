@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+
 import { errorResponse } from "@/lib/api-utils";
+import { authOptions } from "@/lib/auth";
 import { ORDERS_ENABLED } from "@/lib/features";
 
 export async function GET(request: Request) {

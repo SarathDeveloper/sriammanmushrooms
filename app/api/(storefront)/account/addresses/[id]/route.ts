@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+
 import { errorResponse } from "@/lib/api-utils";
+import { authOptions } from "@/lib/auth";
 import { ORDERS_ENABLED } from "@/lib/features";
+import { prisma } from "@/lib/prisma";
 
 const updateAddressSchema = z.object({
   type: z.enum(["HOME", "WORK", "OTHER"]).optional(),

@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { Loader2, MailCheck, MessageSquareText } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+
 import { submitInquiry } from "@/app/actions/contact";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { whatsappLink } from "@/lib/features";
 import { cn } from "@/lib/utils";
 

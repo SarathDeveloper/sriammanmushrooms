@@ -1,6 +1,7 @@
 import { ShieldCheck, Leaf, BadgeCheck, FlaskConical, type LucideIcon } from "lucide-react";
-import { certifications } from "@/lib/data";
+
 import { FadeIn } from "@/components/FadeIn";
+import { certifications } from "@/lib/data";
 
 const iconMap: Record<string, LucideIcon> = {
   ShieldCheck,

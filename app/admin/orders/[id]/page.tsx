@@ -1,15 +1,16 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import { ArrowLeft, Phone, Mail, MapPin, Calendar, CreditCard, Package } from "lucide-react";
-import { prisma } from "@/lib/prisma";
-import { Badge } from "@/components/ui/badge";
-import { SafeImage } from "@/components/SafeImage";
-import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
-import { PaymentStatusSelect } from "@/components/admin/PaymentStatusSelect";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
 import { OrderActions } from "@/components/admin/OrderActions";
 import { OrderNotes } from "@/components/admin/OrderNotes";
-import { readShippingAddress } from "@/lib/shipping-address";
+import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
+import { PaymentStatusSelect } from "@/components/admin/PaymentStatusSelect";
+import { SafeImage } from "@/components/SafeImage";
+import { Badge } from "@/components/ui/badge";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
+import { readShippingAddress } from "@/lib/shipping-address";
 
 export async function generateMetadata(props: { params: Promise<{ id: string }> }) {
   await requireAdminPage();

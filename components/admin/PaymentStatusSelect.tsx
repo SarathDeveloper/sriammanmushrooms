@@ -1,8 +1,9 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
-import { Loader2 } from "lucide-react";
+
 import { updatePaymentStatus } from "@/app/admin/actions";
 import type { PaymentStatus } from "@/lib/status-types";
 

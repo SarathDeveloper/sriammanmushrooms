@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { Loader2, MailCheck } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+
+import { submitInquiry } from "@/app/actions/contact";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import toast from "react-hot-toast";
-import { submitInquiry } from "@/app/actions/contact";
+
+
 
 export const INQUIRY_TYPES = [
   "Products",

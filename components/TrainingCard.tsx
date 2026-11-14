@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { SafeImage } from "@/components/SafeImage";
 import { Calendar, Loader2, Package, Sparkles, Users } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import type { TrainingProgram } from "@/lib/data";
+
+import { SafeImage } from "@/components/SafeImage";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +13,9 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { TrainingProgram } from "@/lib/data";
 
 const levelColor: Record<TrainingProgram["level"], string> = {
   Beginner: "bg-[var(--color-success)]",

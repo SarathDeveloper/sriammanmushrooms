@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
-import { createPhoneVerificationToken, verifyStoredOtp } from "@/lib/otp";
+
 import { errorResponse } from "@/lib/api-utils";
+import { authOptions } from "@/lib/auth";
 import { ORDERS_ENABLED } from "@/lib/features";
+import { createPhoneVerificationToken, verifyStoredOtp } from "@/lib/otp";
+import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
+import { prisma } from "@/lib/prisma";
 import { withRateLimit, apiLimits } from "@/lib/rate-limit";
 
 const schema = z.object({

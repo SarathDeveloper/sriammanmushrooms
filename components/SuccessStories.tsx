@@ -1,8 +1,9 @@
 "use client";
 
 import { ArrowRight, Quote, TrendingUp } from "lucide-react";
-import { FadeIn } from "@/components/FadeIn";
 import Link from "next/link";
+
+import { FadeIn } from "@/components/FadeIn";
 
 const stories = [
   {

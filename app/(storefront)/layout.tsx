@@ -1,8 +1,8 @@
-import Navbar from "@/components/Navbar";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
-import { WhatsAppWidget } from "@/components/WhatsAppWidget";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
+import Navbar from "@/components/Navbar";
+import { WhatsAppWidget } from "@/components/WhatsAppWidget";
 
 export default function StorefrontLayout({
   children,

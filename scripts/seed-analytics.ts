@@ -1,4 +1,7 @@
-require('dotenv').config();
+import 'dotenv/config';
+
+import type { OrderStatus, PaymentStatus } from '@prisma/client';
+
 import { prisma } from '../lib/prisma';
 
 function randomDate(start: Date, end: Date) {
@@ -22,7 +25,7 @@ async function main() {
   }
 
   // Ensure products exist
-  let products = await prisma.product.findMany();
+  const products = await prisma.product.findMany();
   if (products.length === 0) {
     console.error('No products found. Run `npx prisma db seed` first to seed products.');
     process.exit(1);
@@ -68,10 +71,10 @@ async function main() {
 
     // Random status
     const statuses = ['COMPLETED', 'COMPLETED', 'COMPLETED', 'COMPLETED', 'PENDING', 'FAILED', 'REFUNDED'];
-    const paymentStatus = statuses[Math.floor(Math.random() * statuses.length)] as any;
+    const paymentStatus = statuses[Math.floor(Math.random() * statuses.length)] as PaymentStatus;
 
     const orderStatuses = ['DELIVERED', 'DELIVERED', 'SHIPPED', 'PROCESSING', 'PENDING'];
-    const orderStatus = orderStatuses[Math.floor(Math.random() * orderStatuses.length)] as any;
+    const orderStatus = orderStatuses[Math.floor(Math.random() * orderStatuses.length)] as OrderStatus;
 
     await prisma.order.create({
       data: {

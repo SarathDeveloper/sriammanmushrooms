@@ -1,12 +1,13 @@
-import Link from "next/link";
 import { PackageSearch, Plus } from "lucide-react";
-import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/button";
-import { OrderFilters } from "@/components/admin/OrderFilters";
+import Link from "next/link";
+
 import { OrderBulkActions } from "@/components/admin/OrderBulkActions";
+import { OrderFilters } from "@/components/admin/OrderFilters";
 import { Pagination } from "@/components/admin/Pagination";
-import { readShippingAddress } from "@/lib/shipping-address";
+import { Button } from "@/components/ui/button";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
+import { readShippingAddress } from "@/lib/shipping-address";
 
 export const metadata = {
   title: "Orders · Admin",
@@ -56,22 +57,21 @@ export default async function AdminOrdersPage(props: {
     }
   }
 
-  let orders: any[] = [];
+  const loadOrders = () =>
+    prisma.order.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * perPage,
+      take: perPage,
+      include: {
+        user: { select: { name: true, email: true, phone: true } },
+        orderItems: { include: { product: { select: { name: true, images: true } } } },
+      },
+    });
+  let orders: Awaited<ReturnType<typeof loadOrders>> = [];
   let totalCount = 0;
   try {
-    [orders, totalCount] = await Promise.all([
-      prisma.order.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip: (page - 1) * perPage,
-        take: perPage,
-        include: {
-          user: { select: { name: true, email: true, phone: true } },
-          orderItems: { include: { product: { select: { name: true, images: true } } } },
-        },
-      }),
-      prisma.order.count({ where }),
-    ]);
+    [orders, totalCount] = await Promise.all([loadOrders(), prisma.order.count({ where })]);
   } catch {
     orders = [];
   }
@@ -119,7 +119,7 @@ export default async function AdminOrdersPage(props: {
   };
 
   // Serialize orders for client component
-  const serializedOrders = filtered.map((o: any) => ({
+  const serializedOrders = filtered.map((o) => ({
     id: o.id,
     status: o.status,
     paymentStatus: o.paymentStatus,
@@ -127,7 +127,7 @@ export default async function AdminOrdersPage(props: {
     createdAt: o.createdAt.toISOString(),
     shippingAddress: readShippingAddress(o.shippingAddress),
     user: o.user ? { name: o.user.name, email: o.user.email, phone: o.user.phone } : null,
-    orderItems: o.orderItems.map((item: any) => ({ id: item.id })),
+    orderItems: o.orderItems.map((item) => ({ id: item.id })),
   }));
 
   return (

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { SafeImage } from "@/components/SafeImage";
 import { Search, ArrowRight, TrendingUp, Clock, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, useRef, useCallback } from "react";
+
+import { searchProducts } from "@/app/admin/products/actions";
+import { SafeImage } from "@/components/SafeImage";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { searchProducts } from "@/app/admin/products/actions";
 import { ORDERS_ENABLED } from "@/lib/features";
 
 const popularSearches = ["Oyster", "Milky Mushroom", "Shiitake", "Combo Pack", "Fresh"];

@@ -1,4 +1,5 @@
 import { Newspaper } from "lucide-react";
+
 import { FadeIn } from "@/components/FadeIn";
 import { SafeImage } from "@/components/SafeImage";
 

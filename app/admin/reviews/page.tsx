@@ -1,8 +1,9 @@
 import { MessageSquare } from "lucide-react";
-import { prisma } from "@/lib/prisma";
-import { ReviewsTable } from "@/components/admin/ReviewsTable";
+
 import { Pagination } from "@/components/admin/Pagination";
+import { ReviewsTable } from "@/components/admin/ReviewsTable";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Reviews · Admin",

@@ -1,5 +1,5 @@
-import { PageHero } from "@/components/PageHero";
 import { FadeIn } from "@/components/FadeIn";
+import { PageHero } from "@/components/PageHero";
 
 export const metadata = {
   title: "Shipping & Delivery Policy",

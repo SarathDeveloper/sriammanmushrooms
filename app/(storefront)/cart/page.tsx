@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import Link from "next/link";
+
+import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
 import { SafeImage } from "@/components/SafeImage";
-import { FadeIn } from "@/components/FadeIn";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";

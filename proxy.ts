@@ -1,5 +1,5 @@
-import { getToken } from "next-auth/jwt";
 import { NextResponse, type NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 /**
  * First gate for the admin area: runs before any admin route renders, so an

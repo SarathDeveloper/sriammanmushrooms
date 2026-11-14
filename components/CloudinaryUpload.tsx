@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { CldUploadWidget, type CloudinaryUploadWidgetResults } from "next-cloudinary";
-import toast from "react-hot-toast";
 import { ImagePlus, Loader2, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CldUploadWidget, type CloudinaryUploadWidgetResults } from "next-cloudinary";
+import { useState } from "react";
+import toast from "react-hot-toast";
+
 import { SafeImage } from "@/components/SafeImage";
+import { Button } from "@/components/ui/button";
 import { CLOUDINARY_FOLDER, isCloudinarySrc } from "@/lib/cloudinary-utils";
 import { cn } from "@/lib/utils";
 
@@ -152,8 +153,9 @@ export function CloudinaryUpload({
           if (typeof error === "string") {
             msg = error;
           } else if (error && typeof error === "object") {
-            // @ts-ignore - The error type from next-cloudinary is broad
-            msg = error.statusText || error.message || error.error?.message || JSON.stringify(error);
+            // next-cloudinary types this error broadly; read the fields it can carry.
+            const e = error as { statusText?: string; message?: string; error?: { message?: string } };
+            msg = e.statusText || e.message || e.error?.message || JSON.stringify(error);
           }
           toast.error(msg);
         }}

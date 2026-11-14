@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+
 import { ManualOrderForm } from "@/components/admin/ManualOrderForm";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Create Order · Admin",

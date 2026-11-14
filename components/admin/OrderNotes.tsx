@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Trash2, Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { addOrderNote, deleteOrderNote } from "@/app/admin/actions";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
+
+import { addOrderNote, deleteOrderNote } from "@/app/admin/actions";
+import { Button } from "@/components/ui/button";
+
 
 type Note = {
   id: string;

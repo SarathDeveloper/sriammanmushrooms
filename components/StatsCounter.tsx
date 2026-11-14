@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { useEffect, useRef } from "react";
+
 import { stats } from "@/lib/data";
 
 function Counter({ value, suffix }: { value: number; suffix?: string }) {

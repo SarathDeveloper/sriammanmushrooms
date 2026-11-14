@@ -1,37 +1,36 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 import { Loader2, Plus, X, ArrowLeft, Star, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, useTransition, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import toast from "react-hot-toast";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { CloudinaryUpload } from "@/components/CloudinaryUpload";
-import { SafeImage } from "@/components/SafeImage";
-import { cn } from "@/lib/utils";
-
-import {
-  productSchema,
-  type ProductFormValues,
-  generateSlug,
-} from "@/lib/validators/product";
 import {
   createProduct,
   updateProduct,
   createCategory,
 } from "@/app/admin/products/actions";
+import { CloudinaryUpload } from "@/components/CloudinaryUpload";
+import { SafeImage } from "@/components/SafeImage";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import {
+  productSchema,
+  type ProductFormValues,
+  generateSlug,
+} from "@/lib/validators/product";
 
 type Category = { id: string; name: string; slug: string };
 

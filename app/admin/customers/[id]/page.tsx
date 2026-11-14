@@ -1,11 +1,12 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import { ArrowLeft, Mail, Phone, Calendar, ShoppingBag, Eye } from "lucide-react";
-import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { SafeImage } from "@/components/SafeImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { SafeImage } from "@/components/SafeImage";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export async function generateMetadata(props: { params: Promise<{ id: string }> }) {
   await requireAdminPage();

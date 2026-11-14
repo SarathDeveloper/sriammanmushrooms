@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   ArrowUpRight,
   IndianRupee,
@@ -13,10 +12,12 @@ import {
   Clock,
   Truck,
 } from "lucide-react";
-import { prisma } from "@/lib/prisma";
-import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+
 import { SafeImage } from "@/components/SafeImage";
+import { Badge } from "@/components/ui/badge";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -348,7 +349,7 @@ export default async function AdminDashboardPage() {
             </p>
           ) : (
             <div className="divide-y divide-border">
-              {data.recentOrders.map((order: any) => (
+              {data.recentOrders.map((order) => (
                 <Link
                   key={order.id}
                   href={`/admin/orders/${order.id}`}
@@ -388,7 +389,7 @@ export default async function AdminDashboardPage() {
             </p>
           ) : (
             <div className="divide-y divide-border">
-              {data.lowStockProducts.map((product: any) => (
+              {data.lowStockProducts.map((product) => (
                 <Link
                   key={product.id}
                   href={`/admin/products/${product.id}/edit`}

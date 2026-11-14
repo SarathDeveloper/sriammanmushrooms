@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma';
 import { products, categories, trainingPrograms } from '../lib/data';
+import { prisma } from '../lib/prisma';
 
 async function main() {
   console.log('Seeding database from lib/data.ts...');

@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import { ArrowRight, ExternalLink, Loader2, MailCheck, MapPin, Phone, Mail } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import toast from "react-hot-toast";
+
+import { submitInquiry } from "@/app/actions/contact";
 import { FadeIn } from "@/components/FadeIn";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { submitInquiry } from "@/app/actions/contact";
 
 const PHONE = "+91 93855 26105";
 const ADDITIONAL_PHONES = ["+91 89031 56142", "+91 63833 61207"];

@@ -1,13 +1,14 @@
+import Link from "next/link";
 import { Suspense } from "react";
+
+import { Pagination } from "@/components/admin/Pagination";
+import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
 import { ProductCard } from "@/components/ProductCard";
-import { FadeIn } from "@/components/FadeIn";
 import { ShopControls } from "@/components/ShopControls";
-import { Pagination } from "@/components/admin/Pagination";
-import { prisma } from "@/lib/prisma";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
 import type { Product } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
+import { cn } from "@/lib/utils";
 
 export const revalidate = 60;
 
@@ -155,7 +156,6 @@ export default async function ShopPage(props: {
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
                 {products.map((product, i) => (
                   <FadeIn key={product.id} delay={(i % 3) * 0.08}>
-                    {/* @ts-ignore */}
                     <ProductCard product={product} priority={i < 3} />
                   </FadeIn>
                 ))}

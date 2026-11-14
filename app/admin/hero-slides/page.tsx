@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { HeroSlidesTable } from "@/components/admin/HeroSlidesTable";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Hero Slides · Admin",

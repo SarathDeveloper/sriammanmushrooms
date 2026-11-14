@@ -1,9 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   User,
   Mail,
@@ -17,13 +13,18 @@ import {
   Trash2,
   Check,
 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { PageHero } from "@/components/PageHero";
+
 import { FadeIn } from "@/components/FadeIn";
+import { PageHero } from "@/components/PageHero";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 
 type Address = {
   id: string;

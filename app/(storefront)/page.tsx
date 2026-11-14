@@ -1,21 +1,22 @@
-import Link from "next/link";
-import dynamic from "next/dynamic";
 import { ArrowRight, ShieldCheck, Clock, Truck, Send } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+
+import { AboutPreview } from "@/components/AboutPreview";
+import { Certifications } from "@/components/Certifications";
+import { DeliverySchedule } from "@/components/DeliverySchedule";
 import { FadeIn } from "@/components/FadeIn";
 import { HomeHero, type HeroSlideData } from "@/components/HomeHero";
+import { PressAndRecognition } from "@/components/PressAndRecognition";
 import { ProductCard } from "@/components/ProductCard";
 import { SectionDivider } from "@/components/SectionDivider";
 import { ShopByCategory } from "@/components/ShopByCategory";
-import { DeliverySchedule } from "@/components/DeliverySchedule";
-import { AboutPreview } from "@/components/AboutPreview";
-import { PressAndRecognition } from "@/components/PressAndRecognition";
 import { TrainingJourneySection } from "@/components/TrainingJourneySection";
 import { TrainingOrderFlowSection } from "@/components/TrainingOrderFlowSection";
-import { Certifications } from "@/components/Certifications";
-import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { prisma } from "@/lib/prisma";
+import { Button } from "@/components/ui/button";
 import { type Product } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 export const revalidate = 60;
 

@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { Minus, Plus, ShoppingCart, Heart } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import type { Product } from "@/lib/data";
-import { useCartStore, useWishlistStore } from "@/lib/store";
-import { Button } from "@/components/ui/button";
-import { SubscriptionToggle } from "@/components/SubscriptionToggle";
-import { cn } from "@/lib/utils";
-import { ORDERS_ENABLED } from "@/lib/features";
+
 import { EnquireButton } from "@/components/ProductEnquiryDialog";
+import { SubscriptionToggle } from "@/components/SubscriptionToggle";
+import { Button } from "@/components/ui/button";
+import type { Product } from "@/lib/data";
+import { ORDERS_ENABLED } from "@/lib/features";
+import { useCartStore, useWishlistStore } from "@/lib/store";
+import { cn } from "@/lib/utils";
 
 export function ProductActions({ product }: { product: Product }) {
   const [qty, setQty] = useState(1);

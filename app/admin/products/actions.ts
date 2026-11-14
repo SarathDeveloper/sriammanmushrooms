@@ -2,14 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
+
 import { authOptions } from "@/lib/auth";
+import { normalizeCloudinaryImages } from "@/lib/cloudinary-utils";
 import { prisma } from "@/lib/prisma";
 import {
   productSchema,
   categorySchema,
   type ProductFormValues,
 } from "@/lib/validators/product";
-import { normalizeCloudinaryImages } from "@/lib/cloudinary-utils";
 
 type ActionResult<T = unknown> = {
   success: boolean;

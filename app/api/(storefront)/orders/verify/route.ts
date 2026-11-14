@@ -1,12 +1,14 @@
+import { createHmac, timingSafeEqual } from "crypto";
+
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { createHmac, timingSafeEqual } from "crypto";
 import { z } from "zod";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+
 import { errorResponse } from "@/lib/api-utils";
+import { authOptions } from "@/lib/auth";
 import { ORDERS_ENABLED } from "@/lib/features";
 import { notifyOrderConfirmation, parseShippingContact } from "@/lib/notifications";
+import { prisma } from "@/lib/prisma";
 
 const verifySchema = z.object({
   orderId: z.string().uuid(),

@@ -1,16 +1,17 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ChevronRight, Star, Truck, ShieldCheck, RotateCcw, Clock, Share2, Timer } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
 import { FadeIn } from "@/components/FadeIn";
-import { ProductGallery } from "@/components/ProductGallery";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { PincodeChecker } from "@/components/PincodeChecker";
 import { ProductActions } from "@/components/ProductActions";
 import { ProductCard } from "@/components/ProductCard";
-import { PincodeChecker } from "@/components/PincodeChecker";
+import { ProductGallery } from "@/components/ProductGallery";
 import { ProductShare } from "@/components/ProductShare";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { prisma } from "@/lib/prisma";
 import type { Product } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 export async function generateStaticParams() {
   const products = await prisma.product.findMany({ select: { slug: true } });
@@ -235,7 +236,6 @@ export default async function ProductDetailPage(props: {
                 ))}
               </div>
 
-              {/* @ts-ignore */}
               <ProductActions product={product} />
 
               {/* Pincode Checker */}
@@ -457,7 +457,6 @@ export default async function ProductDetailPage(props: {
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {related.map((p, i) => (
                 <FadeIn key={p.id} delay={i * 0.08}>
-                  {/* @ts-ignore */}
                   <ProductCard product={p} />
                 </FadeIn>
               ))}

@@ -1,7 +1,5 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import {
   ArrowRight,
@@ -13,6 +11,9 @@ import {
   ShoppingBag,
   Check
 } from "lucide-react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import { SafeImage } from "@/components/SafeImage";
 import { cn } from "@/lib/utils";
 

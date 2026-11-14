@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { InquiriesTable } from "@/components/admin/InquiriesTable";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Inquiries | Admin Dashboard",
@@ -13,7 +13,7 @@ export default async function InquiriesPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  const unhandledCount = inquiries.filter((i: any) => !i.isHandled).length;
+  const unhandledCount = inquiries.filter((i) => !i.isHandled).length;
 
   return (
     <div className="p-4 sm:p-6 lg:p-10 space-y-6">

@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+
 import { ProductForm } from "@/components/admin/ProductForm";
-import { isCloudinarySrc, toCloudinaryPublicId } from "@/lib/cloudinary-utils";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { isCloudinarySrc, toCloudinaryPublicId } from "@/lib/cloudinary-utils";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Edit Product · Admin",

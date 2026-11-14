@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
-import { resolveCoupon } from "@/lib/order-pricing";
+
 import { errorResponse } from "@/lib/api-utils";
 import { ORDERS_ENABLED } from "@/lib/features";
+import { resolveCoupon } from "@/lib/order-pricing";
+import { prisma } from "@/lib/prisma";
 import { withRateLimit, apiLimits } from "@/lib/rate-limit";
 
 const schema = z.object({

@@ -1,8 +1,9 @@
 "use client";
 
 import { Printer } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { Button } from "@/components/ui/button";
 import type { ShippingAddress } from "@/lib/shipping-address";
 
 // Customer-entered text goes into the print window's HTML, so escape it.

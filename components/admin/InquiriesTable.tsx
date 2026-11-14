@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { 
   CheckCircle2, 
   Clock, 
@@ -11,10 +10,19 @@ import {
   Phone,
   MessageCircle
 } from "lucide-react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
+import { updateInquiryStatus, updateInquiryNotes } from "@/app/admin/inquiries/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +31,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -31,16 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { updateInquiryStatus, updateInquiryNotes } from "@/app/admin/inquiries/actions";
 
 interface Inquiry {
   id: string;

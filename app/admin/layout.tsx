@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+
 import { AdminSidebar } from "@/components/AdminSidebar";
+import { authOptions } from "@/lib/auth";
 
 export const metadata = {
   title: "Admin Dashboard",

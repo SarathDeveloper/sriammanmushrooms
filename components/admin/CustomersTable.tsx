@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Search, Phone, Mail, ShoppingBag, Calendar } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Phone, Mail, ShoppingBag, Calendar } from "lucide-react";
+import { useState } from "react";
+
 import { SafeImage } from "@/components/SafeImage";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";

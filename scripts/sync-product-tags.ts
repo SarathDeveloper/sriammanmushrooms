@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { prisma } from "../lib/prisma";
 import { products } from "../lib/data";
+import { prisma } from "../lib/prisma";
 
 async function main() {
   for (const product of products) {

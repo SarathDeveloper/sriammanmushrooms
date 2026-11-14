@@ -1,26 +1,26 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Pencil, Trash2, Loader2, GripVertical, Plus, X, FolderTree, Home } from "lucide-react";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
-import { SafeImage } from "@/components/SafeImage";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { CloudinaryUpload } from "@/components/CloudinaryUpload";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   createCategory,
   updateCategory,
   deleteCategory,
 } from "@/app/admin/actions";
+import { CloudinaryUpload } from "@/components/CloudinaryUpload";
+import { SafeImage } from "@/components/SafeImage";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { generateSlug } from "@/lib/validators/product";
 
 type Category = {

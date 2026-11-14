@@ -1,9 +1,10 @@
 "use client";
 
 import { MapPin, Phone, Mail, ExternalLink } from "lucide-react";
+
+import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 
 const PHONE = "+91 93855 26105";

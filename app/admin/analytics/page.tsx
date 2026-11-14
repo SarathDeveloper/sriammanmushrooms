@@ -1,7 +1,7 @@
-import { prisma } from "@/lib/prisma";
 import { SalesChart } from "@/components/admin/SalesChart";
 import { TopProductsChart } from "@/components/admin/TopProductsChart";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Analytics · Admin",

@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import {
   Package,
   Truck,
@@ -12,12 +10,15 @@ import {
   Search,
   AlertCircle,
 } from "lucide-react";
-import { PageHero } from "@/components/PageHero";
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+
 import { FadeIn } from "@/components/FadeIn";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { PageHero } from "@/components/PageHero";
 import { SafeImage } from "@/components/SafeImage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { cn } from "@/lib/utils";
 
 interface OrderData {

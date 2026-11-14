@@ -2,8 +2,9 @@
 
 import { headers } from "next/headers";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
+
 import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
+import { prisma } from "@/lib/prisma";
 import { consumeRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const inquirySchema = z.object({
@@ -21,7 +22,7 @@ const inquirySchema = z.object({
 const INQUIRY_LIMIT = 5;
 const INQUIRY_WINDOW_MS = 10 * 60 * 1000;
 
-export async function submitInquiry(prevState: any, formData: FormData) {
+export async function submitInquiry(_prevState: unknown, formData: FormData) {
   try {
     // Honeypot: the "website" field is hidden from people, so only bots fill it.
     // Pretend success so they don't retry.

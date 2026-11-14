@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import Link from "next/link";
 import {
   Search,
   Pencil,
@@ -12,18 +10,20 @@ import {
   EyeOff,
   Star,
 } from "lucide-react";
+import Link from "next/link";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
+import { updateProductStock, toggleProductActive } from "@/app/admin/actions";
+import { deleteProduct } from "@/app/admin/products/actions";
 import { SafeImage } from "@/components/SafeImage";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteProduct } from "@/app/admin/products/actions";
-import { updateProductStock, toggleProductActive } from "@/app/admin/actions";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 type Product = {

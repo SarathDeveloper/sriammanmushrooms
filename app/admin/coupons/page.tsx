@@ -1,8 +1,9 @@
 import { Ticket } from "lucide-react";
-import { prisma } from "@/lib/prisma";
+
 import { CouponsTable } from "@/components/admin/CouponsTable";
 import { Pagination } from "@/components/admin/Pagination";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Coupons · Admin",

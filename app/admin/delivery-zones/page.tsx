@@ -1,8 +1,9 @@
 import { Truck } from "lucide-react";
-import { prisma } from "@/lib/prisma";
+
 import { DeliveryZonesTable } from "@/components/admin/DeliveryZonesTable";
 import { Pagination } from "@/components/admin/Pagination";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Delivery Zones · Admin",

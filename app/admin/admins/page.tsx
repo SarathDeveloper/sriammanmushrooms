@@ -1,9 +1,10 @@
 import { ShieldCheck } from "lucide-react";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+
 import { AdminsTable } from "@/components/admin/AdminsTable";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Admin Users · Admin",

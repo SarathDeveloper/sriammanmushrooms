@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import Link from "next/link";
 import { CheckCircle, XCircle, Trash2, Loader2, Star, Filter } from "lucide-react";
+import Link from "next/link";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
+import { updateReviewApproval, deleteReview } from "@/app/admin/actions";
 import { SafeImage } from "@/components/SafeImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,6 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { updateReviewApproval, deleteReview } from "@/app/admin/actions";
 
 type Review = {
   id: string;
@@ -88,7 +88,7 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
         <Filter size={18} className="text-muted-foreground" />
         <select
           value={filter}
-          onChange={(e) => setFilter(e.target.value as any)}
+          onChange={(e) => setFilter(e.target.value as typeof filter)}
           className="h-9 rounded-lg border border-border bg-card px-3 text-base outline-none focus:border-primary"
         >
           <option value="all">All Reviews</option>

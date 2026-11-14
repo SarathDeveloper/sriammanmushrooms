@@ -1,7 +1,8 @@
 import { PageHero } from "@/components/PageHero";
-import { prisma } from "@/lib/prisma";
-import { WishlistClient } from "./WishlistClient";
 import type { Product } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
+
+import { WishlistClient } from "./WishlistClient";
 
 export default async function WishlistPage() {
   const dbProducts = await prisma.product.findMany({ include: { category: true } });

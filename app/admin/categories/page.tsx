@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { CategoriesTable } from "@/components/admin/CategoriesTable";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Categories · Admin",

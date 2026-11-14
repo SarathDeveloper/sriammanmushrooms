@@ -1,7 +1,8 @@
 import { createHash, createHmac, randomInt, timingSafeEqual } from "crypto";
-import { prisma } from "@/lib/prisma";
-import { isValidIndianMobile } from "@/lib/phone";
+
 import { sendTwilioSms } from "@/lib/notifications";
+import { isValidIndianMobile } from "@/lib/phone";
+import { prisma } from "@/lib/prisma";
 
 const OTP_TTL_MS = 10 * 60 * 1000;
 const VERIFY_TTL_MS = 60 * 60 * 1000;

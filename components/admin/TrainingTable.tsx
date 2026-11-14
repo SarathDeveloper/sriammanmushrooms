@@ -1,29 +1,29 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Pencil, Trash2, Loader2, Users, Plus, Calendar, IndianRupee, GraduationCap } from "lucide-react";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
-import { SafeImage } from "@/components/SafeImage";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { CloudinaryUpload } from "@/components/CloudinaryUpload";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   createTraining,
   updateTraining,
   deleteTraining,
   updateRegistrationStatus,
 } from "@/app/admin/actions";
-import { generateSlug } from "@/lib/validators/product";
+import { CloudinaryUpload } from "@/components/CloudinaryUpload";
+import { SafeImage } from "@/components/SafeImage";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import type { TrainingStatus, PaymentStatus } from "@/lib/status-types";
+import { generateSlug } from "@/lib/validators/product";
 
 type Registration = {
   id: string;

@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
 
-import { authOptions } from "@/lib/auth";
-import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
-import { createAndStoreOtp, sendOtpSms } from "@/lib/otp";
 import { errorResponse } from "@/lib/api-utils";
+import { authOptions } from "@/lib/auth";
 import { ORDERS_ENABLED } from "@/lib/features";
+import { createAndStoreOtp, sendOtpSms } from "@/lib/otp";
+import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
 import { consumeRateLimit, withRateLimit, apiLimits } from "@/lib/rate-limit";
 
 // Every OTP is a paid SMS, so cap per number as well as per IP: someone

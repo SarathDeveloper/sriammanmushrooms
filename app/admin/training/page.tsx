@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { TrainingTable } from "@/components/admin/TrainingTable";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Training Programs · Admin",

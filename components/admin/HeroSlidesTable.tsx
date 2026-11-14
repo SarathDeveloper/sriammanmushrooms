@@ -1,27 +1,27 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Pencil, Trash2, Loader2, Plus, ImageIcon, Presentation } from "lucide-react";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
-import { SafeImage } from "@/components/SafeImage";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { CloudinaryUpload } from "@/components/CloudinaryUpload";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   createHeroSlide,
   updateHeroSlide,
   deleteHeroSlide,
 } from "@/app/admin/actions";
+import { CloudinaryUpload } from "@/components/CloudinaryUpload";
+import { SafeImage } from "@/components/SafeImage";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 type HeroSlide = {
   id: string;

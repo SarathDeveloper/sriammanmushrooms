@@ -1,9 +1,10 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma, prismaBase } from "./prisma";
-import bcrypt from "bcryptjs";
+
 import { normalizeIndianMobile } from "./phone";
+import { prisma, prismaBase } from "./prisma";
 import { consumeRateLimit } from "./rate-limit";
 
 // Login attempts allowed per window, counted separately per IP and per phone,

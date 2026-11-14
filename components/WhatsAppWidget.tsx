@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { usePathname } from "next/navigation";
-import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { ORDERS_ENABLED, whatsappLink } from "@/lib/features";
 

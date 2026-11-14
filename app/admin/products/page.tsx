@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { Plus } from "lucide-react";
-import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/button";
-import { ProductsTable } from "@/components/admin/ProductsTable";
+import Link from "next/link";
+
 import { Pagination } from "@/components/admin/Pagination";
+import { ProductsTable } from "@/components/admin/ProductsTable";
+import { Button } from "@/components/ui/button";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Products · Admin",

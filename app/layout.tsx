@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
+
 import "./globals.css";
-import { formatCurrency } from "@/lib/utils";
 import Providers from "@/components/Providers";
+import { formatCurrency } from "@/lib/utils";
 
 const effra = localFont({
   src: [

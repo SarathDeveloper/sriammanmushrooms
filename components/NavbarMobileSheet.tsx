@@ -1,14 +1,15 @@
 "use client";
 
-import Link from "next/link";
+import { ShoppingCart, ShoppingBag, Menu, Heart, User, LogOut, Package, Leaf } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { ShoppingCart, ShoppingBag, Menu, Heart, User, LogOut, Package, Leaf } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
+
 import { Button } from "@/components/ui/button";
-import { useCartStore, useWishlistStore } from "@/lib/store";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import { ORDERS_ENABLED } from "@/lib/features";
+import { useCartStore, useWishlistStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";
 import { cn } from "@/lib/utils";
 

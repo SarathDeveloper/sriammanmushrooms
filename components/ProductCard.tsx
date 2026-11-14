@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { SafeImage } from "@/components/SafeImage";
 import { Heart, Star, ShoppingCart, Minus, Plus, Clock, MessageSquareText } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import type { Product } from "@/lib/data";
-import { useCartStore, useWishlistStore } from "@/lib/store";
-import { ORDERS_ENABLED } from "@/lib/features";
+
 import { EnquireButton } from "@/components/ProductEnquiryDialog";
+import { SafeImage } from "@/components/SafeImage";
 import { Button } from "@/components/ui/button";
+import type { Product } from "@/lib/data";
+import { ORDERS_ENABLED } from "@/lib/features";
+import { useCartStore, useWishlistStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 function stockLabel(stock: number) {

@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
+
 import { errorResponse } from "@/lib/api-utils";
 import { ORDERS_ENABLED } from "@/lib/features";
 import { indianMobileError, normalizeIndianMobile } from "@/lib/phone";
+import { prisma } from "@/lib/prisma";
 import { withRateLimit, apiLimits } from "@/lib/rate-limit";
 
 const registerSchema = z.object({

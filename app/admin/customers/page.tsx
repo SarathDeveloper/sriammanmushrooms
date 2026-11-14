@@ -1,8 +1,9 @@
 import { Users } from "lucide-react";
-import { prisma } from "@/lib/prisma";
+
 import { CustomersTable } from "@/components/admin/CustomersTable";
 import { Pagination } from "@/components/admin/Pagination";
 import { requireAdminPage } from "@/lib/admin-guard";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Customers · Admin",

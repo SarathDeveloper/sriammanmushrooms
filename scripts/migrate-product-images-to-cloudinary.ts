@@ -1,9 +1,10 @@
 import "dotenv/config";
-import path from "path";
 import fs from "fs";
-import { v2 as cloudinary } from "cloudinary";
-import { PrismaClient } from "@prisma/client";
+import path from "path";
+
 import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@prisma/client";
+import { v2 as cloudinary } from "cloudinary";
 import { Pool } from "pg";
 
 cloudinary.config({
@@ -80,8 +81,9 @@ async function uploadImage(
         resource_type: "image",
       });
       return result.public_id;
-    } catch (err: any) {
-      console.warn(`  [SKIP] Remote upload failed (${err.http_code || err.message}): ${src.substring(0, 80)}`);
+    } catch (err) {
+      const e = err as { http_code?: number; message?: string };
+      console.warn(`  [SKIP] Remote upload failed (${e.http_code || e.message}): ${src.substring(0, 80)}`);
       return "";
     }
   }

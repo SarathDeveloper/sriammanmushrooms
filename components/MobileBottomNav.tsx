@@ -1,13 +1,14 @@
 "use client";
 
+import { Heart, Home, MessageSquareText, ShoppingBag, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Heart, Home, MessageSquareText, ShoppingBag, ShoppingCart, User } from "lucide-react";
+
+import { ORDERS_ENABLED } from "@/lib/features";
 import { useCartStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";
 import { cn } from "@/lib/utils";
-import { ORDERS_ENABLED } from "@/lib/features";
 
 const baseTabs = [
   { href: "/", icon: Home, label: "Home" },

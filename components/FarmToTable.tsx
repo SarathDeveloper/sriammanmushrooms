@@ -1,6 +1,7 @@
 "use client";
 
 import { Scissors, ShieldCheck, Package, Truck, Home } from "lucide-react";
+
 import { FadeIn } from "@/components/FadeIn";
 
 const steps = [

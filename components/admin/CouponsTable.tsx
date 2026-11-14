@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Pencil, Trash2, Loader2, Plus, Percent, IndianRupee, Copy, Check } from "lucide-react";
+import { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 
+import { createCoupon, updateCoupon, deleteCoupon } from "@/app/admin/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { createCoupon, updateCoupon, deleteCoupon } from "@/app/admin/actions";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 type Coupon = {
   id: string;
