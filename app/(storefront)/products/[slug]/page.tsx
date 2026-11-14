@@ -42,9 +42,9 @@ export async function generateMetadata(props: {
   });
 }
 
-const nutritionData: Record<string, { calories: number; protein: string; fiber: string; vitD: string; iron: string }> = {
-  Oyster: { calories: 33, protein: "3.3g", fiber: "2.3g", vitD: "Low", iron: "1.3mg" },
-  Button: { calories: 22, protein: "3.1g", fiber: "1.0g", vitD: "Medium", iron: "0.5mg" },
+const nutritionData: Record<string, { calories: number; protein: string; fiber: string; iron: string }> = {
+  Oyster: { calories: 33, protein: "3.3g", fiber: "2.3g", iron: "1.3mg" },
+  Button: { calories: 22, protein: "3.1g", fiber: "1.0g", iron: "0.5mg" },
 };
 
 const storageInstructions: Record<string, string> = {
@@ -247,7 +247,6 @@ export default async function ProductDetailPage(props: {
                     { label: "Calories", value: `${nutrition.calories} kcal` },
                     { label: "Protein", value: nutrition.protein },
                     { label: "Fiber", value: nutrition.fiber },
-                    { label: "Vitamin D", value: nutrition.vitD },
                     { label: "Iron", value: nutrition.iron },
                   ].map((item) => (
                     <div key={item.label} className="flex items-center justify-between py-2 border-b border-border last:border-0">

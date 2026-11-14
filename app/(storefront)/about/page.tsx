@@ -61,7 +61,7 @@ export default function AboutPage() {
                 In 2017, Mathesh started growing oyster mushrooms in one bamboo shed to earn extra money for his family. He found that the cool weather of Kalvarayan Hills was perfect for growing mushrooms.
               </p>
               <p className="text-[var(--color-body)] leading-relaxed text-base sm:text-lg">
-                Today, Sri Amman Mushroom Farm has many growing sheds. We sell to restaurants and shops across Tamil Nadu. We have taught hundreds of farmers how to grow mushrooms. And we still keep our promise: No chemicals, only natural farming.
+                Today, Sri Amman Mushroom Farm has many growing sheds. We sell to restaurants and shops in Tamil Nadu. We have trained more than 100 farmers to grow mushrooms. And we still grow the natural way, with care at every step.
               </p>
               <Button asChild size="lg" className="rounded-full px-8 mt-2">
                 <Link href="/products">Try Our Mushrooms <ArrowRight className="ml-2" size={18} /></Link>
@@ -119,7 +119,7 @@ export default function AboutPage() {
                   Mathesh grew up in Kalvarayan Hills of Tamil Nadu. He saw that farmers in his area had very few ways to earn money. In 2017, with just one bamboo shed, he started growing oyster mushrooms. The cool, misty weather of the hills was perfect for mushroom farming.
                 </p>
                 <p className="text-[var(--color-body)] leading-relaxed mb-6">
-                  What started as a small project is now Sri Amman Mushroom Farm. We sell fresh and dry mushrooms to restaurants and shops across Tamil Nadu. More than that, Mathesh has taught hundreds of local farmers how to grow mushrooms and start their own business.
+                  What started as a small project is now Sri Amman Mushroom Farm. We sell fresh mushrooms to restaurants and shops in Tamil Nadu. More than that, Mathesh has trained more than 100 local farmers how to grow mushrooms and start their own business.
                 </p>
                 <div className="relative bg-card rounded-2xl p-6 border border-border">
                   <Quote size={32} className="text-primary/20 absolute top-4 left-4" />

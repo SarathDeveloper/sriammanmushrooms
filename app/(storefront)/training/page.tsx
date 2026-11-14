@@ -5,7 +5,6 @@ import {
   Award,
   Ruler,
   Timer,
-  TrendingUp,
   CheckCircle2,
 } from "lucide-react";
 import type { Metadata } from "next";
@@ -32,7 +31,7 @@ const stats = [
   { icon: IndianRupee, value: "₹12K–50K", label: "Monthly Income" },
   { icon: Ruler, value: "120 sq.ft", label: "Minimum Space" },
   { icon: Timer, value: "13–17 days", label: "First Harvest" },
-  { icon: TrendingUp, value: "40%", label: "Govt. Subsidy" },
+  { icon: Award, value: "2017", label: "Farming Since" },
   { icon: Users, value: "100+", label: "Farmers in Network" },
 ];
 

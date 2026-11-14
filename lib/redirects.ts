@@ -39,6 +39,10 @@ export const SITE_REDIRECTS: SiteRedirect[] = [
     { source: `/products/${slug}`, destination: "/products", permanent: true as const },
   ]),
 
+  // "Organic" was dropped from the button mushroom's address: it is not certified organic.
+  { source: "/products/organic-button-mushroom", destination: "/products/button-mushroom", permanent: true },
+  { source: "/shop/organic-button-mushroom", destination: "/products/button-mushroom", permanent: true },
+
   // The catalogue moved from /shop to /products ("Our Mushrooms").
   { source: "/shop", destination: "/products", permanent: true },
   { source: "/shop/:slug", destination: "/products/:slug", permanent: true },

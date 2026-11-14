@@ -30,7 +30,7 @@ const fallbackSlides: HeroSlideData[] = [
     badge: "Free Delivery for ₹500+ Orders",
     headline: "Fresh Mushrooms\nFrom Our Farm",
     subtitle:
-      "We grow oyster & button mushrooms. Pick today, deliver today. Direct from Kalvarayan Hills to your home.",
+      "We grow oyster & button mushrooms. Picked today, delivered fresh. Direct from Kalvarayan Hills to your home.",
     primaryCtaLabel: "Explore Our Mushrooms",
     primaryCtaHref: "/products",
     secondaryCtaLabel: "Book Early",
@@ -42,7 +42,7 @@ const fallbackSlides: HeroSlideData[] = [
     headline: "Learn Mushroom\nFarming",
     subtitle:
       "We teach you how to grow mushrooms and earn money. Easy training with hands-on practice.",
-    primaryCtaLabel: "See Courses",
+    primaryCtaLabel: "Explore Training",
     primaryCtaHref: "/training",
     secondaryCtaLabel: "Talk to Us",
     secondaryCtaHref: "/contact",
@@ -246,16 +246,16 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
                     >
                       <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center items-center gap-y-4 gap-x-2 sm:gap-10">
                         <div className="text-center">
-                          <p className="text-xl sm:text-3xl font-bold text-white mb-0.5">100%</p>
-                          <p className="text-[10px] sm:text-sm text-white/70 uppercase tracking-wider">Naturally Grown</p>
+                          <p className="text-xl sm:text-3xl font-bold text-white mb-0.5">2017</p>
+                          <p className="text-[10px] sm:text-sm text-white/70 uppercase tracking-wider">Growing Since</p>
                         </div>
                         <div className="text-center">
                           <p className="text-xl sm:text-3xl font-bold text-white mb-0.5">Fresh</p>
-                          <p className="text-[10px] sm:text-sm text-white/70 uppercase tracking-wider">Same Day Delivery</p>
+                          <p className="text-[10px] sm:text-sm text-white/70 uppercase tracking-wider">Picked Daily</p>
                         </div>
                         <div className="text-center">
                           <p className="text-xl sm:text-3xl font-bold text-white mb-0.5">FSSAI</p>
-                          <p className="text-[10px] sm:text-sm text-white/70 uppercase tracking-wider">Certified Safe</p>
+                          <p className="text-[10px] sm:text-sm text-white/70 uppercase tracking-wider">Licensed</p>
                         </div>
                         <div className="text-center">
                           <p className="text-xl sm:text-3xl font-bold text-white mb-0.5">Expert</p>

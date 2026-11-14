@@ -128,7 +128,7 @@ export default function Home() {
                 Want to Grow Mushrooms & Earn ₹12K–50K/Month?
               </h2>
               <p className="text-white/80 max-w-2xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
-                We give you bags, hands-on training, customer orders, and help you get 40% government subsidy. Start your own mushroom business with full support from Mathesh.
+                We give you bags, hands-on training, customer orders, and help you apply for government subsidy schemes. Start your own mushroom business with full support from Mathesh.
               </p>
               <Button asChild size="lg" className="rounded-full px-8 bg-white text-[var(--color-primary-dark)] hover:bg-white/90 font-bold">
                 <Link href="/training">Start Your Journey <ArrowRight size={18} className="ml-2" /></Link>

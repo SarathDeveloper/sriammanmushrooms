@@ -20,7 +20,7 @@ const VARIETIES = [
   {
     id: "button",
     name: "Button",
-    href: "/products/organic-button-mushroom",
+    href: "/products/button-mushroom",
     image: "/gallery/products/button-mushrooms-Dj92oXDo.jpg",
     objectPosition: "center",
   },

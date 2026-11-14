@@ -21,7 +21,7 @@ export const HOME_FAQ: FaqItem[] = [
   {
     question: "Are the mushrooms fresh when I get them?",
     answer:
-      "Yes. We pick mushrooms in the early morning and send them out the same day, packed in cool boxes so they stay fresh until they reach you.",
+      "Yes. We pick mushrooms early every morning and send them out the same day, packed in cool boxes so they stay fresh. Nearby orders usually arrive the same day; farther areas the next day.",
   },
   {
     question: "How do I order, and what is the price?",
@@ -54,6 +54,6 @@ export const HOME_FAQ: FaqItem[] = [
   {
     question: "Do you offer mushroom farming training?",
     answer:
-      "Yes. We have a 1-day short course and a 2-week full course with hands-on practice, and we help you with farm setup and customer orders afterwards. See our Training page for more details.",
+      "Yes. We give hands-on training at our farm, then help you with setup, spawn bags and customer orders. Message us on WhatsApp for the next training dates and fees, or see our Training page.",
   },
 ];

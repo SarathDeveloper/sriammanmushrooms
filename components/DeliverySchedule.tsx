@@ -8,12 +8,12 @@ const slots = [
   {
     icon: Sunrise,
     label: "Order before 7 AM",
-    detail: "We pick fresh today and deliver to your door",
+    detail: "Packed from this morning's harvest and sent out today",
   },
   {
     icon: Moon,
     label: "Order after 7 AM",
-    detail: "We pick tomorrow morning, pack and send",
+    detail: "Packed from tomorrow morning's harvest and sent out then",
   },
 ];
 
@@ -39,7 +39,7 @@ export function DeliverySchedule() {
             ))}
           </div>
           <p className="text-center text-sm text-muted-foreground mt-2.5">
-            Mushrooms are picked only after your order &mdash; never sitting in storage.
+            Every order is packed from a fresh morning harvest.
           </p>
         </FadeIn>
       </div>

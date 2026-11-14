@@ -24,14 +24,14 @@ export function TrainingOrderFlowSection() {
         <FadeIn className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-3">
             <span className="h-px w-6 sm:w-8 bg-border" />
-            <span className="text-sm font-bold uppercase tracking-[0.2em] text-primary">Guaranteed Orders</span>
+            <span className="text-sm font-bold uppercase tracking-[0.2em] text-primary">Customer Orders</span>
             <span className="h-px w-6 sm:w-8 bg-border" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading mb-3 sm:mb-4">
             How You Get Orders
           </h2>
           <p className="text-[var(--color-body)] max-w-xl mx-auto text-base sm:text-lg">
-            You don&apos;t search for customers. Mathesh routes orders directly to you.
+            Mathesh routes customer orders to farmers in our network, so you can focus on growing.
           </p>
         </FadeIn>
 
@@ -77,7 +77,7 @@ export function TrainingOrderFlowSection() {
 
             <div className="mt-8 pt-6 border-t border-border/60 text-center">
               <p className="text-base text-[var(--color-body)] font-medium leading-relaxed">
-                <span className="text-primary font-bold">No risk.</span> You grow mushrooms — we make sure someone buys them.
+                <span className="text-primary font-bold">Less hassle.</span> You focus on growing — Mathesh connects you with buyers.
               </p>
             </div>
           </div>

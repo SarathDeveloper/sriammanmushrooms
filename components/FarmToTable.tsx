@@ -8,8 +8,8 @@ const steps = [
   { time: "5:00 AM", title: "We Pick Fresh", icon: Scissors, desc: "Mushrooms picked by hand early morning" },
   { time: "6:30 AM", title: "We Check Quality", icon: ShieldCheck, desc: "Only the best ones selected" },
   { time: "7:00 AM", title: "We Pack Clean", icon: Package, desc: "Packed in cool boxes to stay fresh" },
-  { time: "8:00 AM", title: "We Send Out", icon: Truck, desc: "Delivery starts same day" },
-  { time: "By Evening", title: "You Get It", icon: Home, desc: "Fresh mushrooms at your door" },
+  { time: "8:00 AM", title: "We Send Out", icon: Truck, desc: "Out for delivery the same day" },
+  { time: "Same / Next Day", title: "You Get It", icon: Home, desc: "Nearby areas same day, farther areas next day" },
 ];
 
 export function FarmToTable() {
@@ -23,10 +23,10 @@ export function FarmToTable() {
             <span className="h-px w-6 sm:w-8 bg-border" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading">
-            From Farm to Your Home in One Day
+            From Our Farm to Your Home
           </h2>
           <p className="text-[var(--color-body)] max-w-2xl mx-auto mt-3 text-base sm:text-lg">
-            We pick mushrooms in the morning and deliver to you by evening. Always fresh.
+            We pick mushrooms early every morning and send them out the same day. Nearby orders usually arrive the same day; farther areas the next day.
           </p>
         </FadeIn>
 
@@ -59,7 +59,7 @@ export function FarmToTable() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
             </span>
-            Today&apos;s picking done at 5:30 AM
+            Fresh picking every morning from 5:00 AM
           </div>
         </FadeIn>
       </div>
