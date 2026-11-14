@@ -2,6 +2,7 @@ import { Users } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { CustomersTable } from "@/components/admin/CustomersTable";
 import { Pagination } from "@/components/admin/Pagination";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Customers · Admin",
@@ -13,6 +14,8 @@ export const revalidate = 0;
 export default async function AdminCustomersPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  await requireAdminPage();
+
   const searchParams = await props.searchParams;
   const page = Math.max(1, Number(searchParams?.page) || 1);
   const perPage = 20;

@@ -1,11 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { TrainingTable } from "@/components/admin/TrainingTable";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Training Programs · Admin",
 };
 
 export default async function AdminTrainingPage() {
+  await requireAdminPage();
+
   const programs = await prisma.training.findMany({
     include: {
       _count: { select: { registrations: true } },

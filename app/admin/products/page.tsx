@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import { ProductsTable } from "@/components/admin/ProductsTable";
 import { Pagination } from "@/components/admin/Pagination";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export const metadata = {
   title: "Products · Admin",
@@ -12,6 +13,8 @@ export const metadata = {
 export default async function AdminProductsPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  await requireAdminPage();
+
   const searchParams = await props.searchParams;
   const page = Math.max(1, Number(searchParams?.page) || 1);
   const perPage = 20;
