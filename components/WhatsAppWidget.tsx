@@ -8,7 +8,7 @@ import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { whatsappLink } from "@/lib/whatsapp";
 
 const quickMessages = [
-  { label: "Buy Mushrooms", message: "Hi! I'd like to buy fresh mushrooms. What's available today?" },
+  { label: "Order Mushrooms", message: "Hi! I'd like to order fresh mushrooms. What's available today, and at what price?" },
   { label: "Pre-Order Enquiry", message: "Hi! I'd like to pre-order fresh mushrooms." },
   { label: "Training Info", message: "Hi! I'd like to know about your mushroom farming training programs." },
   { label: "Bulk / Wholesale", message: "Hi! I'm interested in bulk or wholesale mushroom supply." },
@@ -50,7 +50,7 @@ export function WhatsAppWidget() {
             </div>
             <div className="px-4 pb-3">
               <button
-                onClick={() => sendMessage("Hi! I have a question about Sri Amman Mushroom Farms.")}
+                onClick={() => sendMessage("Hi! I have a question about Sri Amman Mushroom Farm.")}
                 className="w-full py-2.5 rounded-xl bg-whatsapp text-white text-base font-semibold hover:bg-whatsapp-hover transition-colors"
               >
                 Start a Conversation

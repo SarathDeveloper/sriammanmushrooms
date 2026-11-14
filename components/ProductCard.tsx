@@ -1,16 +1,16 @@
-"use client";
-
-import { Heart, Star, Minus, Plus, Clock, MessageSquareText } from "lucide-react";
+import { Clock, MessageSquareText, Package } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import toast from "react-hot-toast";
 
 import { EnquireButton } from "@/components/ProductEnquiryDialog";
 import { SafeImage } from "@/components/SafeImage";
 import type { Product } from "@/lib/content";
-import { useWishlistStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
+import { packSizeLabel } from "@/lib/utils";
 
+/**
+ * Catalogue card: image, name, pack size, a couple of highlights and an
+ * enquiry button. A Server Component, so only the product name and pack size
+ * (what the enquiry needs) are sent to the browser for the button.
+ */
 export function ProductCard({
   product,
   priority = false,
@@ -18,28 +18,15 @@ export function ProductCard({
   product: Product;
   priority?: boolean;
 }) {
-  const wished = useWishlistStore((s) => s.has(product.id));
-  const toggleWish = useWishlistStore((s) => s.toggle);
-  const [qty, setQty] = useState(1);
-
-  const highlights = product.highlights ?? [];
-  const tags = [
-    ...(product.tag ? [product.tag] : []),
-    ...highlights.filter(Boolean).slice(0, product.tag ? 3 : 4),
-  ];
-  const outOfStock = !product.inStock;
-
-  const handleWishlist = () => {
-    toggleWish(product.id);
-    toast(wished ? "Removed from wishlist" : "Added to wishlist", {
-      icon: wished ? "💔" : "❤️",
-    });
-  };
+  const href = `/products/${product.slug}`;
+  const highlights = product.highlights.filter(Boolean).slice(0, 2);
+  const shelfLife =
+    product.shelfLifeDays != null && product.shelfLifeDays > 0 ? product.shelfLifeDays : null;
 
   return (
-    <div className="group flex flex-col bg-card rounded-xl sm:rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 ease-out">
+    <article className="group flex h-full flex-col bg-card rounded-xl sm:rounded-2xl overflow-hidden border border-border/80 shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 ease-out">
       <div className="relative aspect-square sm:aspect-[3/2] overflow-hidden bg-secondary">
-        <Link href={`/shop/${product.slug}`} className="relative block h-full w-full">
+        <Link href={href} tabIndex={-1} aria-hidden className="relative block h-full w-full">
           <SafeImage
             src={product.image}
             alt={product.name}
@@ -50,126 +37,66 @@ export function ProductCard({
           />
         </Link>
 
-        <span
-          className={cn(
-            "absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold text-white shadow-sm",
-            outOfStock ? "bg-[#E56D6D]" : "bg-primary"
-          )}
-        >
-          {outOfStock ? "Unavailable" : "Available"}
-        </span>
-
-        <button
-          onClick={handleWishlist}
-          aria-label={
-            wished
-              ? `Remove ${product.name} from wishlist`
-              : `Add ${product.name} to wishlist`
-          }
-          aria-pressed={wished}
-          className="absolute top-2 left-2 sm:top-3 sm:left-3 w-8 h-8 sm:w-9 sm:h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-white transition-colors shadow-sm"
-        >
-          <Heart
-            size={14}
-            className={cn("sm:hidden", wished && "fill-primary text-primary")}
-          />
-          <Heart
-            size={16}
-            className={cn("hidden sm:block", wished && "fill-primary text-primary")}
-          />
-        </button>
+        {product.tag && (
+          <span className="absolute top-2 left-2 sm:top-3 sm:left-3 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-accent text-white text-xs sm:text-sm font-semibold shadow-sm">
+            {product.tag}
+          </span>
+        )}
       </div>
 
       <div className="p-2.5 sm:p-4 flex-1 flex flex-col gap-1.5 sm:gap-2">
-        <div className="flex items-start justify-between gap-2 sm:gap-3">
-          <Link href={`/shop/${product.slug}`} className="min-w-0">
-            <h3 className="font-bold text-base sm:text-lg leading-snug text-foreground line-clamp-2 font-heading hover:text-primary transition-colors">
-              {product.name}
-            </h3>
-          </Link>
-          <div className="flex items-center gap-0.5 sm:gap-1 shrink-0 pt-0.5">
-            <Star size={12} className="fill-[#c4a96a] text-[#c4a96a] sm:hidden" />
-            <Star size={13} className="fill-[#c4a96a] text-[#c4a96a] hidden sm:block" />
-            <span className="text-sm sm:text-sm font-medium text-muted-foreground tabular-nums">
-              {product.rating.toFixed(1)}
+        <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary">
+          {product.category}
+        </span>
+
+        <Link href={href} className="min-w-0">
+          <h3 className="font-bold text-base sm:text-lg leading-snug text-foreground line-clamp-2 font-heading hover:text-primary transition-colors">
+            {product.name}
+          </h3>
+        </Link>
+
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <Package size={14} className="shrink-0 text-primary/70" aria-hidden />
+            {packSizeLabel(product.weight)}
+          </span>
+          {shelfLife && (
+            <span className="hidden sm:inline-flex items-center gap-1.5 font-medium text-amber-700">
+              <Clock size={13} className="shrink-0" aria-hidden />
+              Best within {shelfLife} day{shelfLife > 1 ? "s" : ""}
             </span>
-          </div>
+          )}
         </div>
 
         <p className="hidden sm:block text-base text-muted-foreground leading-relaxed line-clamp-2">
           {product.description}
         </p>
 
-        {product.shelfLifeDays != null && product.shelfLifeDays > 0 && (
-          <div className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-amber-700">
-            <Clock size={12} className="shrink-0" />
-            Best within {product.shelfLifeDays} day{product.shelfLifeDays > 1 ? "s" : ""}
-          </div>
-        )}
-
-        {tags.length > 0 && (
-          <div className="hidden sm:flex flex-wrap gap-1.5">
-            {tags.map((tag) => (
-              <span
-                key={tag}
+        {highlights.length > 0 && (
+          <ul className="hidden sm:flex flex-wrap gap-1.5">
+            {highlights.map((highlight) => (
+              <li
+                key={highlight}
                 className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-medium text-primary border border-primary/10"
               >
-                {tag}
-              </span>
+                {highlight}
+              </li>
             ))}
-          </div>
+          </ul>
         )}
 
-        <div className="mt-auto pt-0.5 sm:pt-1 flex flex-wrap items-baseline gap-1 sm:gap-1.5">
-          <span className="text-lg sm:text-xl font-extrabold text-primary tabular-nums">
-            ₹{product.price.toLocaleString("en-IN")}
-          </span>
-          {product.compareAtPrice && (
-            <span className="text-sm sm:text-sm text-muted-foreground line-through tabular-nums">
-              ₹{product.compareAtPrice.toLocaleString("en-IN")}
-            </span>
-          )}
-          <span className="text-sm sm:text-base text-muted-foreground">
-            / {product.weight}
-          </span>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-0.5 sm:pt-1">
-          <div className="hidden sm:flex items-center rounded-lg border border-border bg-secondary/60 h-9 shrink-0">
-            <button
-              type="button"
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-              disabled={outOfStock}
-              aria-label="Decrease quantity"
-              className="w-9 h-full flex items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40"
-            >
-              <Minus size={14} />
-            </button>
-            <span className="w-7 text-center text-base font-semibold tabular-nums">
-              {qty}
-            </span>
-            <button
-              type="button"
-              onClick={() => setQty((q) => Math.min(999, q + 1))}
-              disabled={outOfStock}
-              aria-label="Increase quantity"
-              className="w-9 h-full flex items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40"
-            >
-              <Plus size={14} />
-            </button>
-          </div>
-
+        <div className="mt-auto pt-1 sm:pt-2">
           <EnquireButton
-            product={product}
-            quantity={qty}
+            product={{ name: product.name, weight: product.weight }}
             size="sm"
-            className="flex-1 min-w-0 h-8 sm:h-9 rounded-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base font-semibold gap-1 sm:gap-1.5 px-2"
+            className="w-full h-9 sm:h-10 rounded-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base font-semibold gap-1.5 px-3"
           >
-            <MessageSquareText size={15} />
-            Enquire
+            <MessageSquareText size={15} aria-hidden />
+            <span className="sm:hidden">Enquire</span>
+            <span className="hidden sm:inline">Enquire for today&apos;s price</span>
           </EnquireButton>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

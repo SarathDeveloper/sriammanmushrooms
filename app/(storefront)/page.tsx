@@ -1,4 +1,5 @@
 import { ArrowRight, ShieldCheck, Clock, Truck, Send } from "lucide-react";
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -16,10 +17,11 @@ import { TrainingOrderFlowSection } from "@/components/TrainingOrderFlowSection"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { WhatsAppUpdatesButton } from "@/components/WhatsAppUpdatesButton";
-import { getFeaturedProducts, getHeroSlides, getProductBySlug, type Product } from "@/lib/content";
-
-/** Ready-made products shown on the home page, in this order. */
-const VALUE_ADDED_SLUGS = ["mushroom-masala-powder", "mushroom-soup-mix", "mushroom-pickle"];
+import { getFeaturedProducts, getHeroSlides } from "@/lib/content";
+import { HOME_FAQ } from "@/lib/faq";
+import { faqPageJsonLd, pageMetadata, serializeJsonLd } from "@/lib/seo";
+import { SITE_DESCRIPTION } from "@/lib/site";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const FarmToTable = dynamic(() =>
   import("@/components/FarmToTable").then((m) => ({ default: m.FarmToTable })),
@@ -34,15 +36,18 @@ const PreOrderSection = dynamic(() =>
   import("@/components/PreOrderSection").then((m) => ({ default: m.PreOrderSection })),
 );
 
+export const metadata: Metadata = pageMetadata({ description: SITE_DESCRIPTION, path: "/" });
+
 export default function Home() {
   const featuredProducts = getFeaturedProducts(3);
-  const valueAddedProducts = VALUE_ADDED_SLUGS.map(getProductBySlug).filter(
-    (p): p is Product => p != null,
-  );
   const heroSlides = getHeroSlides();
 
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqPageJsonLd(HOME_FAQ)) }}
+      />
 
       <HomeHero slides={heroSlides.length > 0 ? heroSlides : undefined} />
 
@@ -63,69 +68,31 @@ export default function Home() {
                 <span className="h-px w-6 sm:w-8 bg-border" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading">Today&apos;s Fresh Mushrooms</h2>
-              <p className="text-[var(--color-body)] text-sm mt-1.5">Picked this morning. Ready to buy now.</p>
-            </div>
-            <div className="sm:absolute sm:right-0 sm:bottom-1">
-              <Link href="/shop" className="group inline-flex items-center gap-2 text-primary font-semibold text-base hover:text-primary/80 transition-colors">
-                See All <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <p className="text-[var(--color-body)] text-sm mt-1.5">Picked this morning. Order fresh on WhatsApp.</p>
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
             {featuredProducts.map((product, i) => (
-              <FadeIn key={product.id} delay={i * 0.1}>
+              <FadeIn key={product.id} delay={i * 0.1} className="h-full">
                 <ProductCard product={product} priority={i === 0} />
               </FadeIn>
             ))}
           </div>
 
           <FadeIn className="mt-10 text-center">
-            <Link
-              href="/compare"
+            <a
+              href={whatsappLink("Hi! Can you help me choose the right mushroom variety?")}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-body)] hover:text-primary transition-colors"
             >
-              Don&apos;t know which to choose? <span className="text-primary font-semibold">Compare Them →</span>
-            </Link>
+              Don&apos;t know which to choose? <span className="text-primary font-semibold">Ask us on WhatsApp →</span>
+            </a>
           </FadeIn>
         </div>
       </section>
 
-      {valueAddedProducts.length > 0 && (
-        <>
-          <SectionDivider variant="leaf" />
-
-          {/* VALUE-ADDED PRODUCTS */}
-          <section className="py-20 sm:py-28 bg-secondary grain-overlay">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-              <FadeIn className="relative flex flex-col items-center text-center mb-8 sm:mb-12 gap-4">
-                <div>
-                  <div className="flex items-center justify-center gap-3 mb-3">
-                    <span className="h-px w-6 sm:w-8 bg-border" />
-                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Easy to Cook</span>
-                    <span className="h-px w-6 sm:w-8 bg-border" />
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading">Ready-Made Products</h2>
-                  <p className="text-[var(--color-body)] text-sm mt-1.5">Mushroom powder, soup mix, and pickle. Made from our fresh mushrooms.</p>
-                </div>
-                <div className="sm:absolute sm:right-0 sm:bottom-1">
-                  <Link href="/shop?category=value-added" className="group inline-flex items-center gap-2 text-primary font-semibold text-base hover:text-primary/80 transition-colors">
-                    View All <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </FadeIn>
-
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
-                {valueAddedProducts.map((product, i) => (
-                  <FadeIn key={product.id} delay={i * 0.1}>
-                    <ProductCard product={product} />
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
-          </section>
-        </>
-      )}
 
       <SectionDivider variant="leaf" />
 
@@ -194,36 +161,12 @@ export default function Home() {
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading mb-6 sm:mb-8">Common Questions</h2>
               <Accordion className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">Are mushrooms fresh when I get them?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    Yes! We pick mushrooms in the early morning and send them the same day. We pack them in cool boxes so they stay fresh until you get them.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">How do you grow your mushrooms?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    We follow natural growing practices at our farm and pack each harvest with care. Contact us if you need details about a particular variety or batch.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">How long is the training?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    We have 1-day short course and 2-week full course. Choose what works for you. See our Training page for more details.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-4">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">Where do you deliver?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    We deliver to Salem, Namakkal, Erode, Coimbatore, Trichy, Madurai, Chennai, and Bangalore. Check your pincode on the product page to see if we deliver to your area.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-5">
-                  <AccordionTrigger className="text-sm sm:text-base font-medium">Can I get mushrooms every week?</AccordionTrigger>
-                  <AccordionContent className="text-[var(--color-body)] text-sm">
-                    Yes! Message us on WhatsApp to set up a regular weekly, fortnightly or monthly supply. You can stop anytime.
-                  </AccordionContent>
-                </AccordionItem>
+                {HOME_FAQ.map((item, i) => (
+                  <AccordionItem key={item.question} value={`faq-${i}`}>
+                    <AccordionTrigger className="text-sm sm:text-base font-medium">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-[var(--color-body)] text-sm">{item.answer}</AccordionContent>
+                  </AccordionItem>
+                ))}
               </Accordion>
             </FadeIn>
 
@@ -255,7 +198,7 @@ export default function Home() {
           <FadeIn>
             <div className="flex items-center justify-center gap-3 mb-4">
               <span className="h-px w-6 sm:w-8 bg-border" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Why Buy From Us</span>
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Why Choose Us</span>
               <span className="h-px w-6 sm:w-8 bg-border" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading mb-3 sm:mb-4">Our Promise to You</h2>

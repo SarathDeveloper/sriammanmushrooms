@@ -54,7 +54,7 @@ if (integrityErrors.length > 0) {
   throw new Error(`Invalid content:\n  ${integrityErrors.join("\n  ")}`);
 }
 
-/** Product as the UI components consume it. */
+/** Product as the UI components consume it. Deliberately has no price, rating or stock fields. */
 export interface Product {
   id: string;
   slug: string;
@@ -62,16 +62,12 @@ export interface Product {
   /** Category display name, e.g. "Oyster". */
   category: string;
   categorySlug: string;
-  price: number;
-  compareAtPrice: number | null;
+  /** Pack size, e.g. "250g". */
   weight: string;
   /** First image; same as gallery[0]. */
   image: string;
   gallery: string[];
-  rating: number;
-  reviewCount: number;
   tag: string | null;
-  inStock: boolean;
   isFeatured: boolean;
   description: string;
   highlights: string[];
@@ -90,15 +86,10 @@ const products: Product[] = productEntries.map((p) => ({
   name: p.name,
   category: categoryBySlug.get(p.category)!.name,
   categorySlug: p.category,
-  price: p.price,
-  compareAtPrice: p.compareAtPrice,
   weight: p.weight,
   image: p.images[0],
   gallery: p.images,
-  rating: p.rating,
-  reviewCount: p.reviewCount,
   tag: p.tag,
-  inStock: p.inStock,
   isFeatured: p.isFeatured,
   description: p.description,
   highlights: p.highlights,
@@ -144,14 +135,13 @@ export function getHeroSlides(): HeroSlide[] {
 }
 
 /** Lightweight list for the client-side search dialog. */
-export type SearchItem = Pick<Product, "slug" | "name" | "category" | "price" | "weight" | "image">;
+export type SearchItem = Pick<Product, "slug" | "name" | "category" | "weight" | "image">;
 
 export function getSearchItems(): SearchItem[] {
-  return products.map(({ slug, name, category, price, weight, image }) => ({
+  return products.map(({ slug, name, category, weight, image }) => ({
     slug,
     name,
     category,
-    price,
     weight,
     image,
   }));

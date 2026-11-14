@@ -5,7 +5,6 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  ShoppingBag,
   Check
 } from "lucide-react";
 import Link from "next/link";
@@ -31,9 +30,9 @@ const fallbackSlides: HeroSlideData[] = [
     badge: "Free Delivery for ₹500+ Orders",
     headline: "Fresh Mushrooms\nFrom Our Farm",
     subtitle:
-      "We grow oyster, shiitake & button mushrooms. Pick today, deliver today. Direct from Kalvarayan Hills to your home.",
-    primaryCtaLabel: "View Products",
-    primaryCtaHref: "/shop",
+      "We grow oyster & button mushrooms. Pick today, deliver today. Direct from Kalvarayan Hills to your home.",
+    primaryCtaLabel: "Explore Our Mushrooms",
+    primaryCtaHref: "/products",
     secondaryCtaLabel: "Book Early",
     secondaryCtaHref: "/pre-order",
     image: "/gallery/products/oyster-mushrooms-DUuUKbNY.jpg",
@@ -56,8 +55,8 @@ const fallbackSlides: HeroSlideData[] = [
       "Some mushrooms are available only in certain seasons. Book early so you don't miss out.",
     primaryCtaLabel: "Book Now",
     primaryCtaHref: "/pre-order",
-    secondaryCtaLabel: "See All",
-    secondaryCtaHref: "/shop",
+    secondaryCtaLabel: "Our Mushrooms",
+    secondaryCtaHref: "/products",
     image: "/gallery/farm/growing-shed-interior.png",
   },
 ];
@@ -132,6 +131,7 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
           {data.map((slide, i) => {
             const isActive = i === activeIndex;
             const hasVideo = !!slide.video;
+            const Headline = i === 0 ? "h1" : "h2";
 
             return (
               <div
@@ -177,8 +177,9 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
                       {slide.badge}
                     </div>
 
-                    {/* Headline */}
-                    <h1
+                    {/* Headline: only the first slide is the page's <h1>; the
+                        other slides use <h2> so the home page has one main heading. */}
+                    <Headline
                       className={cn(
                         "text-5xl sm:text-6xl md:text-7xl font-extrabold font-sans text-white leading-[1.1] mb-4 sm:mb-6 tracking-tight whitespace-pre-line transition-all duration-700",
                         isActive
@@ -190,7 +191,7 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
                       }}
                     >
                       {slide.headline}
-                    </h1>
+                    </Headline>
 
                     {/* Subtitle */}
                     <p
@@ -220,7 +221,6 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
                           href={slide.primaryCtaHref}
                           className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#265e47] text-white font-medium px-5 sm:px-7 py-3 sm:py-3.5 text-base hover:bg-[#1f4e3b] transition-colors shadow-lg shadow-black/20"
                         >
-                          <ShoppingBag size={16} />
                           {slide.primaryCtaLabel}
                           <ArrowRight size={16} className="ml-1 opacity-70" />
                         </Link>

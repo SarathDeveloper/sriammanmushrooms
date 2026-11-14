@@ -1,12 +1,15 @@
+import type { Metadata } from "next";
+
 import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/shipping-policy" },
+export const metadata: Metadata = pageMetadata({
   title: "Shipping & Delivery Policy",
   description:
-    "Shipping charges, delivery timelines, and delivery terms for Sri Amman Mushroom Farms.",
-};
+    "Shipping charges, delivery timelines, and delivery terms for Sri Amman Mushroom Farm.",
+  path: "/shipping-policy",
+});
 
 const sections = [
   {
@@ -39,7 +42,7 @@ const sections = [
   },
   {
     title: "8. Contact Us",
-    body: "For any shipping or delivery-related queries, please contact us at hello@vellimalaifarms.in or call +91 93855 26105. Our team is available Monday–Saturday, 8:00 AM – 6:00 PM.",
+    body: "For any shipping or delivery-related queries, please contact us at sriammanmushrooms@gmail.com or call +91 93855 26105. Our team is available Monday–Sunday, 6:00 AM – 8:00 PM.",
   },
 ];
 

@@ -2,20 +2,21 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { CONTACT_EMAIL, INSTAGRAM, OPENING_HOURS } from "@/lib/site";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "/shop", label: "Shop" },
+  { href: "/products", label: "Our Mushrooms" },
   { href: "/training", label: "Training" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
 const productLinks = [
-  { href: "/shop", label: "Fresh Mushrooms" },
+  { href: "/products", label: "Fresh Mushrooms" },
   { href: "/pre-order", label: "Pre-Order" },
-  { href: "/compare", label: "Compare Varieties" },
   { href: "/training", label: "Farm Training" },
 ];
 
@@ -36,18 +37,18 @@ const contactItems = [
   {
     icon: Mail,
     label: "Email Us",
-    value: "hello@vellimalaifarms.in",
-    href: "mailto:hello@vellimalaifarms.in",
+    value: CONTACT_EMAIL,
+    href: `mailto:${CONTACT_EMAIL}`,
   },
   {
     icon: MapPin,
     label: "Our Location",
-    value: "Sari Amman Oyster Mushroom Farm\nVellimalai, Melsathanur\nKallakurichi – 606 209, Tamil Nadu",
+    value: "Sri Amman Mushroom Farm\nVellimalai, Melsathanur\nKallakurichi – 606 209, Tamil Nadu",
   },
   {
     icon: Clock,
     label: "Open Hours",
-    value: "Monday–Saturday: 8:00 AM – 6:00 PM\nSunday: Closed",
+    value: OPENING_HOURS,
   },
 ];
 
@@ -62,7 +63,7 @@ export default function Footer() {
               <div className="relative h-20 w-20 overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/gallery/brand-logo.png"
-                  alt="Sri Amman Mushroom Farms"
+                  alt="Sri Amman Mushroom Farm"
                   fill
                   sizes="80px"
                   className="object-cover"
@@ -73,7 +74,7 @@ export default function Footer() {
                   Sri Amman
                 </span>
                 <span className="block font-sans text-xs sm:text-sm font-semibold tracking-[0.22em] uppercase text-white/60 mt-1.5">
-                  Mushroom Farms
+                  Mushroom Farm
                 </span>
                 <svg className="w-8 h-2 text-white/30 mt-2 transition-all duration-300 group-hover:w-12 group-hover:text-[#2B7A5D]" viewBox="0 0 32 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 4.5C8 2 24 1.5 31 3.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
@@ -81,8 +82,8 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-base leading-relaxed text-white/75">
-              Fresh mushrooms from Kalvarayan Hills, Vellimalai. Buy fresh,
-              book early, or learn farming with us.
+              Fresh mushrooms from Kalvarayan Hills, Vellimalai. Get fresh
+              mushrooms, book early, or learn farming with us.
             </p>
             <p className="text-sm text-white/45">
               Grown with care — Fresh and healthy
@@ -224,15 +225,13 @@ export default function Footer() {
                 <WhatsAppIcon className="size-4" />
               </a>
               <a
-                href="https://instagram.com/vellimalaifarms"
+                href={INSTAGRAM.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 transition-colors hover:bg-[#E4405F] hover:border-transparent hover:text-white"
-                aria-label="Instagram"
+                aria-label={`Instagram @${INSTAGRAM.handle}`}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                </svg>
+                <InstagramIcon className="size-4" />
               </a>
               <a
                 href="https://youtube.com/@vellimalaifarms"
@@ -251,7 +250,7 @@ export default function Footer() {
 
         <div className="mt-16 border-t border-white/10 pt-8 flex items-center justify-center text-sm text-white/45">
           <p className="text-center">
-            &copy; {new Date().getFullYear()} Sri Amman Mushroom Farms. All rights
+            &copy; {new Date().getFullYear()} Sri Amman Mushroom Farm. All rights
             reserved. FSSAI Lic: 22424356000315
           </p>
         </div>

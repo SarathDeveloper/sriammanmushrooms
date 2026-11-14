@@ -20,6 +20,11 @@ export const categorySchema = z.object({
   sortOrder: z.number().int().default(0),
 });
 
+/**
+ * Prices, ratings and stock are deliberately not part of the content: the
+ * showcase never shows them (prices change with the daily harvest; visitors
+ * enquire on WhatsApp for today's price).
+ */
 export const productSchema = z.object({
   id: z.string().min(1),
   slug,
@@ -27,16 +32,11 @@ export const productSchema = z.object({
   /** Category slug; must match an entry in categories.json. */
   category: slug,
   description: z.string().min(1),
-  price: z.number().nonnegative(),
-  compareAtPrice: z.number().nonnegative().nullable().default(null),
   weight: z.string().min(1),
   images: z.array(imageRef).min(1),
   tag: z.string().nullable().default(null),
-  rating: z.number().min(0).max(5),
-  reviewCount: z.number().int().nonnegative(),
   highlights: z.array(z.string()).default([]),
   shelfLifeDays: z.number().int().nonnegative().nullable().default(null),
-  inStock: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   sortOrder: z.number().int().default(0),
 });
@@ -57,8 +57,8 @@ export const reviewSchema = z.object({
   /** Product slug the review belongs to. */
   product: slug,
   name: z.string().min(1),
-  rating: z.number().int().min(1).max(5),
-  comment: z.string().nullable().default(null),
+  /** Shown as a plain testimonial quote (no star ratings on the site). */
+  comment: z.string().trim().min(1),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Use YYYY-MM-DD"),
 });
 

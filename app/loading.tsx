@@ -6,7 +6,7 @@ export default function RootLoading() {
       <div className="relative h-14 w-14 overflow-hidden rounded-full ring-1 ring-[var(--color-primary-dark)]/20 animate-pulse">
         <Image
           src="/gallery/brand-logo.png"
-          alt="Sri Amman Mushroom Farms"
+          alt="Sri Amman Mushroom Farm"
           fill
           sizes="56px"
           className="object-cover"

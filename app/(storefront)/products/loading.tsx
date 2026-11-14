@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function ShopLoading() {
+export default function ProductsLoading() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="pt-20 pb-10 sm:pt-28 sm:pb-14 md:pt-36 md:pb-20 border-b border-border/40" style={{ background: 'linear-gradient(180deg, #eaf5ed 0%, #f5faf6 50%, #ffffff 100%)' }}>
@@ -17,20 +17,20 @@ export default function ShopLoading() {
               <Skeleton key={i} className="h-10 w-24 rounded-full" />
             ))}
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="rounded-2xl overflow-hidden border border-border shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
                 <Skeleton className="aspect-[3/2] w-full rounded-none" />
                 <div className="p-5 space-y-3">
+                  <Skeleton className="h-4 w-20" />
                   <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-24" />
                   <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-2/3" />
                   <div className="flex gap-2">
-                    <Skeleton className="h-5 w-16 rounded-full" />
-                    <Skeleton className="h-5 w-20 rounded-full" />
+                    <Skeleton className="h-5 w-24 rounded-full" />
+                    <Skeleton className="h-5 w-28 rounded-full" />
                   </div>
-                  <Skeleton className="h-6 w-24" />
-                  <Skeleton className="h-10 w-full rounded-lg" />
+                  <Skeleton className="h-10 w-full rounded-full" />
                 </div>
               </div>
             ))}

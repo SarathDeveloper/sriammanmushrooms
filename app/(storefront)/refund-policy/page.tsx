@@ -1,17 +1,20 @@
+import type { Metadata } from "next";
+
 import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/refund-policy" },
+export const metadata: Metadata = pageMetadata({
   title: "Refund & Cancellation Policy",
   description:
-    "Refund, return, and order cancellation policy for Sri Amman Mushroom Farms.",
-};
+    "Refund, return, and order cancellation policy for Sri Amman Mushroom Farm.",
+  path: "/refund-policy",
+});
 
 const sections = [
   {
     title: "1. Order Cancellation",
-    body: "You may cancel an order before it has been dispatched by contacting us at hello@vellimalaifarms.in or +91 93855 26105. Once an order has been dispatched, it cannot be cancelled. For pre-orders, cancellation is allowed up to 24 hours before the scheduled harvest date.",
+    body: "You may cancel an order before it has been dispatched by contacting us at sriammanmushrooms@gmail.com or +91 93855 26105. Once an order has been dispatched, it cannot be cancelled. For pre-orders, cancellation is allowed up to 24 hours before the scheduled harvest date.",
   },
   {
     title: "2. Return Eligibility",
@@ -35,11 +38,11 @@ const sections = [
   },
   {
     title: "7. How to Request a Refund",
-    body: "To initiate a return or refund, email us at hello@vellimalaifarms.in or call +91 93855 26105 with your order number and photographs of the issue. Our team will review your request and respond within 24 hours.",
+    body: "To initiate a return or refund, email us at sriammanmushrooms@gmail.com or call +91 93855 26105 with your order number and photographs of the issue. Our team will review your request and respond within 24 hours.",
   },
   {
     title: "8. Contact Us",
-    body: "For any questions regarding this Refund & Cancellation Policy, please reach out to us at hello@vellimalaifarms.in or call +91 93855 26105. Our team is available Monday–Saturday, 8:00 AM – 6:00 PM.",
+    body: "For any questions regarding this Refund & Cancellation Policy, please reach out to us at sriammanmushrooms@gmail.com or call +91 93855 26105. Our team is available Monday–Sunday, 6:00 AM – 8:00 PM.",
   },
 ];
 

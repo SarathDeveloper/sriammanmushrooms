@@ -1,6 +1,6 @@
-# Sri Amman Mushroom Farms: showcase site
+# Sri Amman Mushroom Farm: showcase site
 
-Public website for Sri Amman Mushroom Farms (Kallakurichi, Tamil Nadu). It shows the
+Public website for Sri Amman Mushroom Farm (Kallakurichi, Tamil Nadu). It shows the
 product catalogue, farming training and farm information. Every enquiry and pre-order
 goes to the farm's WhatsApp. There is no database, login, cart or payment on this
 version.
@@ -35,10 +35,10 @@ message naming the file and field.
 
 | File | Contents |
 |---|---|
-| `content/products.json` | Products: name, slug, `category` (a category slug), price, images, `inStock`, `isFeatured`, `sortOrder`… |
-| `content/categories.json` | Shop filter categories |
+| `content/products.json` | Products: name, slug, `category` (a category slug), pack size (`weight`), images, highlights, `isFeatured`, `sortOrder`… No prices, ratings or stock: visitors enquire on WhatsApp for today's price |
+| `content/categories.json` | Category filters on Our Mushrooms (`/products`) |
 | `content/hero-slides.json` | Home page hero carousel |
-| `content/reviews.json` | Customer reviews shown on product pages (`product` is a product slug) |
+| `content/reviews.json` | Customer quotes shown on product pages as testimonials, without star ratings (`product` is a product slug) |
 | `lib/data.ts` | Training programmes, stats, testimonials, certifications |
 
 The schema is in `lib/content-schema.ts`. Images can be a Cloudinary public ID
@@ -59,7 +59,8 @@ git diff content/                                                  # review, the
 ```
 
 The script only runs `SELECT`s inside a read-only transaction, exports active
-products only, keeps only reviewers' first names, and validates the output with the same
+products only (without prices, ratings or stock), keeps only approved reviews that have a
+written comment and only reviewers' first names, and validates the output with the same
 schema the site uses.
 
 ## How enquiries work
@@ -90,23 +91,25 @@ Missing values are logged as warnings when the server starts.
 
 1. Import the repository. Framework preset: Next.js. Defaults are fine (Node 22+).
 2. Add the environment variables above (at least `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`).
-3. Deploy. Every page except `/shop` (which reads search params) is prerendered.
+3. Deploy. Every page except `/products` (which reads search params) is prerendered.
 
 After deploying, check: home page images load, an enquiry opens WhatsApp with the
-details, and `/sitemap.xml` lists the products. Old links (`/cart`, `/checkout`,
-`/login`, `/admin`, …) permanently redirect to `/shop`, `/contact` or `/`.
+details, and `/sitemap.xml` lists the products. Old links (`/shop`, `/shop/<slug>`,
+`/wishlist`, `/compare`, `/cart`, `/checkout`, `/login`, `/admin`, …) permanently redirect
+to `/products`, `/contact` or `/` (see `lib/redirects.ts`).
 
 ## Project layout
 
 ```
-app/(storefront)/   pages: home, shop, product, pre-order, training, about, contact, compare, wishlist, policies
+app/(storefront)/   pages: home, products ("Our Mushrooms") + product detail, pre-order, training, about, contact, policies
 app/sitemap.ts      sitemap.xml (static pages + every product)
 app/robots.ts       robots.txt
 components/         page sections, forms (ContactForm, PreOrderSection, ProductEnquiryDialog), shadcn ui
 content/            catalogue JSON
 lib/content.ts      loads + validates content; getProducts(), getProductBySlug()…
 lib/whatsapp.ts     WhatsApp link, form schemas, message builders
-lib/seo.ts          JSON-LD and absolute image URLs
+lib/seo.ts          JSON-LD (BreadcrumbList) and absolute image URLs
+lib/redirects.ts    permanent redirects used by next.config.ts
 scripts/            export-content.ts
 tests/              vitest
 ```

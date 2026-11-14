@@ -11,7 +11,7 @@ export default function NotFound() {
         <div className="relative mx-auto mb-8 h-16 w-16 overflow-hidden rounded-full ring-1 ring-[var(--color-primary-dark)]/20">
           <Image
             src="/gallery/brand-logo.png"
-            alt="Sri Amman Mushroom Farms"
+            alt="Sri Amman Mushroom Farm"
             fill
             sizes="64px"
             className="object-cover"
@@ -27,7 +27,7 @@ export default function NotFound() {
             <Link href="/">Back to Home <ArrowRight className="ml-2" size={18} /></Link>
           </Button>
           <Button asChild size="lg" variant="outline" className="rounded-full px-8">
-            <Link href="/shop"><Search className="mr-2" size={18} /> Browse Shop</Link>
+            <Link href="/products"><Search className="mr-2" size={18} /> Explore Our Mushrooms</Link>
           </Button>
         </div>
       </div>

@@ -133,7 +133,7 @@ export function buildProductEnquiryMessage(
     ["Location", enquiry.location],
   ]);
   const note = enquiry.message ? `\n\n${enquiry.message}` : "";
-  return `Hi Sri Amman Mushroom Farms! I'd like to enquire about a product.\n\n${details}${note}\n\nPlease confirm availability, price and delivery.`;
+  return `Hi Sri Amman Mushroom Farm! I'd like to enquire about a product.\n\n${details}${note}\n\nPlease share today's price, availability and delivery details.`;
 }
 
 export function buildContactMessage(enquiry: ContactEnquiry) {
@@ -146,7 +146,7 @@ export function buildContactMessage(enquiry: ContactEnquiry) {
     ["Company", enquiry.company],
   ]);
   const note = enquiry.message ? `\n\n${enquiry.message}` : "";
-  return `Hi Sri Amman Mushroom Farms! I have an enquiry.\n\n${details}${note}`;
+  return `Hi Sri Amman Mushroom Farm! I have an enquiry.\n\n${details}${note}`;
 }
 
 export function buildPreOrderMessage(order: PreOrderEnquiry) {
@@ -160,9 +160,9 @@ export function buildPreOrderMessage(order: PreOrderEnquiry) {
     ["Email", order.email],
   ]);
   const note = order.notes ? `\n\nNotes: ${order.notes}` : "";
-  return `Hi Sri Amman Mushroom Farms! I'd like to pre-order.\n\n${details}${note}\n\nPlease confirm availability.`;
+  return `Hi Sri Amman Mushroom Farm! I'd like to pre-order.\n\n${details}${note}\n\nPlease confirm availability.`;
 }
 
 export function buildUpdatesMessage() {
-  return "Hi Sri Amman Mushroom Farms! Please add me to your WhatsApp updates for fresh harvests, offers and training dates.";
+  return "Hi Sri Amman Mushroom Farm! Please add me to your WhatsApp updates for fresh harvests, offers and training dates.";
 }

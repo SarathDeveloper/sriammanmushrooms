@@ -10,9 +10,10 @@ export type ShopQuery = {
 };
 
 /**
- * Filters, sorts and paginates the static catalogue for the shop page.
+ * Filters, sorts and paginates the static catalogue for the /products page.
  * "Default" keeps the content file order (sortOrder); "newest" reverses it,
- * so products added at the end of products.json show first.
+ * so products added at the end of products.json show first. Unknown sort
+ * values (including the old price sorts) fall back to the default order.
  */
 export function queryProducts(all: Product[], query: ShopQuery) {
   let list = all;
@@ -30,12 +31,6 @@ export function queryProducts(all: Product[], query: ShopQuery) {
 
   const sorted = [...list];
   switch (query.sort) {
-    case "price-asc":
-      sorted.sort((a, b) => a.price - b.price);
-      break;
-    case "price-desc":
-      sorted.sort((a, b) => b.price - a.price);
-      break;
     case "name-asc":
       sorted.sort((a, b) => a.name.localeCompare(b.name));
       break;

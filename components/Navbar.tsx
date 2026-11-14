@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +8,6 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import type { SearchItem } from "@/lib/content";
-import { useWishlistStore } from "@/lib/store";
-import { useHasMounted } from "@/lib/useHasMounted";
 import { cn } from "@/lib/utils";
 
 const SearchDialog = dynamic(
@@ -25,7 +23,7 @@ const MobileSheet = dynamic(
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/shop", label: "Shop" },
+  { href: "/products", label: "Our Mushrooms" },
   { href: "/pre-order", label: "Pre Order" },
   { href: "/training", label: "Training" },
   { href: "/contact", label: "Contact" },
@@ -33,8 +31,6 @@ const navLinks = [
 
 export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
   const pathname = usePathname();
-  const mounted = useHasMounted();
-  const wishlistCount = useWishlistStore((s) => s.productIds.length);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-md">
@@ -45,7 +41,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
             <div className="relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 overflow-hidden rounded-full transition-transform duration-300 group-hover:scale-105">
               <Image
                 src="/gallery/brand-logo.png"
-                alt="Sri Amman Mushroom Farms"
+                alt="Sri Amman Mushroom Farm"
                 fill
                 sizes="56px"
                 className="object-cover"
@@ -57,7 +53,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
                 Sri Amman
               </span>
               <span className="block font-sans text-[10px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-primary/90 mt-1">
-                Mushroom Farms
+                Mushroom Farm
               </span>
               <svg className="w-7 h-1.5 text-primary/40 mt-1 transition-all duration-300 group-hover:w-11 group-hover:text-primary" viewBox="0 0 32 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 4.5C8 2 24 1.5 31 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -66,7 +62,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => {
               const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
               return (
@@ -74,7 +70,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "text-base font-medium transition-colors hover:text-primary",
+                    "text-base font-medium whitespace-nowrap transition-colors hover:text-primary",
                     isActive ? "text-primary" : "text-muted-foreground"
                   )}
                 >
@@ -88,23 +84,14 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
           <div className="flex items-center gap-2 sm:gap-4">
             <SearchDialog items={searchItems} />
 
-            <Link href="/wishlist" aria-label="View wishlist" className="relative flex items-center justify-center w-10 h-10 text-muted-foreground hover:text-primary transition-colors">
-              <Heart size={20} />
-              {mounted && wishlistCount > 0 && (
-                <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F76B46] text-xs font-bold text-white">
-                  {wishlistCount}
-                </span>
-              )}
-            </Link>
-
-            <div className="hidden md:flex">
+            <div className="hidden lg:flex">
               <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium">
                 <Link href="/contact">Enquire Now</Link>
               </Button>
             </div>
 
-            {/* Mobile Menu */}
-            <div className="md:hidden">
+            {/* Mobile / tablet menu (the full menu needs ~1024px) */}
+            <div className="lg:hidden">
               <MobileSheet />
             </div>
           </div>

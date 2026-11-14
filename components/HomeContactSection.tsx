@@ -5,17 +5,17 @@ import Link from "next/link";
 
 import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { CONTACT_EMAIL, FARM_MAPS_EMBED_URL, FARM_MAPS_LINK, INSTAGRAM } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
 
 const PHONE = "+91 93855 26105";
 const ADDITIONAL_PHONES = ["+91 89031 56142", "+91 63833 61207"];
-const EMAIL = "hello@vellimalaifarms.in";
-const ADDRESS_LINE = "Sari Amman Oyster Mushroom Farm, Vellimalai, Melsathanur, Kallakurichi - 606 209, Tamil Nadu, India";
-const LAT = 11.786746298281923;
-const LNG = 78.71029442669108;
-const MAPS_EMBED_URL = `https://www.google.com/maps?q=${LAT},${LNG}&z=14&output=embed`;
-const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
+const EMAIL = CONTACT_EMAIL;
+const ADDRESS_LINE = "Sri Amman Mushroom Farm, Vellimalai, Melsathanur, Kallakurichi - 606 209, Tamil Nadu, India";
+const MAPS_EMBED_URL = FARM_MAPS_EMBED_URL;
+const MAPS_LINK = FARM_MAPS_LINK;
 
 export function HomeContactSection() {
   return (
@@ -74,8 +74,23 @@ export function HomeContactSection() {
                   href={`mailto:${EMAIL}`}
                   className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-base font-medium text-foreground hover:bg-secondary transition-colors"
                 >
-                  <Mail size={15} />
-                  {EMAIL}
+                  <Mail size={15} className="shrink-0" />
+                  {/* wrap only at the "@" on narrow screens */}
+                  <span className="min-w-0">
+                    {EMAIL.split("@")[0]}
+                    <wbr />@{EMAIL.split("@")[1]}
+                  </span>
+                </a>
+
+                <a
+                  href={INSTAGRAM.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Instagram @${INSTAGRAM.handle}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-base font-medium text-foreground hover:bg-secondary hover:text-[#E4405F] transition-colors"
+                >
+                  <InstagramIcon className="size-4 shrink-0" />
+                  @{INSTAGRAM.handle}
                 </a>
               </div>
               <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-base text-muted-foreground">
@@ -112,17 +127,17 @@ export function HomeContactSection() {
                 <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-base text-foreground">
-                    Sari Amman Oyster Mushroom Farm
+                    Sri Amman Mushroom Farm
                   </p>
                   <p className="text-base text-muted-foreground">
-                    {ADDRESS_LINE.replace("Sari Amman Oyster Mushroom Farm, ", "")}
+                    {ADDRESS_LINE.replace("Sri Amman Mushroom Farm, ", "")}
                   </p>
                 </div>
               </div>
 
               <div className="rounded-xl overflow-hidden border border-border h-48 sm:h-56">
                 <iframe
-                  title="Sri Amman Mushroom Farms location"
+                  title="Sri Amman Mushroom Farm location"
                   src={MAPS_EMBED_URL}
                   className="w-full h-full border-0"
                   loading="lazy"

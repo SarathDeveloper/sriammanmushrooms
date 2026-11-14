@@ -175,7 +175,7 @@ export function PreOrderSection() {
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="preorder-product">Product(s)</Label>
-                    <Input {...fieldProps("product")} maxLength={120} placeholder="e.g. Shiitake, Oyster" className="h-11 bg-white" />
+                    <Input {...fieldProps("product")} maxLength={120} placeholder="e.g. Oyster, Button" className="h-11 bg-white" />
                     <FieldError id="preorder-product-error" message={errors.product} />
                   </div>
                   <div className="space-y-1.5">

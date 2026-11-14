@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Home, MessageSquareText, ShoppingBag } from "lucide-react";
+import { CalendarClock, Home, MessageSquareText, Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 
 const tabs = [
   { href: "/", icon: Home, label: "Home" },
-  { href: "/shop", icon: ShoppingBag, label: "Shop" },
-  { href: "/wishlist", icon: Heart, label: "Wishlist" },
+  { href: "/products", icon: Sprout, label: "Mushrooms" },
+  { href: "/pre-order", icon: CalendarClock, label: "Pre-Order" },
   { href: "/contact", icon: MessageSquareText, label: "Enquire" },
 ];
 

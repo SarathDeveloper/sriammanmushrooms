@@ -1,11 +1,15 @@
+import type { Metadata } from "next";
+
 import { FadeIn } from "@/components/FadeIn";
 import { PageHero } from "@/components/PageHero";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: "/privacy" },
+export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
-  description: "How Sri Amman Mushroom Farms collects, uses, and protects your personal information.",
-};
+  description:
+    "How Sri Amman Mushroom Farm collects, uses, and protects your personal information.",
+  path: "/privacy",
+});
 
 const sections = [
   {
@@ -26,7 +30,7 @@ const sections = [
   },
   {
     title: "5. Your Rights",
-    body: "You may access, update, or request deletion of your personal information at any time by contacting us at hello@vellimalaifarms.in. You may also opt out of marketing communications at any time using the unsubscribe link in our emails.",
+    body: "You may access, update, or request deletion of your personal information at any time by contacting us at sriammanmushrooms@gmail.com. You may also opt out of marketing communications at any time using the unsubscribe link in our emails.",
   },
   {
     title: "6. Cookies",
@@ -38,7 +42,7 @@ const sections = [
   },
   {
     title: "8. Contact Us",
-    body: "If you have any questions about this Privacy Policy, please contact us at hello@vellimalaifarms.in or +91 93855 26105.",
+    body: "If you have any questions about this Privacy Policy, please contact us at sriammanmushrooms@gmail.com or +91 93855 26105.",
   },
 ];
 

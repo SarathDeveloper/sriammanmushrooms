@@ -7,31 +7,10 @@
     "sortOrder": 1
   },
   {
-    "name": "Milky",
-    "slug": "milky",
-    "description": null,
-    "image": null,
-    "sortOrder": 2
-  },
-  {
     "name": "Button",
     "slug": "button",
     "description": null,
     "image": null,
-    "sortOrder": 3
-  },
-  {
-    "name": "Shiitake",
-    "slug": "shiitake",
-    "description": null,
-    "image": null,
-    "sortOrder": 4
-  },
-  {
-    "name": "Value-Added",
-    "slug": "value-added",
-    "description": null,
-    "image": null,
-    "sortOrder": 5
+    "sortOrder": 2
   }
 ]

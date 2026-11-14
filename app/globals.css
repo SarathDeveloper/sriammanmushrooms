@@ -119,6 +119,10 @@
 
   html {
     @apply font-sans scroll-smooth;
+    /* Sections that slide in from the side (FadeIn left/right) start up to
+       24px off-screen; without this, phones get a sideways wiggle and can
+       zoom out. `clip` (not `hidden`) keeps the sticky navbar working. */
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4 {

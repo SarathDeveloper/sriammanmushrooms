@@ -21,16 +21,17 @@ type EnquiryProduct = { name: string; weight: string };
 
 const emptyForm = { name: "", phone: "", location: "", message: "" };
 
-/** "Enquire" button that opens a short form and hands the enquiry to WhatsApp. */
+/**
+ * "Enquire" button that opens a short form and hands the enquiry to WhatsApp.
+ * The site shows no prices; the farm replies with today's price.
+ */
 export function EnquireButton({
   product,
-  quantity = 1,
   className,
   size = "lg",
   children,
 }: {
   product: EnquiryProduct;
-  quantity?: number;
   className?: string;
   size?: "sm" | "default" | "lg";
   children?: React.ReactNode;
@@ -43,14 +44,13 @@ export function EnquireButton({
         {children ?? (
           <>
             <MessageSquareText size={18} className="mr-2" />
-            Enquire Now
+            Enquire for today&apos;s price
           </>
         )}
       </Button>
       {open && (
         <ProductEnquiryDialog
           product={product}
-          quantity={quantity}
           open={open}
           onOpenChange={setOpen}
         />
@@ -61,17 +61,15 @@ export function EnquireButton({
 
 function ProductEnquiryDialog({
   product,
-  quantity,
   open,
   onOpenChange,
 }: {
   product: EnquiryProduct;
-  quantity: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
   const [form, setForm] = useState(emptyForm);
-  const [qty, setQty] = useState(String(quantity));
+  const [qty, setQty] = useState("1");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [handoff, setHandoff] = useState<{ url: string; blocked: boolean } | null>(null);
 
@@ -110,7 +108,8 @@ function ProductEnquiryDialog({
             <div>
               <DialogTitle>Enquire about {product.name}</DialogTitle>
               <DialogDescription className="mt-1">
-                Fill in your details and we&apos;ll open WhatsApp with your enquiry ready to send.
+                Prices follow the daily harvest. Fill in your details and we&apos;ll open WhatsApp
+                with your enquiry ready to send; we&apos;ll reply with today&apos;s price.
               </DialogDescription>
             </div>
 

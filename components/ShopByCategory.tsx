@@ -5,37 +5,24 @@ import Link from "next/link";
 import { FadeIn } from "@/components/FadeIn";
 import { SafeImage } from "@/components/SafeImage";
 
-// Hardcoded for now — wire to admin/DB later
-const HARDCODED_CATEGORIES = [
+// The farm currently grows two varieties; each links straight to its product page.
+const VARIETIES = [
   {
     id: "oyster",
     name: "Oyster",
-    slug: "oyster",
-    image: "/gallery/products/oyster-mushrooms-DUuUKbNY.jpg",
-  },
-  {
-    id: "milky",
-    name: "Milky",
-    slug: "milky",
-    image: "/gallery/products/mixed-mushrooms-CNX65Zqk.jpg",
+    href: "/products/premium-oyster-mushroom",
+    // Square crop of the farm's photo of oyster clusters on grow bags
+    // (public/gallery/farm/oyster-mushroom-growing.png). Pre-cropped so the
+    // small circle gets full resolution instead of a downscaled wide image.
+    image: "/gallery/products/oyster-mushroom-cluster.jpg",
+    objectPosition: "center",
   },
   {
     id: "button",
     name: "Button",
-    slug: "button",
+    href: "/products/organic-button-mushroom",
     image: "/gallery/products/button-mushrooms-Dj92oXDo.jpg",
-  },
-  {
-    id: "shiitake",
-    name: "Shiitake",
-    slug: "shiitake",
-    image: "/gallery/products/shiitake-mushrooms-BMfvtmoS.jpg",
-  },
-  {
-    id: "value-added",
-    name: "Ready-Made",
-    slug: "value-added",
-    image: "/gallery/products/mixed-mushrooms-CNX65Zqk.jpg",
+    objectPosition: "center",
   },
 ] as const;
 
@@ -47,15 +34,15 @@ export function ShopByCategory() {
           <div className="flex items-center justify-center gap-3 mb-3">
             <span className="h-px w-6 sm:w-8 bg-border" />
             <span className="text-sm font-bold uppercase tracking-[0.2em] text-primary">
-              Shop
+              Our Mushrooms
             </span>
             <span className="h-px w-6 sm:w-8 bg-border" />
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading">
-            Shop by Category
+            Explore Our Varieties
           </h2>
           <p className="text-[var(--color-body)] text-base mt-1.5 max-w-md mx-auto">
-            Find the mushrooms you&apos;re looking for
+            Oyster and button mushrooms, grown and hand-picked on our farm
           </p>
         </FadeIn>
 
@@ -65,10 +52,10 @@ export function ShopByCategory() {
         */}
         <FadeIn direction="none">
           <div className="flex justify-center gap-6 sm:gap-10 md:gap-14 lg:gap-16 overflow-x-auto overflow-y-hidden scrollbar-hide py-1 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {HARDCODED_CATEGORIES.map((category) => (
+            {VARIETIES.map((category) => (
               <Link
                 key={category.id}
-                href={`/shop?category=${category.slug}`}
+                href={category.href}
                 className="group flex flex-col items-center gap-3 sm:gap-4 shrink-0"
               >
                 <div className="relative h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 rounded-full overflow-hidden bg-card border border-border shadow-[0_4px_12px_rgba(0,0,0,0.04)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] group-hover:border-primary/30">
@@ -78,6 +65,7 @@ export function ShopByCategory() {
                     fill
                     sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    style={{ objectPosition: category.objectPosition }}
                   />
                 </div>
                 <span className="text-base sm:text-lg font-bold text-foreground text-center font-heading group-hover:text-primary transition-colors">

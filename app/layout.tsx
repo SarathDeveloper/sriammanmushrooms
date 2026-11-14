@@ -4,9 +4,9 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import Providers from "@/components/Providers";
-import { serializeJsonLd } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { formatCurrency } from "@/lib/utils";
+import { getProducts } from "@/lib/content";
+import { localBusinessJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const effra = localFont({
   src: [
@@ -33,24 +33,48 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+
+// Site-wide defaults. Every page sets its own canonical, Open Graph and
+// Twitter metadata through pageMetadata() (lib/seo.ts).
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   title: {
-    default: "Sri Amman Mushroom Farms | Fresh Farm Mushrooms",
-    template: "%s | Sri Amman Mushroom Farms",
+    default: `${SITE_NAME} | Fresh Oyster & Button Mushrooms`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "Fresh mushrooms from the Kalvarayan Hills with delivery, pre-orders, and mushroom farming training.",
-  alternates: { canonical: "/" },
-  keywords: ["fresh mushrooms delivery", "mushroom farming training", "mushroom pre-order", "oyster mushroom", "milky mushroom", "Salem", "Tamil Nadu"],
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "Sri Amman Mushroom Farm",
+    "oyster mushroom",
+    "button mushroom",
+    "fresh mushrooms",
+    "mushroom farm Kallakurichi",
+    "Kalvarayan Hills mushrooms",
+    "mushroom farming training Tamil Nadu",
+    "mushroom delivery Salem",
+  ],
+  category: "agriculture",
+  formatDetection: { telephone: true, email: true, address: true },
+  ...(googleVerification ? { verification: { google: googleVerification } } : {}),
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "/",
     siteName: SITE_NAME,
-    title: "Sri Amman Mushroom Farms | Fresh Farm Mushrooms",
-    description: "Fresh mushrooms from the Kalvarayan Hills with delivery, pre-orders, and farming training.",
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE.path,
+        width: DEFAULT_OG_IMAGE.width,
+        height: DEFAULT_OG_IMAGE.height,
+        alt: DEFAULT_OG_IMAGE.alt,
+      },
+    ],
   },
+  twitter: { card: "summary_large_image", images: [DEFAULT_OG_IMAGE.path] },
 };
+
+const siteJsonLd = [localBusinessJsonLd(getProducts()), websiteJsonLd()];
 
 export default function RootLayout({
   children,
@@ -59,7 +83,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       data-scroll-behavior="smooth"
       className={`${effra.variable} ${playfair.variable} h-full antialiased`}
       style={{ ["--font-heading" as string]: "var(--font-sans)" }}
@@ -68,29 +92,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: serializeJsonLd({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              name: "Sri Amman Mushroom Farms",
-              description: "Fresh mushrooms grown and packed in the Kalvarayan Hills, Tamil Nadu",
-              url: SITE_URL,
-              telephone: "+919385526105",
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "Vellimalai, Melsathanur",
-                addressLocality: "Kallakurichi",
-                addressRegion: "Tamil Nadu",
-                postalCode: "606209",
-                addressCountry: "IN",
-              },
-              geo: {
-                "@type": "GeoCoordinates",
-                latitude: "11.7480",
-                longitude: "78.5580",
-              },
-              openingHours: "Mo-Sa 08:00-18:00",
-              priceRange: `${formatCurrency(120)} - ${formatCurrency(520)}`,
-            }),
+            __html: serializeJsonLd(siteJsonLd),
           }}
         />
       </head>
