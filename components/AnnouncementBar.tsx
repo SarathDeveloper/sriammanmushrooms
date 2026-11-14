@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { X, Truck } from "lucide-react";
+import { useState } from "react";
 
 export function AnnouncementBar() {
   const [visible, setVisible] = useState(true);

@@ -1,38 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sri Amman Mushroom Farms: showcase site
 
-## Getting Started
+Public website for Sri Amman Mushroom Farms (Kallakurichi, Tamil Nadu). It shows the
+product catalogue, farming training and farm information. Every enquiry and pre-order
+goes to the farm's WhatsApp. There is no database, login, cart or payment on this
+version.
 
-First, run the development server:
+The full-stack version (admin dashboard, Razorpay checkout, OTP, customer accounts)
+lives on the `feature/fullstack-admin` branch for later use.
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+No `.env` file is needed to run or build. See [Environment variables](#environment-variables)
+for the optional ones production should set.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build / serve it |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript |
+| `npm test` | Vitest unit tests |
+| `npm run content:export` | One-off import of the catalogue from the old database (below) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Editing content
 
-## Learn More
+Catalogue content lives in JSON files and is checked at build time. A mistake (missing
+field, unknown category, duplicate slug) fails `npm run build` and `npm test` with a
+message naming the file and field.
 
-To learn more about Next.js, take a look at the following resources:
+| File | Contents |
+|---|---|
+| `content/products.json` | Products: name, slug, `category` (a category slug), price, images, `inStock`, `isFeatured`, `sortOrder`… |
+| `content/categories.json` | Shop filter categories |
+| `content/hero-slides.json` | Home page hero carousel |
+| `content/reviews.json` | Customer reviews shown on product pages (`product` is a product slug) |
+| `lib/data.ts` | Training programmes, stats, testimonials, certifications |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The schema is in `lib/content-schema.ts`. Images can be a Cloudinary public ID
+(`mushroom-farm/products/oyster-1`), a `res.cloudinary.com` URL, or a local path under
+`public/` (`/gallery/products/oyster.jpg`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To change content: edit the JSON, run `npm test`, commit, and push. Vercel redeploys.
 
-## Deploy on Vercel
+### Importing the current catalogue from the old database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The JSON was first seeded from `lib/data.ts`. To bring over the products, categories,
+hero slides and approved reviews that admins edited in the old app's database:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+DATABASE_URL="postgres://…" npm run content:export -- --dry-run   # check counts first
+DATABASE_URL="postgres://…" npm run content:export
+git diff content/                                                  # review, then commit
+```
 
-# mushroom-farm-ui
+The script only runs `SELECT`s inside a read-only transaction, exports active
+products only, keeps only reviewers' first names, and validates the output with the same
+schema the site uses.
+
+## How enquiries work
+
+The product "Enquire" dialog, the contact forms, the pre-order form and the floating
+WhatsApp button all validate in the browser (name, 10-digit Indian mobile, required
+fields). They then open `wa.me/<farm number>` with a pre-filled message. If the browser
+blocks the new tab, an "Open WhatsApp" button is shown. Nothing is sent to a server, so
+there is nothing to store, rate-limit or secure.
+
+The farm's WhatsApp number is `WHATSAPP_NUMBER` in `lib/whatsapp.ts`. Message wording is
+in the `build*Message` functions in the same file.
+
+## Environment variables
+
+All optional. Set them in Vercel → Project → Settings → Environment Variables.
+
+| Variable | Purpose | If missing |
+|---|---|---|
+| `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | Serves product images stored on Cloudinary | Cloudinary images show a leaf placeholder (local `/gallery` images still work) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URLs, sitemap, Open Graph | Uses `https://vellimalaifarms.in` |
+| `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` | Server / browser error reporting | Errors aren't reported |
+
+`NEXT_PUBLIC_*` values are inlined at build time, so redeploy after changing them.
+Missing values are logged as warnings when the server starts.
+
+## Deploying on Vercel
+
+1. Import the repository. Framework preset: Next.js. Defaults are fine (Node 22+).
+2. Add the environment variables above (at least `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`).
+3. Deploy. Every page except `/shop` (which reads search params) is prerendered.
+
+After deploying, check: home page images load, an enquiry opens WhatsApp with the
+details, and `/sitemap.xml` lists the products. Old links (`/cart`, `/checkout`,
+`/login`, `/admin`, …) permanently redirect to `/shop`, `/contact` or `/`.
+
+## Project layout
+
+```
+app/(storefront)/   pages: home, shop, product, pre-order, training, about, contact, compare, wishlist, policies
+app/sitemap.ts      sitemap.xml (static pages + every product)
+app/robots.ts       robots.txt
+components/         page sections, forms (ContactForm, PreOrderSection, ProductEnquiryDialog), shadcn ui
+content/            catalogue JSON
+lib/content.ts      loads + validates content; getProducts(), getProductBySlug()…
+lib/whatsapp.ts     WhatsApp link, form schemas, message builders
+lib/seo.ts          JSON-LD and absolute image URLs
+scripts/            export-content.ts
+tests/              vitest
+```
+
+See `PROJECT.md` for more detail. This repo uses Next.js 16; see `AGENTS.md`.

@@ -9,14 +9,15 @@ import {
   TrendingUp,
   CheckCircle2,
 } from "lucide-react";
-import { PageHero } from "@/components/PageHero";
-import { FadeIn } from "@/components/FadeIn";
-import { SafeImage } from "@/components/SafeImage";
+
 import { ContactForm } from "@/components/ContactForm";
-import { Button } from "@/components/ui/button";
+import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { PageHero } from "@/components/PageHero";
+import { SafeImage } from "@/components/SafeImage";
 import { TrainingJourneySection } from "@/components/TrainingJourneySection";
 import { TrainingOrderFlowSection } from "@/components/TrainingOrderFlowSection";
+import { Button } from "@/components/ui/button";
 
 const subsidySteps = [
   "Complete training and get your certificate",
@@ -35,6 +36,7 @@ const stats = [
 ];
 
 export const metadata = {
+  alternates: { canonical: "/training" },
   title: "Mushroom Farming Support — From Setup to Earning",
   description:
     "We don't just teach mushroom farming. Mathesh helps you with setup, bags, customer orders, and understanding available government schemes.",

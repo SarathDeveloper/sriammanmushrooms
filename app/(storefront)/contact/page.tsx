@@ -1,15 +1,22 @@
-"use client";
-
 import { MapPin, Phone, Mail, ExternalLink } from "lucide-react";
+import type { Metadata } from "next";
+
+import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
+import { whatsappLink } from "@/lib/whatsapp";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description:
+    "Call, WhatsApp or message Sri Amman Mushroom Farms about fresh mushrooms, bulk orders, farm visits and mushroom farming training.",
+  alternates: { canonical: "/contact" },
+};
 
 const PHONE = "+91 93855 26105";
 const ADDITIONAL_PHONES = ["+91 89031 56142", "+91 63833 61207"];
 const EMAIL = "hello@vellimalaifarms.in";
-const WHATSAPP_NUMBER = "916380687811";
 const ADDRESS_LINE = "Sari Amman Oyster Mushroom Farm, Vellimalai, Melsathanur, Kallakurichi - 606 209, Tamil Nadu, India";
 const LAT = 11.786746298281923;
 const LNG = 78.71029442669108;
@@ -44,7 +51,7 @@ export default function ContactPage() {
                 <div className="flex flex-wrap gap-3">
                   {/* WhatsApp */}
                   <a
-                    href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                    href={whatsappLink()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-base font-semibold text-white hover:bg-whatsapp-hover transition-colors"

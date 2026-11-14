@@ -1,99 +1,39 @@
-import { Suspense } from "react";
-import { PageHero } from "@/components/PageHero";
-import { ProductCard } from "@/components/ProductCard";
-import { FadeIn } from "@/components/FadeIn";
-import { ShopControls } from "@/components/ShopControls";
-import { Pagination } from "@/components/admin/Pagination";
-import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
+
+import { FadeIn } from "@/components/FadeIn";
+import { PageHero } from "@/components/PageHero";
+import { Pagination } from "@/components/Pagination";
+import { ProductCard } from "@/components/ProductCard";
+import { ShopControls } from "@/components/ShopControls";
+import { getCategories, getProducts } from "@/lib/content";
+import { queryProducts } from "@/lib/shop";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/lib/data";
 
-export const revalidate = 60;
-
-const PRODUCTS_PER_PAGE = 12;
-
-type DbProduct = Omit<Product, "category" | "image" | "gallery"> & {
-  images: string[];
-  category: { name: string };
+export const metadata: Metadata = {
+  title: "Shop Fresh Mushrooms",
+  description:
+    "Browse fresh oyster, milky, button and shiitake mushrooms and ready-made mushroom products from Sri Amman Mushroom Farms. Enquire on WhatsApp.",
+  alternates: { canonical: "/shop" },
 };
-
-function mapProduct(p: DbProduct): Product {
-  return {
-    ...p,
-    category: p.category.name,
-    image: p.images[0] || "",
-    gallery: p.images,
-  };
-}
-
-function getOrderBy(
-  sort: string | undefined
-): Record<string, "asc" | "desc"> {
-  switch (sort) {
-    case "price-asc":
-      return { price: "asc" };
-    case "price-desc":
-      return { price: "desc" };
-    case "newest":
-      return { createdAt: "desc" };
-    case "name-asc":
-      return { name: "asc" };
-    default:
-      return { createdAt: "desc" };
-  }
-}
-
-type ProductWhere = {
-  isActive: boolean;
-  category?: { slug: string };
-  OR?: Array<{
-    name?: { contains: string; mode: "insensitive" };
-    description?: { contains: string; mode: "insensitive" };
-  }>;
-};
-type ShopCategory = { id: string; name: string; slug: string };
 
 export default async function ShopPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = await props.searchParams;
-  const activeCategorySlug = searchParams?.category as string | undefined;
-  const sort = searchParams?.sort as string | undefined;
-  const query = searchParams?.q as string | undefined;
-  const page = Math.max(1, Number(searchParams?.page) || 1);
+  const single = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+  const activeCategorySlug = single(searchParams?.category);
+  const sort = single(searchParams?.sort);
+  const query = single(searchParams?.q);
 
-  const where: ProductWhere = {
-    isActive: true,
-  };
-
-  if (activeCategorySlug && activeCategorySlug !== "all") {
-    where.category = { slug: activeCategorySlug };
-  }
-
-  if (query && query.length >= 2) {
-    where.OR = [
-      { name: { contains: query, mode: "insensitive" } },
-      { description: { contains: query, mode: "insensitive" } },
-    ];
-  }
-
-  const [categories, prismaProducts, totalCount] = await Promise.all([
-    prisma.category.findMany() as Promise<ShopCategory[]>,
-    prisma.product.findMany({
-      where,
-      include: { category: true },
-      orderBy: getOrderBy(sort),
-      skip: (page - 1) * PRODUCTS_PER_PAGE,
-      take: PRODUCTS_PER_PAGE,
-    }),
-    prisma.product.count({ where }),
-  ]);
-
-  const totalPages = Math.ceil(totalCount / PRODUCTS_PER_PAGE);
-  const products: Product[] = prismaProducts.map((product: DbProduct) =>
-    mapProduct(product)
-  );
+  const categories = getCategories();
+  const { products, totalCount, totalPages, page } = queryProducts(getProducts(), {
+    category: activeCategorySlug,
+    q: query,
+    sort,
+    page: Number(single(searchParams?.page)) || 1,
+  });
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -121,7 +61,7 @@ export default async function ShopPage(props: {
               </Link>
               {categories.map((category) => (
                 <Link
-                  key={category.id}
+                  key={category.slug}
                   href={`/shop?category=${category.slug}`}
                   className={cn(
                     "px-5 py-2.5 rounded-full text-base font-semibold transition-colors border whitespace-nowrap shrink-0",
@@ -155,7 +95,6 @@ export default async function ShopPage(props: {
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
                 {products.map((product, i) => (
                   <FadeIn key={product.id} delay={(i % 3) * 0.08}>
-                    {/* @ts-ignore */}
                     <ProductCard product={product} priority={i < 3} />
                   </FadeIn>
                 ))}

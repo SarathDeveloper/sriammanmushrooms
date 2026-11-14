@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Leaf } from "lucide-react";
 import Image, { type ImageProps } from "next/image";
 import { CldImage } from "next-cloudinary";
-import { Leaf } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
+
 import { isCloudinarySrc, toCloudinaryPublicId } from "@/lib/cloudinary-utils";
+import { cn } from "@/lib/utils";
+
+// Inlined at build time. Without it Cloudinary images can't be addressed, so
+// they render the placeholder instead of crashing the page.
+const CLOUDINARY_CONFIGURED = Boolean(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
 
 /**
  * Wraps next/image (or CldImage for Cloudinary assets) with a graceful
@@ -16,7 +21,7 @@ export function SafeImage({ className, fill, alt, src, width, height, sizes, ...
   const srcString = typeof src === "string" ? src : undefined;
   const useCloudinary = Boolean(srcString && isCloudinarySrc(srcString));
 
-  if (failed || !srcString) {
+  if (failed || !srcString || (useCloudinary && !CLOUDINARY_CONFIGURED)) {
     return (
       <div
         role="img"

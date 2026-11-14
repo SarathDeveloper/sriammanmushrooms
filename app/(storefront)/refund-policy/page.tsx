@@ -1,7 +1,8 @@
-import { PageHero } from "@/components/PageHero";
 import { FadeIn } from "@/components/FadeIn";
+import { PageHero } from "@/components/PageHero";
 
 export const metadata = {
+  alternates: { canonical: "/refund-policy" },
   title: "Refund & Cancellation Policy",
   description:
     "Refund, return, and order cancellation policy for Sri Amman Mushroom Farms.",

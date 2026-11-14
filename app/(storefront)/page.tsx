@@ -1,23 +1,25 @@
-import Link from "next/link";
-import dynamic from "next/dynamic";
 import { ArrowRight, ShieldCheck, Clock, Truck, Send } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+
+import { AboutPreview } from "@/components/AboutPreview";
+import { Certifications } from "@/components/Certifications";
+import { DeliverySchedule } from "@/components/DeliverySchedule";
 import { FadeIn } from "@/components/FadeIn";
-import { HomeHero, type HeroSlideData } from "@/components/HomeHero";
+import { HomeHero } from "@/components/HomeHero";
+import { PressAndRecognition } from "@/components/PressAndRecognition";
 import { ProductCard } from "@/components/ProductCard";
 import { SectionDivider } from "@/components/SectionDivider";
 import { ShopByCategory } from "@/components/ShopByCategory";
-import { DeliverySchedule } from "@/components/DeliverySchedule";
-import { AboutPreview } from "@/components/AboutPreview";
-import { PressAndRecognition } from "@/components/PressAndRecognition";
 import { TrainingJourneySection } from "@/components/TrainingJourneySection";
 import { TrainingOrderFlowSection } from "@/components/TrainingOrderFlowSection";
-import { Certifications } from "@/components/Certifications";
-import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { prisma } from "@/lib/prisma";
-import { type Product } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import { WhatsAppUpdatesButton } from "@/components/WhatsAppUpdatesButton";
+import { getFeaturedProducts, getHeroSlides, getProductBySlug, type Product } from "@/lib/content";
 
-export const revalidate = 60;
+/** Ready-made products shown on the home page, in this order. */
+const VALUE_ADDED_SLUGS = ["mushroom-masala-powder", "mushroom-soup-mix", "mushroom-pickle"];
 
 const FarmToTable = dynamic(() =>
   import("@/components/FarmToTable").then((m) => ({ default: m.FarmToTable })),
@@ -31,85 +33,18 @@ const HomeContactSection = dynamic(() =>
 const PreOrderSection = dynamic(() =>
   import("@/components/PreOrderSection").then((m) => ({ default: m.PreOrderSection })),
 );
-const NewsletterForm = dynamic(() =>
-  import("@/components/NewsletterForm").then((m) => ({ default: m.NewsletterForm })),
-);
 
-export default async function Home() {
-  const [dbProducts, dbValueAdded, dbSlides] = await Promise.all([
-    prisma.product.findMany({ take: 3, include: { category: true } }),
-    prisma.product.findMany({
-      where: {
-        isActive: true,
-        slug: {
-          in: ["mushroom-masala-powder", "mushroom-soup-mix", "mushroom-pickle"],
-        },
-      },
-      include: { category: true },
-    }),
-    prisma.heroSlide.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: "asc" },
-    }),
-  ]);
-  type FeaturedProduct = {
-    id: string;
-    slug: string;
-    name: string;
-    description: string;
-    price: number;
-    compareAtPrice: number | null;
-    weight: string;
-    stock: number;
-    images: string[];
-    rating: number;
-    reviewCount: number;
-    tag: string | null;
-    highlights: string[];
-    shelfLifeDays: number;
-    category: { name: string };
-  };
-  const mapProduct = (p: FeaturedProduct): Product => ({
-    ...p,
-    category: p.category.name,
-    image: p.images[0] || "",
-    gallery: p.images,
-  });
-  const featuredProducts: Product[] = dbProducts.map(mapProduct);
-  const valueAddedOrder = ["mushroom-masala-powder", "mushroom-soup-mix", "mushroom-pickle"];
-  const valueAddedProducts: Product[] = valueAddedOrder
-    .map((slug) => dbValueAdded.find((p) => p.slug === slug))
-    .filter((p): p is NonNullable<typeof p> => p != null)
-    .map(mapProduct);
-
-  type DbHeroSlide = {
-    badge: string;
-    headline: string;
-    subtitle: string;
-    primaryCtaLabel: string;
-    primaryCtaHref: string;
-    secondaryCtaLabel: string;
-    secondaryCtaHref: string;
-    image: string;
-  };
-  const heroSlides: HeroSlideData[] | undefined =
-    dbSlides.length > 0
-      ? dbSlides.map((s: DbHeroSlide) => ({
-          badge: s.badge,
-          headline: s.headline,
-          subtitle: s.subtitle,
-          primaryCtaLabel: s.primaryCtaLabel,
-          primaryCtaHref: s.primaryCtaHref,
-          secondaryCtaLabel: s.secondaryCtaLabel,
-          secondaryCtaHref: s.secondaryCtaHref,
-          image: s.image,
-        }))
-      : undefined;
+export default function Home() {
+  const featuredProducts = getFeaturedProducts(3);
+  const valueAddedProducts = VALUE_ADDED_SLUGS.map(getProductBySlug).filter(
+    (p): p is Product => p != null,
+  );
+  const heroSlides = getHeroSlides();
 
   return (
     <div className="flex flex-col min-h-screen">
 
-      <HomeHero slides={heroSlides} />
+      <HomeHero slides={heroSlides.length > 0 ? heroSlides : undefined} />
 
       <ShopByCategory />
 
@@ -286,7 +221,7 @@ export default async function Home() {
                 <AccordionItem value="item-5">
                   <AccordionTrigger className="text-sm sm:text-base font-medium">Can I get mushrooms every week?</AccordionTrigger>
                   <AccordionContent className="text-[var(--color-body)] text-sm">
-                    Yes! You can order weekly, every 2 weeks, or monthly. You save up to 15% and can stop anytime you want.
+                    Yes! Message us on WhatsApp to set up a regular weekly, fortnightly or monthly supply. You can stop anytime.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -298,9 +233,9 @@ export default async function Home() {
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold mb-3 sm:mb-4 font-heading">Get Our Updates</h2>
               <p className="text-white/80 mb-6 sm:mb-8 max-w-sm mx-auto text-sm sm:text-base">
-                Give your email and we will send you special offers and news from our farm.
+                Join our WhatsApp updates for fresh harvest alerts, special offers and training dates.
               </p>
-              <NewsletterForm />
+              <WhatsAppUpdatesButton />
             </FadeIn>
 
           </div>

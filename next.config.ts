@@ -1,5 +1,5 @@
-import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import type { NextConfig } from "next";
 
 const securityHeaders = [
   {
@@ -35,7 +35,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: [
       "lucide-react",
-      "recharts",
       "framer-motion",
       "embla-carousel-react",
     ],
@@ -64,17 +63,20 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 60 * 60 * 24,
   },
-  // With online ordering off (see lib/features.ts) the customer order and
-  // account pages aren't reachable. /login stays for admins.
+  // The showcase site has no ordering, accounts or admin. Old links and
+  // bookmarks to those pages land somewhere useful instead of a 404. The full
+  // version with these pages lives on the feature/fullstack-admin branch.
   async redirects() {
-    if (process.env.NEXT_PUBLIC_ORDERS_ENABLED === "true") return [];
     return [
-      { source: "/cart", destination: "/shop", permanent: false },
-      { source: "/checkout", destination: "/shop", permanent: false },
-      { source: "/orders", destination: "/contact", permanent: false },
-      { source: "/track-order", destination: "/contact", permanent: false },
-      { source: "/account", destination: "/", permanent: false },
-      { source: "/register", destination: "/contact", permanent: false },
+      { source: "/cart", destination: "/shop", permanent: true },
+      { source: "/checkout", destination: "/shop", permanent: true },
+      { source: "/orders", destination: "/contact", permanent: true },
+      { source: "/track-order", destination: "/contact", permanent: true },
+      { source: "/account", destination: "/", permanent: true },
+      { source: "/register", destination: "/contact", permanent: true },
+      { source: "/login", destination: "/", permanent: true },
+      { source: "/admin", destination: "/", permanent: true },
+      { source: "/admin/:path*", destination: "/", permanent: true },
     ];
   },
   async headers() {
@@ -82,12 +84,6 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: securityHeaders,
-      },
-      {
-        source: "/api/:path*",
-        headers: [
-          { key: "Cache-Control", value: "no-store, max-age=0" },
-        ],
       },
       // Immutable caching is correct for hashed production assets, but in
       // development Turbopack reuses chunk URLs across HMR updates. Serving

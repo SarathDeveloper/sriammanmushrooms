@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+
 import { SafeImage } from "@/components/SafeImage";
 
 export function ParallaxImage({

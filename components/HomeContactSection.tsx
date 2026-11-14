@@ -1,80 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { ArrowRight, ExternalLink, MapPin, Phone, Mail } from "lucide-react";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Loader2, MailCheck, MapPin, Phone, Mail } from "lucide-react";
-import toast from "react-hot-toast";
+
+import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { submitInquiry } from "@/app/actions/contact";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const PHONE = "+91 93855 26105";
 const ADDITIONAL_PHONES = ["+91 89031 56142", "+91 63833 61207"];
 const EMAIL = "hello@vellimalaifarms.in";
-const WHATSAPP_NUMBER = "916380687811";
 const ADDRESS_LINE = "Sari Amman Oyster Mushroom Farm, Vellimalai, Melsathanur, Kallakurichi - 606 209, Tamil Nadu, India";
 const LAT = 11.786746298281923;
 const LNG = 78.71029442669108;
 const MAPS_EMBED_URL = `https://www.google.com/maps?q=${LAT},${LNG}&z=14&output=embed`;
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
 
-const contactMethods = ["WhatsApp", "Phone", "Email"] as const;
-type ContactMethod = (typeof contactMethods)[number];
-
-const initialForm = {
-  name: "",
-  email: "",
-  mobile: "",
-  inquiryType: "",
-  preferredContact: "WhatsApp" as ContactMethod,
-  message: "",
-};
-
-const inquiryTypes = [
-  "Products",
-  "Training",
-  "Farm Visit",
-  "Wholesale",
-  "Other",
-];
-
 export function HomeContactSection() {
-  const [form, setForm] = useState(initialForm);
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const set = (field: keyof typeof initialForm, value: string) =>
-    setForm((prev) => ({ ...prev, [field]: value }));
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const formData = new FormData();
-    formData.append("name", form.name);
-    formData.append("email", form.email);
-    formData.append("phone", form.mobile);
-    formData.append("location", "");
-    formData.append("company", "");
-    formData.append("inquiryType", form.inquiryType);
-    formData.append("preferredContact", form.preferredContact);
-    formData.append("message", form.message);
-
-    const result = await submitInquiry(null, formData);
-
-    setLoading(false);
-
-    if (result.success) {
-      setSubmitted(true);
-      toast.success("Message sent! We'll get back to you within 24 hours.");
-    } else {
-      toast.error(result.message || "Failed to send message.");
-    }
-  };
-
   return (
     <section className="py-10 sm:py-14 bg-secondary grain-overlay">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
@@ -110,7 +53,7 @@ export function HomeContactSection() {
 
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                  href={whatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-base font-semibold text-white hover:bg-whatsapp-hover transition-colors"
@@ -198,162 +141,9 @@ export function HomeContactSection() {
             </div>
           </FadeIn>
 
-          {/* Right column — form */}
+          {/* Right column: form that hands the message to WhatsApp */}
           <FadeIn direction="left">
-            {submitted ? (
-              <div className="min-h-[440px] flex flex-col items-center justify-center text-center bg-card rounded-2xl p-10 border border-border">
-                <div className="w-14 h-14 rounded-full bg-[var(--color-success)]/15 text-[var(--color-success)] flex items-center justify-center mb-5">
-                  <MailCheck size={28} />
-                </div>
-                <h3 className="text-2xl font-bold font-heading text-foreground mb-2">
-                    Message Sent!
-                  </h3>
-                  <p className="text-[var(--color-body)] max-w-sm mb-5 text-base">
-                    Thank you! We will reply to you within one day.
-                  </p>
-                <Button
-                  variant="outline"
-                  className="rounded-full"
-                  onClick={() => {
-                    setForm(initialForm);
-                    setSubmitted(false);
-                  }}
-                >
-                  Send Another Message
-                </Button>
-              </div>
-            ) : (
-                <form
-                  onSubmit={handleSubmit}
-                  className="bg-card rounded-2xl border border-border p-6 sm:p-8 space-y-4"
-                >
-                  <div>
-                    <h3 className="text-xl font-bold font-heading text-foreground">
-                      Send Us a Message
-                    </h3>
-                    <p className="text-base text-muted-foreground mt-0.5">
-                      Tell us what you need and we will reply within 24 hours.
-                    </p>
-                  </div>
-
-                {/* Full Name */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="home-name">Full Name</Label>
-                  <Input
-                    id="home-name"
-                    required
-                    value={form.name}
-                    onChange={(e) => set("name", e.target.value)}
-                    placeholder="Full Name"
-                  />
-                </div>
-
-                {/* Email + Mobile */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="home-email">Email Address</Label>
-                    <Input
-                      id="home-email"
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={(e) => set("email", e.target.value)}
-                      placeholder="Email Address"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="home-mobile">Mobile Number</Label>
-                    <Input
-                      id="home-mobile"
-                      type="tel"
-                      required
-                      value={form.mobile}
-                      onChange={(e) => set("mobile", e.target.value)}
-                      placeholder="Mobile Number"
-                    />
-                  </div>
-                </div>
-
-                  {/* Inquiry type */}
-                  <div className="space-y-1.5">
-                    <Label htmlFor="home-inquiry-type">What do you need?</Label>
-                  <select
-                    id="home-inquiry-type"
-                    required
-                    value={form.inquiryType}
-                    onChange={(e) => set("inquiryType", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-base outline-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-primary/20 text-foreground appearance-none"
-                    style={{
-                      backgroundImage:
-                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c6370' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "right 12px center",
-                      paddingRight: "2.5rem",
-                    }}
-                  >
-                    <option value="" disabled className="text-muted-foreground">
-                      Choose one...
-                    </option>
-                    {inquiryTypes.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                  {/* Preferred contact */}
-                  <div className="space-y-2">
-                    <Label>How should we contact you?</Label>
-                  <div className="flex gap-2">
-                    {contactMethods.map((method) => {
-                      const active = form.preferredContact === method;
-                      return (
-                        <button
-                          key={method}
-                          type="button"
-                          onClick={() => set("preferredContact", method)}
-                          className={`rounded-full px-4 py-1.5 text-base font-medium border transition-colors ${
-                            active
-                              ? "bg-primary text-white border-primary"
-                              : "bg-card text-foreground border-border hover:bg-secondary"
-                          }`}
-                        >
-                          {method}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                  {/* Message */}
-                  <div className="space-y-1.5">
-                    <Label htmlFor="home-message">Your Message (optional)</Label>
-                    <textarea
-                      id="home-message"
-                      value={form.message}
-                      onChange={(e) => set("message", e.target.value)}
-                      placeholder="Tell us more about what you need..."
-                    rows={3}
-                    className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-base outline-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-primary/20 resize-none"
-                  />
-                </div>
-
-                {/* Submit */}
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  size="lg"
-                  className="w-full rounded-full h-12"
-                >
-                  {loading ? (
-                    <Loader2 size={18} className="animate-spin" />
-                  ) : (
-                    "Send Message"
-                  )}
-                </Button>
-              </form>
-            )}
+            <ContactForm showEmail showMessage idPrefix="home" />
           </FadeIn>
 
         </div>

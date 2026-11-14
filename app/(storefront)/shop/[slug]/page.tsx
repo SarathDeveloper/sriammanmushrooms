@@ -1,31 +1,49 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ChevronRight, Star, Truck, ShieldCheck, RotateCcw, Clock, Share2, Timer } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
 import { FadeIn } from "@/components/FadeIn";
-import { ProductGallery } from "@/components/ProductGallery";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { PincodeChecker } from "@/components/PincodeChecker";
 import { ProductActions } from "@/components/ProductActions";
 import { ProductCard } from "@/components/ProductCard";
-import { PincodeChecker } from "@/components/PincodeChecker";
+import { ProductGallery } from "@/components/ProductGallery";
 import { ProductShare } from "@/components/ProductShare";
-import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { prisma } from "@/lib/prisma";
-import type { Product } from "@/lib/data";
+import {
+  getProductBySlug,
+  getProducts,
+  getRelatedProducts,
+  getReviewsForProduct,
+} from "@/lib/content";
+import { absoluteImageUrl, productJsonLd, serializeJsonLd } from "@/lib/seo";
+import { absoluteUrl } from "@/lib/site";
 
-export async function generateStaticParams() {
-  const products = await prisma.product.findMany({ select: { slug: true } });
-  return products.map((p: { slug: string }) => ({ slug: p.slug }));
+// Every product page is generated at build time; unknown slugs are a 404.
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return getProducts().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await props.params;
-  const product = await prisma.product.findUnique({ where: { slug } });
+  const product = getProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
+  const image = absoluteImageUrl(product.image);
   return {
     title: product.name,
     description: product.description,
+    alternates: { canonical: `/shop/${product.slug}` },
+    openGraph: {
+      type: "website",
+      title: product.name,
+      description: product.description,
+      url: `/shop/${product.slug}`,
+      ...(image ? { images: [{ url: image, alt: product.name }] } : {}),
+    },
     other: {
       "product:price:amount": product.price.toString(),
       "product:price:currency": "INR",
@@ -72,62 +90,26 @@ const recipesByCategory: Record<string, { title: string; time: string; descripti
   ],
 };
 
-type DbProduct = Omit<Product, "category" | "image" | "gallery"> & {
-  images: string[];
-  category: { name: string };
-  categoryId: string;
-  harvestDate: Date | null;
-  bestBefore: Date | null;
-};
-
-function mapProduct(p: DbProduct): Product {
-  return {
-    ...p,
-    category: p.category.name,
-    image: p.images[0] || "",
-    gallery: p.images,
-  };
-}
-
 export default async function ProductDetailPage(props: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await props.params;
-  
-  const p = await prisma.product.findUnique({ 
-    where: { slug },
-    include: {
-      category: true,
-      reviews: {
-        where: { isApproved: true },
-        orderBy: { createdAt: "desc" },
-        take: 6,
-        include: { user: { select: { name: true } } },
-      },
-    },
-  });
-  
-  if (!p) notFound();
-  
-  const product = mapProduct(p);
+  const product = getProductBySlug(slug);
+  if (!product) notFound();
 
-  const rawRelated = await prisma.product.findMany({
-    where: { 
-      categoryId: p.categoryId,
-      id: { not: p.id }
-    },
-    include: { category: true },
-    take: 3,
-  });
-  
-  const related: Product[] = rawRelated.map((p: DbProduct) => mapProduct(p));
+  const related = getRelatedProducts(product, 3);
   const nutrition = nutritionData[product.category] || nutritionData["Value-Added"];
   const storage = storageInstructions[product.category] || storageInstructions["Value-Added"];
   const recipes = recipesByCategory[product.category] || recipesByCategory["Value-Added"];
-  const reviews = p.reviews;
+  const reviews = getReviewsForProduct(product.slug);
+  const shareText = `Check out ${product.name} from Sri Amman Mushroom Farms! ${absoluteUrl(`/shop/${product.slug}`)}`;
 
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(productJsonLd(product)) }}
+      />
       {/* Breadcrumb */}
       <div className="bg-secondary py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center gap-2 text-base text-muted-foreground min-w-0">
@@ -172,28 +154,20 @@ export default async function ProductDetailPage(props: {
                 <span className="text-base text-muted-foreground">{product.rating} ({product.reviewCount} reviews)</span>
               </div>
 
-              {/* Stock badge */}
+              {/* Availability */}
               <div className="flex items-center gap-2 mb-4">
                 <span
                   className={
-                    product.stock <= 0
-                      ? "inline-flex px-2.5 py-1 rounded-full bg-[hsl(var(--destructive))] text-white text-sm font-semibold"
-                      : product.stock <= 20
-                        ? "inline-flex px-2.5 py-1 rounded-full bg-[hsl(var(--warning))] text-white text-sm font-semibold"
-                        : "inline-flex px-2.5 py-1 rounded-full bg-[hsl(var(--primary-600))] text-white text-sm font-semibold"
+                    product.inStock
+                      ? "inline-flex px-2.5 py-1 rounded-full bg-primary text-white text-sm font-semibold"
+                      : "inline-flex px-2.5 py-1 rounded-full bg-[#E56D6D] text-white text-sm font-semibold"
                   }
                 >
-                  {product.stock <= 0
-                    ? "Out of Stock"
-                    : product.stock <= 20
-                      ? "Low Stock"
-                      : "In Stock"}
+                  {product.inStock ? "Available" : "Currently Unavailable"}
                 </span>
-                {product.stock > 0 && product.stock <= 20 && (
-                  <span className="text-sm font-semibold text-[hsl(var(--warning))]">
-                    Only {product.stock} left!
-                  </span>
-                )}
+                <span className="text-sm text-muted-foreground">
+                  Enquire on WhatsApp for today&apos;s stock and delivery.
+                </span>
               </div>
 
               {product.shelfLifeDays != null && product.shelfLifeDays > 0 && (
@@ -235,7 +209,6 @@ export default async function ProductDetailPage(props: {
                 ))}
               </div>
 
-              {/* @ts-ignore */}
               <ProductActions product={product} />
 
               {/* Pincode Checker */}
@@ -248,7 +221,7 @@ export default async function ProductDetailPage(props: {
                 <Share2 size={14} />
                 <span>Share:</span>
                 <a
-                  href={`https://wa.me/?text=Check out ${product.name} from Sri Amman Mushroom Farms!`}
+                  href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-whatsapp hover:text-whatsapp-hover font-medium"
@@ -293,17 +266,13 @@ export default async function ProductDetailPage(props: {
                   <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
                     <span className="text-muted-foreground">Harvested</span>
                     <span className="font-semibold text-right">
-                      {p.harvestDate
-                        ? new Date(p.harvestDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
-                        : "Fresh farm harvest"}
+                      Fresh farm harvest
                     </span>
                   </div>
                   <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
                     <span className="text-muted-foreground">Best before</span>
                     <span className="font-semibold text-right">
-                      {p.bestBefore
-                        ? new Date(p.bestBefore).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
-                        : "See pack label"}
+                      See pack label
                     </span>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -397,7 +366,7 @@ export default async function ProductDetailPage(props: {
                       {review.comment || "A customer left a rating for this product."}
                     </p>
                     <p className="mt-4 text-sm font-semibold text-muted-foreground">
-                      {review.user.name || "Verified customer"}
+                      {review.name}
                     </p>
                   </article>
                 </FadeIn>
@@ -405,7 +374,7 @@ export default async function ProductDetailPage(props: {
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-border bg-secondary/50 p-8 text-center text-base text-muted-foreground">
-              Customer reviews for this product will appear here after they are approved.
+              No written reviews yet. Tried this product? Tell us on WhatsApp and we&apos;ll feature your feedback.
             </div>
           )}
         </div>
@@ -457,7 +426,6 @@ export default async function ProductDetailPage(props: {
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {related.map((p, i) => (
                 <FadeIn key={p.id} delay={i * 0.08}>
-                  {/* @ts-ignore */}
                   <ProductCard product={p} />
                 </FadeIn>
               ))}

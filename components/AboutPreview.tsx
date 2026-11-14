@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+
 import { FadeIn } from "@/components/FadeIn";
 import { SafeImage } from "@/components/SafeImage";
 import { Button } from "@/components/ui/button";

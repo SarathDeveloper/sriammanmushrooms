@@ -1,21 +1,17 @@
+import type { Metadata } from "next";
+
 import { PageHero } from "@/components/PageHero";
-import { prisma } from "@/lib/prisma";
+import { getProducts } from "@/lib/content";
+
 import { WishlistClient } from "./WishlistClient";
-import type { Product } from "@/lib/data";
 
-export default async function WishlistPage() {
-  const dbProducts = await prisma.product.findMany({ include: { category: true } });
-  type DbProduct = Omit<Product, "category" | "image" | "gallery"> & {
-    images: string[];
-    category: { name: string };
-  };
-  const products: Product[] = dbProducts.map((p: DbProduct) => ({
-    ...p,
-    category: p.category.name,
-    image: p.images[0] || "",
-    gallery: p.images,
-  }));
+export const metadata: Metadata = {
+  title: "Wishlist",
+  // Personal, browser-only list: nothing for search engines here.
+  robots: { index: false, follow: true },
+};
 
+export default function WishlistPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <PageHero
@@ -25,7 +21,7 @@ export default async function WishlistPage() {
       />
 
       <section className="py-10 sm:py-14 bg-background">
-        <WishlistClient products={products} />
+        <WishlistClient products={getProducts()} />
       </section>
     </div>
   );

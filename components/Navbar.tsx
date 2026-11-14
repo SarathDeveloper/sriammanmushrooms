@@ -1,22 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
+import { Heart, Search } from "lucide-react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import { ShoppingCart, Heart, Leaf, User, LogOut, Package, Search } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useCartStore, useWishlistStore } from "@/lib/store";
-import { ORDERS_ENABLED } from "@/lib/features";
+import type { SearchItem } from "@/lib/content";
+import { useWishlistStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";
 import { cn } from "@/lib/utils";
 
@@ -39,11 +31,9 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
   const pathname = usePathname();
-  const { data: session } = useSession();
   const mounted = useHasMounted();
-  const cartCount = useCartStore((s) => s.totalItems());
   const wishlistCount = useWishlistStore((s) => s.productIds.length);
 
   return (
@@ -96,7 +86,7 @@ export default function Navbar() {
 
           {/* Icons & Actions */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <SearchDialog />
+            <SearchDialog items={searchItems} />
 
             <Link href="/wishlist" aria-label="View wishlist" className="relative flex items-center justify-center w-10 h-10 text-muted-foreground hover:text-primary transition-colors">
               <Heart size={20} />
@@ -107,53 +97,10 @@ export default function Navbar() {
               )}
             </Link>
 
-            {ORDERS_ENABLED && (
-              <Link href="/cart" aria-label="View cart" className="relative flex items-center justify-center w-10 h-10 text-muted-foreground hover:text-primary transition-colors">
-                <ShoppingCart size={20} />
-                {mounted && cartCount > 0 && (
-                  <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F76B46] text-xs font-bold text-white">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
-            )}
-
             <div className="hidden md:flex">
-              {session?.user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger
-                    className="flex items-center justify-center h-9 w-9 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer"
-                  >
-                    <User size={18} />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuLabel>{session.user.name ?? session.user.email ?? "User"}</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    {session.user.role === "ADMIN" && (
-                      <DropdownMenuItem render={<Link href="/admin" />}>
-                        <Leaf size={14} /> Admin Dashboard
-                      </DropdownMenuItem>
-                    )}
-                    {ORDERS_ENABLED && (
-                      <>
-                        <DropdownMenuItem render={<Link href="/account" />}>
-                          <User size={14} /> My Profile
-                        </DropdownMenuItem>
-                        <DropdownMenuItem render={<Link href="/orders" />}>
-                          <Package size={14} /> My Orders
-                        </DropdownMenuItem>
-                      </>
-                    )}
-                    <DropdownMenuItem variant="destructive" onClick={() => signOut()}>
-                      <LogOut size={14} /> Sign Out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium">
-                  {ORDERS_ENABLED ? <Link href="/login">Sign In</Link> : <Link href="/contact">Enquire Now</Link>}
-                </Button>
-              )}
+              <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium">
+                <Link href="/contact">Enquire Now</Link>
+              </Button>
             </div>
 
             {/* Mobile Menu */}

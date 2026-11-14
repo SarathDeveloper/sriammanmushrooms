@@ -1,16 +1,17 @@
 "use client";
 
-import Link from "next/link";
+import { ShoppingBag, Menu, Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import { ShoppingCart, ShoppingBag, Menu, Heart, User, LogOut, Package, Leaf } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
+
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Button } from "@/components/ui/button";
-import { useCartStore, useWishlistStore } from "@/lib/store";
-import { ORDERS_ENABLED } from "@/lib/features";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
+import { useWishlistStore } from "@/lib/store";
 import { useHasMounted } from "@/lib/useHasMounted";
 import { cn } from "@/lib/utils";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -23,9 +24,7 @@ const navLinks = [
 
 export default function NavbarMobileSheet() {
   const pathname = usePathname();
-  const { data: session } = useSession();
   const mounted = useHasMounted();
-  const cartCount = useCartStore((s) => s.totalItems());
   const wishlistCount = useWishlistStore((s) => s.productIds.length);
 
   return (
@@ -79,12 +78,6 @@ export default function NavbarMobileSheet() {
             <p className="px-4 mb-2 text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground">
               Quick Access
             </p>
-            {ORDERS_ENABLED && (
-              <Link href="/track-order" className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-base font-medium text-foreground hover:bg-secondary hover:text-primary transition-colors">
-                <Package size={16} className="text-muted-foreground" />
-                Track Order
-              </Link>
-            )}
             <Link href="/compare" className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-base font-medium text-foreground hover:bg-secondary hover:text-primary transition-colors">
               <ShoppingBag size={16} className="text-muted-foreground" />
               Compare Varieties
@@ -98,67 +91,27 @@ export default function NavbarMobileSheet() {
                 </span>
               )}
             </Link>
-            {ORDERS_ENABLED && (
-              <Link href="/cart" className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-base font-medium text-foreground hover:bg-secondary hover:text-primary transition-colors">
-                <ShoppingCart size={16} className="text-muted-foreground" />
-                Cart
-                {mounted && cartCount > 0 && (
-                  <span className="ml-auto text-xs font-bold bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
-            )}
           </div>
 
           <div className="mx-6 my-4 border-t border-border" />
           <div className="px-4 space-y-1">
             <p className="px-4 mb-2 text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground">
-              Account
+              Get in Touch
             </p>
-            {session?.user ? (
-              <>
-                {ORDERS_ENABLED && (
-                  <>
-                    <Link href="/account" className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-base font-medium text-foreground hover:bg-secondary hover:text-primary transition-colors">
-                      <User size={16} className="text-muted-foreground" />
-                      My Profile
-                    </Link>
-                    <Link href="/orders" className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-base font-medium text-foreground hover:bg-secondary hover:text-primary transition-colors">
-                      <Package size={16} className="text-muted-foreground" />
-                      My Orders
-                    </Link>
-                  </>
-                )}
-                {session.user.role === "ADMIN" && (
-                  <Link href="/admin" className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-base font-medium text-primary hover:bg-primary/10 transition-colors">
-                    <Leaf size={16} />
-                    Admin Dashboard
-                  </Link>
-                )}
-                <div className="px-4 pt-3">
-                  <Button onClick={() => signOut()} variant="outline" className="w-full rounded-full h-11">
-                    <LogOut size={16} className="mr-2" />
-                    Sign Out
-                  </Button>
-                </div>
-              </>
-            ) : ORDERS_ENABLED ? (
-              <div className="px-4 pt-1 space-y-2">
-                <Button asChild className="w-full rounded-full h-11 bg-primary hover:bg-primary/90 text-white">
-                  <Link href="/login">Sign In</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full rounded-full h-11">
-                  <Link href="/register">Create Account</Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="px-4 pt-1">
-                <Button asChild className="w-full rounded-full h-11 bg-primary hover:bg-primary/90 text-white">
-                  <Link href="/contact">Enquire Now</Link>
-                </Button>
-              </div>
-            )}
+            <div className="px-4 pt-1 space-y-2">
+              <Button asChild className="w-full rounded-full h-11 bg-primary hover:bg-primary/90 text-white">
+                <Link href="/contact">Enquire Now</Link>
+              </Button>
+              <a
+                href={whatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full items-center justify-center gap-2 rounded-full h-11 bg-whatsapp text-white font-medium hover:bg-whatsapp-hover transition-colors"
+              >
+                <WhatsAppIcon className="size-4" />
+                Chat on WhatsApp
+              </a>
+            </div>
           </div>
         </nav>
       </SheetContent>
