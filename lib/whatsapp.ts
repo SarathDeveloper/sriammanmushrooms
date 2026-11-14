@@ -133,7 +133,7 @@ export function buildProductEnquiryMessage(
     ["Location", enquiry.location],
   ]);
   const note = enquiry.message ? `\n\n${enquiry.message}` : "";
-  return `Hi Sri Amman Mushroom Farms! I'd like to enquire about a product.\n\n${details}${note}\n\nPlease confirm availability, price and delivery.`;
+  return `Hi Sri Amman Mushroom Farms! I'd like to enquire about a product.\n\n${details}${note}\n\nPlease share today's price, availability and delivery details.`;
 }
 
 export function buildContactMessage(enquiry: ContactEnquiry) {

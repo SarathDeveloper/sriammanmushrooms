@@ -10,11 +10,11 @@ import { Input } from "@/components/ui/input";
 import type { SearchItem } from "@/lib/content";
 import { filterSearchItems } from "@/lib/search";
 
-const popularSearches = ["Oyster", "Milky Mushroom", "Shiitake", "Combo Pack", "Fresh"];
+const popularSearches = ["Oyster", "Button", "Fresh"];
 
 const quickLinks = [
   { label: "Pre-Order Mushrooms", href: "/pre-order" },
-  { label: "Compare Nutrition", href: "/compare" },
+  { label: "Our Mushrooms", href: "/products" },
   { label: "Training Programs", href: "/training" },
 ];
 
@@ -129,7 +129,7 @@ export function SearchDialog({ items }: { items: SearchItem[] }) {
                     {results.map((product) => (
                       <button
                         key={product.slug}
-                        onClick={() => goTo(`/shop/${product.slug}`)}
+                        onClick={() => goTo(`/products/${product.slug}`)}
                         className="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-secondary/50 text-left transition-colors group"
                       >
                         <div className="relative h-12 w-12 rounded-lg overflow-hidden shrink-0 bg-secondary">
@@ -137,8 +137,11 @@ export function SearchDialog({ items }: { items: SearchItem[] }) {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-base text-foreground truncate">{product.name}</p>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {product.category} · {product.weight}
+                          </p>
                         </div>
-                        <span className="text-sm font-semibold text-[#2B7A5D] shrink-0">₹{product.price}</span>
+                        <ArrowRight size={14} className="text-border group-hover:text-[#2B7A5D] transition-colors shrink-0" />
                       </button>
                     ))}
                   </div>
@@ -150,7 +153,7 @@ export function SearchDialog({ items }: { items: SearchItem[] }) {
                       No results for &ldquo;{query}&rdquo;
                     </p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Try searching for &ldquo;oyster&rdquo;, &ldquo;milky&rdquo;, or &ldquo;shiitake&rdquo;
+                      Try searching for &ldquo;oyster&rdquo; or &ldquo;button&rdquo;
                     </p>
                   </div>
                 )}

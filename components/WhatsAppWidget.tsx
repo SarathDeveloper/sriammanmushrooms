@@ -8,7 +8,7 @@ import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { whatsappLink } from "@/lib/whatsapp";
 
 const quickMessages = [
-  { label: "Buy Mushrooms", message: "Hi! I'd like to buy fresh mushrooms. What's available today?" },
+  { label: "Order Mushrooms", message: "Hi! I'd like to order fresh mushrooms. What's available today, and at what price?" },
   { label: "Pre-Order Enquiry", message: "Hi! I'd like to pre-order fresh mushrooms." },
   { label: "Training Info", message: "Hi! I'd like to know about your mushroom farming training programs." },
   { label: "Bulk / Wholesale", message: "Hi! I'm interested in bulk or wholesale mushroom supply." },

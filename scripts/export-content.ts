@@ -8,6 +8,12 @@
  * Read-only: it only runs SELECT statements. Output is validated with the
  * same zod schemas the site uses at build time, so a successful export is a
  * buildable one. Review the diff (git diff content/) before committing.
+ *
+ * Prices, ratings and stock levels are intentionally not exported: the
+ * showcase never shows them, and anything in content/ ends up in the build.
+ *
+ * Only the products listed in lib/catalogue.ts are exported (the farm currently
+ * sells oyster and button mushrooms only); other database products are skipped.
  */
 import "dotenv/config";
 
@@ -16,6 +22,7 @@ import { join } from "node:path";
 
 import { Client } from "pg";
 
+import { CATALOGUE_PRODUCT_SLUGS, DISCONTINUED_VARIETY_PATTERN } from "../lib/catalogue";
 import {
   categoriesFileSchema,
   checkContentIntegrity,
@@ -64,19 +71,14 @@ async function main() {
       name: string;
       categoryId: string;
       description: string;
-      price: string | number;
-      compareAtPrice: string | number | null;
       weight: string;
       images: string[];
       tag: string | null;
-      rating: number;
-      reviewCount: number;
       highlights: string[];
       shelfLifeDays: number | null;
-      stock: number;
       isFeatured: boolean;
-    }>(`SELECT id, slug, name, "categoryId", description, price, "compareAtPrice", weight,
-               images, tag, rating, "reviewCount", highlights, "shelfLifeDays", stock, "isFeatured"
+    }>(`SELECT id, slug, name, "categoryId", description, weight,
+               images, tag, highlights, "shelfLifeDays", "isFeatured"
           FROM "Product"
          WHERE "isActive" = true
          ORDER BY "createdAt" ASC`);
@@ -96,19 +98,20 @@ async function main() {
          WHERE "isActive" = true
          ORDER BY "sortOrder" ASC`);
 
-    // Approved reviews only, with the reviewer's first name (no surnames, emails or phones).
+    // Approved reviews with a written comment only, shown as testimonials (no
+    // star ratings), with the reviewer's first name (no surnames, emails or phones).
     const reviewRows = await client.query<{
       id: string;
       productSlug: string;
       userName: string | null;
-      rating: number;
       comment: string | null;
       createdAt: Date;
-    }>(`SELECT r.id, p.slug AS "productSlug", u.name AS "userName", r.rating, r.comment, r."createdAt"
+    }>(`SELECT r.id, p.slug AS "productSlug", u.name AS "userName", r.comment, r."createdAt"
           FROM "Review" r
           JOIN "Product" p ON p.id = r."productId" AND p."isActive" = true
           JOIN "User" u ON u.id = r."userId"
          WHERE r."isApproved" = true
+           AND COALESCE(TRIM(r.comment), '') <> ''
          ORDER BY r."createdAt" DESC`);
 
     await client.query("COMMIT");
@@ -127,47 +130,54 @@ async function main() {
       })),
     );
 
+    const catalogueSlugs = new Set<string>(CATALOGUE_PRODUCT_SLUGS);
+    const notInCatalogue = productRows.rows.filter((p) => !catalogueSlugs.has(p.slug));
+    if (notInCatalogue.length > 0) {
+      console.log(`Not in lib/catalogue.ts, skipped: ${notInCatalogue.map((p) => p.slug).join(", ")}`);
+    }
+
     const products = productsFileSchema.parse(
       productRows.rows
-        .filter((p) => p.images.length > 0)
+        .filter((p) => catalogueSlugs.has(p.slug) && p.images.length > 0)
         .map((p, i) => ({
           id: p.id,
           slug: p.slug,
           name: p.name,
           category: categorySlugById.get(p.categoryId),
           description: p.description,
-          price: Number(p.price),
-          compareAtPrice: p.compareAtPrice == null ? null : Number(p.compareAtPrice),
           weight: p.weight,
           images: p.images,
           tag: p.tag,
-          rating: p.rating,
-          reviewCount: p.reviewCount,
           highlights: p.highlights ?? [],
           shelfLifeDays: p.shelfLifeDays,
-          inStock: p.stock > 0,
           isFeatured: p.isFeatured,
           sortOrder: i + 1,
         })),
     );
 
-    const skipped = productRows.rows.filter((p) => p.images.length === 0);
+    const skipped = productRows.rows.filter((p) => catalogueSlugs.has(p.slug) && p.images.length === 0);
     for (const p of skipped) {
       console.warn(`Skipped product "${p.slug}": it has no images.`);
     }
 
-    // Keep only categories that still have products, so the shop has no empty filters.
+    // Keep only categories that still have products, so /products has no empty filters.
     const usedCategories = new Set(products.map((p) => p.category));
     const activeCategories = categories.filter((c) => usedCategories.has(c.slug));
 
     const heroSlides = heroSlidesFileSchema.parse(slideRows.rows);
+    for (const slide of heroSlides) {
+      const text = `${slide.headline} ${slide.subtitle}`;
+      if (DISCONTINUED_VARIETY_PATTERN.test(text)) {
+        const title = slide.headline.replace(/\s+/g, " ");
+        console.warn(`Hero slide "${title}" mentions a variety the farm no longer grows; edit content/hero-slides.json after export.`);
+      }
+    }
 
     const reviews = reviewsFileSchema.parse(
-      reviewRows.rows.map((r) => ({
+      reviewRows.rows.filter((r) => catalogueSlugs.has(r.productSlug)).map((r) => ({
         id: r.id,
         product: r.productSlug,
         name: r.userName?.trim().split(/\s+/)[0] || "Verified customer",
-        rating: r.rating,
         comment: r.comment,
         date: r.createdAt.toISOString().slice(0, 10),
       })),

@@ -16,10 +16,8 @@ import { TrainingOrderFlowSection } from "@/components/TrainingOrderFlowSection"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { WhatsAppUpdatesButton } from "@/components/WhatsAppUpdatesButton";
-import { getFeaturedProducts, getHeroSlides, getProductBySlug, type Product } from "@/lib/content";
-
-/** Ready-made products shown on the home page, in this order. */
-const VALUE_ADDED_SLUGS = ["mushroom-masala-powder", "mushroom-soup-mix", "mushroom-pickle"];
+import { getFeaturedProducts, getHeroSlides } from "@/lib/content";
+import { whatsappLink } from "@/lib/whatsapp";
 
 const FarmToTable = dynamic(() =>
   import("@/components/FarmToTable").then((m) => ({ default: m.FarmToTable })),
@@ -36,9 +34,6 @@ const PreOrderSection = dynamic(() =>
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts(3);
-  const valueAddedProducts = VALUE_ADDED_SLUGS.map(getProductBySlug).filter(
-    (p): p is Product => p != null,
-  );
   const heroSlides = getHeroSlides();
 
   return (
@@ -63,10 +58,10 @@ export default function Home() {
                 <span className="h-px w-6 sm:w-8 bg-border" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading">Today&apos;s Fresh Mushrooms</h2>
-              <p className="text-[var(--color-body)] text-sm mt-1.5">Picked this morning. Ready to buy now.</p>
+              <p className="text-[var(--color-body)] text-sm mt-1.5">Picked this morning. Order fresh on WhatsApp.</p>
             </div>
             <div className="sm:absolute sm:right-0 sm:bottom-1">
-              <Link href="/shop" className="group inline-flex items-center gap-2 text-primary font-semibold text-base hover:text-primary/80 transition-colors">
+              <Link href="/products" className="group inline-flex items-center gap-2 text-primary font-semibold text-base hover:text-primary/80 transition-colors">
                 See All <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -74,58 +69,25 @@ export default function Home() {
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
             {featuredProducts.map((product, i) => (
-              <FadeIn key={product.id} delay={i * 0.1}>
+              <FadeIn key={product.id} delay={i * 0.1} className="h-full">
                 <ProductCard product={product} priority={i === 0} />
               </FadeIn>
             ))}
           </div>
 
           <FadeIn className="mt-10 text-center">
-            <Link
-              href="/compare"
+            <a
+              href={whatsappLink("Hi! Can you help me choose the right mushroom variety?")}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-body)] hover:text-primary transition-colors"
             >
-              Don&apos;t know which to choose? <span className="text-primary font-semibold">Compare Them →</span>
-            </Link>
+              Don&apos;t know which to choose? <span className="text-primary font-semibold">Ask us on WhatsApp →</span>
+            </a>
           </FadeIn>
         </div>
       </section>
 
-      {valueAddedProducts.length > 0 && (
-        <>
-          <SectionDivider variant="leaf" />
-
-          {/* VALUE-ADDED PRODUCTS */}
-          <section className="py-20 sm:py-28 bg-secondary grain-overlay">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-              <FadeIn className="relative flex flex-col items-center text-center mb-8 sm:mb-12 gap-4">
-                <div>
-                  <div className="flex items-center justify-center gap-3 mb-3">
-                    <span className="h-px w-6 sm:w-8 bg-border" />
-                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Easy to Cook</span>
-                    <span className="h-px w-6 sm:w-8 bg-border" />
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading">Ready-Made Products</h2>
-                  <p className="text-[var(--color-body)] text-sm mt-1.5">Mushroom powder, soup mix, and pickle. Made from our fresh mushrooms.</p>
-                </div>
-                <div className="sm:absolute sm:right-0 sm:bottom-1">
-                  <Link href="/shop?category=value-added" className="group inline-flex items-center gap-2 text-primary font-semibold text-base hover:text-primary/80 transition-colors">
-                    View All <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </FadeIn>
-
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
-                {valueAddedProducts.map((product, i) => (
-                  <FadeIn key={product.id} delay={i * 0.1}>
-                    <ProductCard product={product} />
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
-          </section>
-        </>
-      )}
 
       <SectionDivider variant="leaf" />
 
@@ -255,7 +217,7 @@ export default function Home() {
           <FadeIn>
             <div className="flex items-center justify-center gap-3 mb-4">
               <span className="h-px w-6 sm:w-8 bg-border" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Why Buy From Us</span>
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Why Choose Us</span>
               <span className="h-px w-6 sm:w-8 bg-border" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight font-heading mb-3 sm:mb-4">Our Promise to You</h2>

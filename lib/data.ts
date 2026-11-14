@@ -8,7 +8,6 @@ export interface Testimonial {
   name: string;
   role: string;
   review: string;
-  rating: number;
   avatar: string;
 }
 
@@ -17,21 +16,18 @@ export const testimonials: Testimonial[] = [
     name: "Priya Subramaniam",
     role: "Home Chef",
     review: "The freshness is unbelievable. These mushrooms have elevated my cooking completely.",
-    rating: 5,
     avatar: "https://i.pravatar.cc/150?img=47",
   },
   {
     name: "Rahul Menon",
     role: "Restaurant Owner",
     review: "Consistent quality and reliable delivery. Sri Amman Mushroom Farms is our trusted partner.",
-    rating: 5,
     avatar: "https://i.pravatar.cc/150?img=12",
   },
   {
     name: "Anita Krishnan",
     role: "Fitness Enthusiast",
     review: "Clean, fresh, and incredibly tasty. I order my weekly batch every Monday!",
-    rating: 4,
     avatar: "https://i.pravatar.cc/150?img=32",
   },
 ];

@@ -1,6 +1,5 @@
 import { isCloudinarySrc, toCloudinaryPublicId } from "@/lib/cloudinary-utils";
-import type { Product } from "@/lib/content";
-import { absoluteUrl, SITE_NAME } from "@/lib/site";
+import { absoluteUrl } from "@/lib/site";
 
 /**
  * Absolute URL for an image reference, for Open Graph and JSON-LD.
@@ -17,30 +16,25 @@ export function absoluteImageUrl(src: string): string | null {
   return null;
 }
 
-export function productJsonLd(product: Product) {
-  const images = product.gallery
-    .map(absoluteImageUrl)
-    .filter((u): u is string => u !== null);
-
+/**
+ * schema.org BreadcrumbList for a trail of site paths, e.g.
+ * Home → Our Mushrooms → Premium Oyster Mushroom.
+ *
+ * Product pages deliberately have no Product JSON-LD: the site shows no
+ * prices or ratings, and Google flags a Product without offers, review or
+ * aggregateRating as invalid. The breadcrumb plus the site-wide LocalBusiness
+ * (app/layout.tsx) is what's left.
+ */
+export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
   return {
     "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.description,
-    sku: product.slug,
-    category: product.category,
-    ...(images.length > 0 ? { image: images } : {}),
-    brand: { "@type": "Brand", name: SITE_NAME },
-    offers: {
-      "@type": "Offer",
-      url: absoluteUrl(`/shop/${product.slug}`),
-      priceCurrency: "INR",
-      price: product.price,
-      availability: product.inStock
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
-      seller: { "@type": "Organization", name: SITE_NAME },
-    },
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
+    })),
   };
 }
 

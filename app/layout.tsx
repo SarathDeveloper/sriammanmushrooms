@@ -6,7 +6,6 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import { serializeJsonLd } from "@/lib/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { formatCurrency } from "@/lib/utils";
 
 const effra = localFont({
   src: [
@@ -89,7 +88,6 @@ export default function RootLayout({
                 longitude: "78.5580",
               },
               openingHours: "Mo-Sa 08:00-18:00",
-              priceRange: `${formatCurrency(120)} - ${formatCurrency(520)}`,
             }),
           }}
         />

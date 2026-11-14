@@ -24,7 +24,6 @@ small script that reverses `scripts/export-content.ts`.
 | Content | JSON files in `content/`, validated with zod at build time |
 | UI | Tailwind CSS 4, shadcn (Base UI), lucide-react, framer-motion, Embla carousel |
 | Images | next/image + next-cloudinary (`CldImage`) |
-| Client state | Zustand (wishlist in localStorage) |
 | Monitoring | Sentry (`instrumentation.ts`, `instrumentation-client.ts`) |
 | Tests | Vitest |
 | Hosting | Vercel |
@@ -34,15 +33,16 @@ small script that reverses `scripts/export-content.ts`.
 | Route | Rendering | Notes |
 |---|---|---|
 | `/` | static | Hero (content/hero-slides.json), featured + ready-made products, pre-order form, contact form |
-| `/shop` | dynamic | Filter/sort/paginate via search params (lib/shop.ts) |
-| `/shop/[slug]` | static (SSG) | One page per product; unknown slugs 404; Product JSON-LD |
+| `/products` | dynamic | "Our Mushrooms": category filter, search, name/newest sort, pagination via search params (lib/shop.ts) |
+| `/products/[slug]` | static (SSG) | One page per product; unknown slugs 404; BreadcrumbList JSON-LD (no Product JSON-LD: no price or rating to show) |
 | `/pre-order`, `/contact`, `/training` | static | WhatsApp forms |
-| `/about`, `/compare`, policies | static | |
-| `/wishlist` | static | Reads localStorage on the client; `noindex` |
+| `/about`, policies | static | |
 | `/sitemap.xml`, `/robots.txt` | static | |
 
-Removed routes (`/cart`, `/checkout`, `/orders`, `/track-order`, `/account`, `/login`,
-`/register`, `/admin/*`) return permanent redirects (`next.config.ts`).
+Moved and removed routes return permanent redirects (`lib/redirects.ts`, used by
+`next.config.ts`): `/shop` → `/products`, `/shop/:slug` → `/products/:slug`, `/wishlist`,
+`/compare`, `/cart`, `/checkout` → `/products`, and `/orders`, `/track-order`, `/account`,
+`/login`, `/register`, `/admin/*` → `/contact` or `/`.
 
 ## Data flow
 
@@ -61,5 +61,6 @@ Nothing posts to the server; there are no API routes or server actions.
   licensed files or a free font before relying on the site commercially.
 - **Policy pages** (shipping, refund) still describe online orders and delivery. The
   wording may need a review now that orders are confirmed over WhatsApp.
-- **Prices and availability** are whatever is in `content/products.json`. Product pages
-  ask customers to confirm on WhatsApp.
+- **Prices, ratings and stock are not shown anywhere** and are not in `content/` (so they
+  never reach the browser). Product cards and pages ask visitors to enquire on WhatsApp
+  for today's price. Training fees, policy amounts and the delivery promos are unaffected.

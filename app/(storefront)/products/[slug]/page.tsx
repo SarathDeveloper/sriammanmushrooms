@@ -1,4 +1,4 @@
-import { ChevronRight, Star, Truck, ShieldCheck, RotateCcw, Clock, Share2, Timer } from "lucide-react";
+import { ChevronRight, Truck, ShieldCheck, RotateCcw, Clock, Share2, Timer, Package, Quote } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -6,8 +6,8 @@ import { notFound } from "next/navigation";
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { PincodeChecker } from "@/components/PincodeChecker";
-import { ProductActions } from "@/components/ProductActions";
 import { ProductCard } from "@/components/ProductCard";
+import { EnquireButton } from "@/components/ProductEnquiryDialog";
 import { ProductGallery } from "@/components/ProductGallery";
 import { ProductShare } from "@/components/ProductShare";
 import {
@@ -16,8 +16,9 @@ import {
   getRelatedProducts,
   getReviewsForProduct,
 } from "@/lib/content";
-import { absoluteImageUrl, productJsonLd, serializeJsonLd } from "@/lib/seo";
+import { absoluteImageUrl, breadcrumbJsonLd, serializeJsonLd } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/site";
+import { packSizeLabel } from "@/lib/utils";
 
 // Every product page is generated at build time; unknown slugs are a 404.
 export const dynamicParams = false;
@@ -36,35 +37,25 @@ export async function generateMetadata(props: {
   return {
     title: product.name,
     description: product.description,
-    alternates: { canonical: `/shop/${product.slug}` },
+    alternates: { canonical: `/products/${product.slug}` },
     openGraph: {
       type: "website",
       title: product.name,
       description: product.description,
-      url: `/shop/${product.slug}`,
+      url: `/products/${product.slug}`,
       ...(image ? { images: [{ url: image, alt: product.name }] } : {}),
-    },
-    other: {
-      "product:price:amount": product.price.toString(),
-      "product:price:currency": "INR",
     },
   };
 }
 
 const nutritionData: Record<string, { calories: number; protein: string; fiber: string; vitD: string; iron: string }> = {
   Oyster: { calories: 33, protein: "3.3g", fiber: "2.3g", vitD: "Low", iron: "1.3mg" },
-  Milky: { calories: 35, protein: "3.1g", fiber: "1.8g", vitD: "High", iron: "1.7mg" },
   Button: { calories: 22, protein: "3.1g", fiber: "1.0g", vitD: "Medium", iron: "0.5mg" },
-  Shiitake: { calories: 34, protein: "2.2g", fiber: "2.5g", vitD: "High", iron: "0.4mg" },
-  "Value-Added": { calories: 45, protein: "2.8g", fiber: "1.5g", vitD: "Varies", iron: "0.8mg" },
 };
 
 const storageInstructions: Record<string, string> = {
   Oyster: "Store in a paper bag in the refrigerator. Best consumed within 3-4 days of delivery.",
-  Milky: "Keep refrigerated in original packaging. Consume within 4-5 days for best freshness.",
   Button: "Store in a paper bag or open container in the fridge. Stays fresh for 5-7 days.",
-  Shiitake: "Refrigerate in a paper bag. Fresh shiitake keeps well for 5-7 days.",
-  "Value-Added": "Store in a cool, dry place away from sunlight. Check label for specific shelf life.",
 };
 
 const recipesByCategory: Record<string, { title: string; time: string; description: string }[]> = {
@@ -72,21 +63,9 @@ const recipesByCategory: Record<string, { title: string; time: string; descripti
     { title: "Pepper Garlic Oyster Mushrooms", time: "20 min", description: "Toss with garlic, black pepper, curry leaves, and a little oil for a quick side dish." },
     { title: "Oyster Mushroom Stir-Fry", time: "15 min", description: "Cook with onions, capsicum, and soy or spices until lightly crisp at the edges." },
   ],
-  Milky: [
-    { title: "Milky Mushroom Biryani", time: "40 min", description: "Slice the firm mushrooms into a fragrant rice biryani with whole spices and herbs." },
-    { title: "Mushroom Pepper Curry", time: "30 min", description: "Simmer with onion, tomato, and freshly ground pepper for a hearty curry." },
-  ],
   Button: [
     { title: "Everyday Mushroom Masala", time: "25 min", description: "Sauté with onion, tomato, turmeric, and garam masala for an easy weeknight dish." },
     { title: "Creamy Mushroom Toast", time: "15 min", description: "Cook sliced mushrooms with garlic and herbs, then serve over toasted bread." },
-  ],
-  Shiitake: [
-    { title: "Shiitake Noodle Bowl", time: "25 min", description: "Add sautéed shiitake to noodles with greens, ginger, and a light soy dressing." },
-    { title: "Crispy Shiitake Roast", time: "25 min", description: "Roast with oil and seasoning until the edges are crisp and deeply savoury." },
-  ],
-  "Value-Added": [
-    { title: "Quick Mushroom Soup", time: "15 min", description: "Prepare a warming soup using the mix according to the pack instructions." },
-    { title: "Mushroom Masala Marinade", time: "10 min", description: "Use mushroom masala powder with yogurt or oil as a flavourful marinade." },
   ],
 };
 
@@ -98,24 +77,31 @@ export default async function ProductDetailPage(props: {
   if (!product) notFound();
 
   const related = getRelatedProducts(product, 3);
-  const nutrition = nutritionData[product.category] || nutritionData["Value-Added"];
-  const storage = storageInstructions[product.category] || storageInstructions["Value-Added"];
-  const recipes = recipesByCategory[product.category] || recipesByCategory["Value-Added"];
+  const nutrition = nutritionData[product.category] || nutritionData.Oyster;
+  const storage = storageInstructions[product.category] || storageInstructions.Oyster;
+  const recipes = recipesByCategory[product.category] || recipesByCategory.Oyster;
   const reviews = getReviewsForProduct(product.slug);
-  const shareText = `Check out ${product.name} from Sri Amman Mushroom Farms! ${absoluteUrl(`/shop/${product.slug}`)}`;
+  const hasReviews = reviews.length > 0;
+  const shareText = `Check out ${product.name} from Sri Amman Mushroom Farms! ${absoluteUrl(`/products/${product.slug}`)}`;
+  const breadcrumbs = [
+    { name: "Home", path: "/" },
+    { name: "Our Mushrooms", path: "/products" },
+    { name: product.name, path: `/products/${product.slug}` },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* No Product JSON-LD on purpose: without a price or rating Google treats it as invalid (see lib/seo.ts). */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(productJsonLd(product)) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd(breadcrumbs)) }}
       />
       {/* Breadcrumb */}
       <div className="bg-secondary py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center gap-2 text-base text-muted-foreground min-w-0">
           <Link href="/" className="hover:text-primary shrink-0">Home</Link>
           <ChevronRight size={14} className="shrink-0" />
-          <Link href="/shop" className="hover:text-primary shrink-0">Shop</Link>
+          <Link href="/products" className="hover:text-primary shrink-0">Our Mushrooms</Link>
           <ChevronRight size={14} className="shrink-0" />
           <span className="text-foreground font-medium truncate min-w-0">{product.name}</span>
         </div>
@@ -138,78 +124,52 @@ export default async function ProductDetailPage(props: {
               <span className="text-base font-semibold text-primary uppercase tracking-wider mb-2">
                 {product.category} Mushroom
               </span>
-              <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground mb-3">
+              <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground mb-4">
                 {product.name}
               </h1>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex items-center gap-0.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={16}
-                      className={star <= Math.round(product.rating) ? "fill-[#c4a96a] text-[#c4a96a]" : "fill-border text-border"}
-                    />
-                  ))}
-                </div>
-                <span className="text-base text-muted-foreground">{product.rating} ({product.reviewCount} reviews)</span>
-              </div>
 
-              {/* Availability */}
-              <div className="flex items-center gap-2 mb-4">
-                <span
-                  className={
-                    product.inStock
-                      ? "inline-flex px-2.5 py-1 rounded-full bg-primary text-white text-sm font-semibold"
-                      : "inline-flex px-2.5 py-1 rounded-full bg-[#E56D6D] text-white text-sm font-semibold"
-                  }
-                >
-                  {product.inStock ? "Available" : "Currently Unavailable"}
+              <div className="flex flex-wrap items-center gap-2 mb-5">
+                <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary border border-border text-sm font-semibold text-foreground">
+                  <Package size={16} className="text-primary shrink-0" aria-hidden />
+                  {packSizeLabel(product.weight)}
                 </span>
-                <span className="text-sm text-muted-foreground">
-                  Enquire on WhatsApp for today&apos;s stock and delivery.
-                </span>
-              </div>
-
-              {product.shelfLifeDays != null && product.shelfLifeDays > 0 && (
-                <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 w-fit">
-                  <Timer size={16} className="text-amber-600 shrink-0" />
-                  <span className="text-sm font-semibold text-amber-700">
+                {product.shelfLifeDays != null && product.shelfLifeDays > 0 && (
+                  <span className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-700">
+                    <Timer size={16} className="text-amber-600 shrink-0" aria-hidden />
                     Best consumed within {product.shelfLifeDays} day{product.shelfLifeDays > 1 ? "s" : ""} of delivery
-                  </span>
-                </div>
-              )}
-
-              <div className="flex items-baseline gap-2 mb-6 flex-wrap">
-                <span className="text-2xl sm:text-3xl font-bold text-primary">
-                  ₹{product.price.toLocaleString("en-IN")}
-                </span>
-                {product.compareAtPrice && (
-                  <span className="text-base sm:text-lg text-muted-foreground line-through">
-                    ₹{product.compareAtPrice.toLocaleString("en-IN")}
-                  </span>
-                )}
-                <span className="text-muted-foreground">per {product.weight}</span>
-                {product.compareAtPrice && (
-                  <span className="text-sm font-bold text-white bg-[var(--color-error)] px-2 py-0.5 rounded-full">
-                    {Math.round((1 - product.price / product.compareAtPrice) * 100)}% OFF
                   </span>
                 )}
               </div>
 
               <p className="text-sm sm:text-base text-foreground leading-relaxed mb-6">{product.description}</p>
 
-              <div className="flex flex-wrap gap-2 mb-6">
-                {product.highlights.map((h: string) => (
-                  <span
-                    key={h}
-                    className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary border border-primary/10"
-                  >
-                    {h}
-                  </span>
-                ))}
-              </div>
+              {product.highlights.length > 0 && (
+                <ul className="flex flex-wrap gap-2 mb-6">
+                  {product.highlights.map((h) => (
+                    <li
+                      key={h}
+                      className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary border border-primary/10"
+                    >
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-              <ProductActions product={product} />
+              {/* Enquiry: prices follow the daily harvest, so they are given on WhatsApp. */}
+              <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
+                <h2 className="text-base sm:text-lg font-bold font-heading text-foreground">
+                  Today&apos;s price on WhatsApp
+                </h2>
+                <p className="mt-1 mb-4 text-sm sm:text-base text-[var(--color-body)] leading-relaxed">
+                  Our prices follow the daily harvest. Send a quick enquiry and we&apos;ll reply with
+                  today&apos;s price, stock and delivery slot.
+                </p>
+                <EnquireButton
+                  product={{ name: product.name, weight: product.weight }}
+                  className="w-full rounded-lg h-11 bg-[#1A4938] hover:bg-[#14392c]"
+                />
+              </div>
 
               {/* Pincode Checker */}
               <div className="mt-6">
@@ -257,7 +217,7 @@ export default async function ProductDetailPage(props: {
       <section className="py-10 sm:py-14 bg-secondary">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FadeIn>
+            <FadeIn className="h-full">
               <div className="bg-card rounded-2xl border border-border p-6 h-full">
                 <h3 className="text-lg sm:text-xl font-bold text-foreground font-heading mb-4">
                   Freshness Information
@@ -283,8 +243,8 @@ export default async function ProductDetailPage(props: {
               </div>
             </FadeIn>
 
-            <FadeIn>
-              <div className="bg-card rounded-2xl border border-border p-6">
+            <FadeIn className="h-full">
+              <div className="bg-card rounded-2xl border border-border p-6 h-full">
                 <h3 className="text-lg sm:text-xl font-bold text-foreground font-heading mb-4 flex items-center gap-2">
                   <Clock size={18} className="text-primary" /> Nutrition Facts (per 100g)
                 </h3>
@@ -302,14 +262,11 @@ export default async function ProductDetailPage(props: {
                     </div>
                   ))}
                 </div>
-                <Link href="/compare" className="text-sm text-primary font-semibold mt-4 inline-block hover:underline">
-                  Compare all varieties →
-                </Link>
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.1}>
-              <div className="bg-card rounded-2xl border border-border p-6">
+            <FadeIn delay={0.1} className="h-full">
+              <div className="bg-card rounded-2xl border border-border p-6 h-full">
                 <h3 className="text-lg sm:text-xl font-bold text-foreground font-heading mb-4 flex items-center gap-2">
                   <ShieldCheck size={18} className="text-primary" /> Storage Instructions
                 </h3>
@@ -328,43 +285,28 @@ export default async function ProductDetailPage(props: {
         </div>
       </section>
 
-      {/* Customer reviews */}
-      <section className="py-10 sm:py-14 bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <FadeIn>
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
-              <div>
+      {/* Customer testimonials: shown only when this product has written feedback. */}
+      {hasReviews && (
+        <section className="py-10 sm:py-14 bg-background">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <FadeIn>
+              <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="h-px w-6 sm:w-8 bg-border" />
-                  <span className="text-sm font-bold uppercase tracking-[0.2em] text-primary">Customer feedback</span>
+                  <span className="text-sm font-bold uppercase tracking-[0.2em] text-primary">From our customers</span>
                   <span className="h-px w-6 sm:w-8 bg-border" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground font-heading tracking-tight">Reviews for {product.name}</h2>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground font-heading tracking-tight">What customers say</h2>
               </div>
-              <div className="flex items-center gap-2 text-base text-muted-foreground">
-                <Star size={16} className="fill-[#c4a96a] text-[#c4a96a]" />
-                <span className="font-semibold text-foreground">{product.rating.toFixed(1)}</span>
-                <span>from {product.reviewCount} reviews</span>
-              </div>
-            </div>
-          </FadeIn>
-          {reviews.length > 0 ? (
+            </FadeIn>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {reviews.map((review) => (
-                <FadeIn key={review.id}>
+                <FadeIn key={review.id} className="h-full">
                   <article className="h-full rounded-2xl border border-border bg-card p-5">
-                    <div className="flex items-center gap-1 mb-3" aria-label={`${review.rating} out of 5 stars`}>
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          size={14}
-                          className={star <= review.rating ? "fill-[#c4a96a] text-[#c4a96a]" : "fill-border text-border"}
-                        />
-                      ))}
-                    </div>
-                    <p className="text-base leading-relaxed text-[var(--color-body)]">
-                      {review.comment || "A customer left a rating for this product."}
-                    </p>
+                    <Quote size={20} className="mb-3 text-primary/40" aria-hidden />
+                    <blockquote className="text-base leading-relaxed text-[var(--color-body)]">
+                      {review.comment}
+                    </blockquote>
                     <p className="mt-4 text-sm font-semibold text-muted-foreground">
                       {review.name}
                     </p>
@@ -372,16 +314,12 @@ export default async function ProductDetailPage(props: {
                 </FadeIn>
               ))}
             </div>
-          ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-secondary/50 p-8 text-center text-base text-muted-foreground">
-              No written reviews yet. Tried this product? Tell us on WhatsApp and we&apos;ll feature your feedback.
-            </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* Recipe ideas */}
-      <section className="py-10 sm:py-14 bg-secondary">
+      <section className={`py-10 sm:py-14 ${hasReviews ? "bg-secondary" : "bg-background"}`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <FadeIn>
             <div className="flex items-center gap-3 mb-2">
@@ -413,7 +351,7 @@ export default async function ProductDetailPage(props: {
 
       {/* Related Products */}
       {related.length > 0 && (
-        <section className="py-10 sm:py-14 bg-background">
+        <section className={`py-10 sm:py-14 ${hasReviews ? "bg-background" : "bg-secondary"}`}>
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <FadeIn>
               <div className="flex items-center justify-center gap-3 mb-3">
@@ -425,7 +363,7 @@ export default async function ProductDetailPage(props: {
             </FadeIn>
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {related.map((p, i) => (
-                <FadeIn key={p.id} delay={i * 0.08}>
+                <FadeIn key={p.id} delay={i * 0.08} className="h-full">
                   <ProductCard product={p} />
                 </FadeIn>
               ))}

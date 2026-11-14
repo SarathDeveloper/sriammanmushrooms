@@ -29,7 +29,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Talk to Us"
         title="Contact Us"
-        description="Want to buy mushrooms? Want to learn farming? Want to visit our farm? Call us, WhatsApp us, or send a message. We will help you."
+        description="Want fresh mushrooms? Want to learn farming? Want to visit our farm? Call us, WhatsApp us, or send a message. We will help you."
       />
 
       {/* ───── Two-column body ───── */}

@@ -5,7 +5,6 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  ShoppingBag,
   Check
 } from "lucide-react";
 import Link from "next/link";
@@ -31,9 +30,9 @@ const fallbackSlides: HeroSlideData[] = [
     badge: "Free Delivery for ₹500+ Orders",
     headline: "Fresh Mushrooms\nFrom Our Farm",
     subtitle:
-      "We grow oyster, shiitake & button mushrooms. Pick today, deliver today. Direct from Kalvarayan Hills to your home.",
-    primaryCtaLabel: "View Products",
-    primaryCtaHref: "/shop",
+      "We grow oyster & button mushrooms. Pick today, deliver today. Direct from Kalvarayan Hills to your home.",
+    primaryCtaLabel: "Explore Our Mushrooms",
+    primaryCtaHref: "/products",
     secondaryCtaLabel: "Book Early",
     secondaryCtaHref: "/pre-order",
     image: "/gallery/products/oyster-mushrooms-DUuUKbNY.jpg",
@@ -57,7 +56,7 @@ const fallbackSlides: HeroSlideData[] = [
     primaryCtaLabel: "Book Now",
     primaryCtaHref: "/pre-order",
     secondaryCtaLabel: "See All",
-    secondaryCtaHref: "/shop",
+    secondaryCtaHref: "/products",
     image: "/gallery/farm/growing-shed-interior.png",
   },
 ];
@@ -220,7 +219,6 @@ export function HomeHero({ slides }: { slides?: HeroSlideData[] }) {
                           href={slide.primaryCtaHref}
                           className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#265e47] text-white font-medium px-5 sm:px-7 py-3 sm:py-3.5 text-base hover:bg-[#1f4e3b] transition-colors shadow-lg shadow-black/20"
                         >
-                          <ShoppingBag size={16} />
                           {slide.primaryCtaLabel}
                           <ArrowRight size={16} className="ml-1 opacity-70" />
                         </Link>

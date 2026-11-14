@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import robots from "@/app/robots";
 import sitemap, { STATIC_ROUTES } from "@/app/sitemap";
 import { getProducts } from "@/lib/content";
-import { productJsonLd, serializeJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, serializeJsonLd } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 
 describe("sitemap", () => {
@@ -13,8 +13,9 @@ describe("sitemap", () => {
   it("lists every static page and every product exactly once", () => {
     expect(entries).toHaveLength(STATIC_ROUTES.length + getProducts().length);
     expect(new Set(urls).size).toBe(urls.length);
+    expect(urls).toContain(`${SITE_URL}/products`);
     for (const product of getProducts()) {
-      expect(urls).toContain(`${SITE_URL}/shop/${product.slug}`);
+      expect(urls).toContain(`${SITE_URL}/products/${product.slug}`);
     }
   });
 
@@ -23,10 +24,11 @@ describe("sitemap", () => {
     for (const url of urls) expect(url.startsWith(`${SITE_URL}/`)).toBe(true);
   });
 
-  it("does not list removed or private pages", () => {
-    for (const path of ["/cart", "/checkout", "/admin", "/login", "/account", "/orders", "/wishlist"]) {
+  it("does not list removed, redirected or private pages", () => {
+    for (const path of ["/cart", "/checkout", "/admin", "/login", "/account", "/orders", "/wishlist", "/compare"]) {
       expect(urls).not.toContain(`${SITE_URL}${path}`);
     }
+    for (const url of urls) expect(url.startsWith(`${SITE_URL}/shop`)).toBe(false);
   });
 });
 
@@ -38,16 +40,31 @@ describe("robots", () => {
   });
 });
 
-describe("product JSON-LD", () => {
+describe("breadcrumb JSON-LD", () => {
   const product = getProducts()[0];
+  const data = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Our Mushrooms", path: "/products" },
+    { name: product.name, path: `/products/${product.slug}` },
+  ]);
 
-  it("describes the product with an INR offer", () => {
-    const data = productJsonLd(product);
-    expect(data).toMatchObject({
-      "@type": "Product",
-      name: product.name,
-      offers: { priceCurrency: "INR", price: product.price, url: `${SITE_URL}/shop/${product.slug}` },
+  it("lists the trail in order with absolute /products URLs", () => {
+    expect(data).toEqual({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Our Mushrooms", item: `${SITE_URL}/products` },
+        { "@type": "ListItem", position: 3, name: product.name, item: `${SITE_URL}/products/${product.slug}` },
+      ],
     });
+  });
+
+  it("carries no price, offer or rating data", () => {
+    const json = serializeJsonLd(data);
+    for (const word of ["price", "offers", "Offer", "aggregateRating", "review"]) {
+      expect(json).not.toContain(word);
+    }
   });
 
   it("escapes < so content can't close the script tag", () => {

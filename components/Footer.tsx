@@ -6,16 +6,15 @@ import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "/shop", label: "Shop" },
+  { href: "/products", label: "Our Mushrooms" },
   { href: "/training", label: "Training" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
 const productLinks = [
-  { href: "/shop", label: "Fresh Mushrooms" },
+  { href: "/products", label: "Fresh Mushrooms" },
   { href: "/pre-order", label: "Pre-Order" },
-  { href: "/compare", label: "Compare Varieties" },
   { href: "/training", label: "Farm Training" },
 ];
 
@@ -81,8 +80,8 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-base leading-relaxed text-white/75">
-              Fresh mushrooms from Kalvarayan Hills, Vellimalai. Buy fresh,
-              book early, or learn farming with us.
+              Fresh mushrooms from Kalvarayan Hills, Vellimalai. Get fresh
+              mushrooms, book early, or learn farming with us.
             </p>
             <p className="text-sm text-white/45">
               Grown with care — Fresh and healthy

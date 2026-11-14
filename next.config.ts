@@ -1,6 +1,8 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
+import { SITE_REDIRECTS } from "./lib/redirects";
+
 const securityHeaders = [
   {
     key: "X-DNS-Prefetch-Control",
@@ -63,21 +65,9 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 60 * 60 * 24,
   },
-  // The showcase site has no ordering, accounts or admin. Old links and
-  // bookmarks to those pages land somewhere useful instead of a 404. The full
-  // version with these pages lives on the feature/fullstack-admin branch.
+  // Old URLs (/shop, /wishlist, /compare, /cart, /admin, …) — see lib/redirects.ts.
   async redirects() {
-    return [
-      { source: "/cart", destination: "/shop", permanent: true },
-      { source: "/checkout", destination: "/shop", permanent: true },
-      { source: "/orders", destination: "/contact", permanent: true },
-      { source: "/track-order", destination: "/contact", permanent: true },
-      { source: "/account", destination: "/", permanent: true },
-      { source: "/register", destination: "/contact", permanent: true },
-      { source: "/login", destination: "/", permanent: true },
-      { source: "/admin", destination: "/", permanent: true },
-      { source: "/admin/:path*", destination: "/", permanent: true },
-    ];
+    return SITE_REDIRECTS;
   },
   async headers() {
     return [

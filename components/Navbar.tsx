@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +8,6 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import type { SearchItem } from "@/lib/content";
-import { useWishlistStore } from "@/lib/store";
-import { useHasMounted } from "@/lib/useHasMounted";
 import { cn } from "@/lib/utils";
 
 const SearchDialog = dynamic(
@@ -25,7 +23,7 @@ const MobileSheet = dynamic(
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/shop", label: "Shop" },
+  { href: "/products", label: "Our Mushrooms" },
   { href: "/pre-order", label: "Pre Order" },
   { href: "/training", label: "Training" },
   { href: "/contact", label: "Contact" },
@@ -33,8 +31,6 @@ const navLinks = [
 
 export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
   const pathname = usePathname();
-  const mounted = useHasMounted();
-  const wishlistCount = useWishlistStore((s) => s.productIds.length);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-md">
@@ -87,15 +83,6 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
           {/* Icons & Actions */}
           <div className="flex items-center gap-2 sm:gap-4">
             <SearchDialog items={searchItems} />
-
-            <Link href="/wishlist" aria-label="View wishlist" className="relative flex items-center justify-center w-10 h-10 text-muted-foreground hover:text-primary transition-colors">
-              <Heart size={20} />
-              {mounted && wishlistCount > 0 && (
-                <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F76B46] text-xs font-bold text-white">
-                  {wishlistCount}
-                </span>
-              )}
-            </Link>
 
             <div className="hidden md:flex">
               <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium">

@@ -79,7 +79,7 @@ describe("message builders", () => {
         "Mobile: 9876543210",
         "Location: Salem",
         "",
-        "Please confirm availability, price and delivery.",
+        "Please share today's price, availability and delivery details.",
       ].join("\n"),
     );
   });

@@ -5,16 +5,12 @@
     "name": "Premium Oyster Mushroom",
     "category": "oyster",
     "description": "Delicate, fan-shaped oyster mushrooms hand-picked at the peak of freshness. Prized for their subtle, savory flavor and tender texture, perfect for stir-fries, soups, and grilling.",
-    "price": 150,
-    "compareAtPrice": 180,
     "weight": "250g",
     "images": [
       "mushroom-farm/products/premium-oyster-mushroom-0",
       "mushroom-farm/products/premium-oyster-mushroom-1"
     ],
     "tag": "Bestseller",
-    "rating": 4.8,
-    "reviewCount": 124,
     "highlights": [
       "Rich in protein & fiber",
       "Carefully grown",
@@ -22,35 +18,8 @@
       "Great meat substitute"
     ],
     "shelfLifeDays": null,
-    "inStock": true,
     "isFeatured": true,
     "sortOrder": 1
-  },
-  {
-    "id": "2",
-    "slug": "fresh-milky-mushroom",
-    "name": "Fresh Milky Mushroom",
-    "category": "milky",
-    "description": "Milky mushrooms with a firm, meaty bite that holds up beautifully in curries and biryanis. A South Indian favorite, cultivated in our climate-controlled beds for consistent quality.",
-    "price": 180,
-    "compareAtPrice": null,
-    "weight": "250g",
-    "images": [
-      "mushroom-farm/products/mixed-mushrooms-CNX65Zqk"
-    ],
-    "tag": "Farmer's Pick",
-    "rating": 4.9,
-    "reviewCount": 98,
-    "highlights": [
-      "High in Vitamin D",
-      "Firm, meaty texture",
-      "Locally cultivated",
-      "Ideal for curries"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": true,
-    "sortOrder": 2
   },
   {
     "id": "3",
@@ -58,16 +27,12 @@
     "name": "Button Mushroom",
     "category": "button",
     "description": "Classic white button mushrooms with a mild, earthy flavor that works in nearly every dish. A pantry staple, delivered fresh from farm to doorstep within hours of harvest.",
-    "price": 120,
-    "compareAtPrice": null,
     "weight": "200g",
     "images": [
       "mushroom-farm/products/organic-button-mushroom",
       "mushroom-farm/products/button-mushrooms-Dj92oXDo"
     ],
     "tag": "Everyday Staple",
-    "rating": 4.6,
-    "reviewCount": 210,
     "highlights": [
       "Ready to cook",
       "Farm-fresh harvest",
@@ -75,353 +40,7 @@
       "Vegetarian"
     ],
     "shelfLifeDays": null,
-    "inStock": true,
     "isFeatured": true,
-    "sortOrder": 3
-  },
-  {
-    "id": "4",
-    "slug": "shiitake-exotic",
-    "name": "Shiitake Exotic",
-    "category": "shiitake",
-    "description": "Rich, umami-packed shiitake mushrooms with a deep smoky aroma. A restaurant favorite, this exotic variety elevates ramen, risottos, and Asian stir-fries.",
-    "price": 250,
-    "compareAtPrice": 290,
-    "weight": "200g",
-    "images": [
-      "mushroom-farm/products/shiitake-exotic-1"
-    ],
-    "tag": "Chef's Choice",
-    "rating": 5,
-    "reviewCount": 76,
-    "highlights": [
-      "Umami-rich flavor",
-      "Boosts immunity",
-      "Restaurant grade",
-      "Limited harvest"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 4
-  },
-  {
-    "id": "5",
-    "slug": "grey-oyster-mushroom",
-    "name": "Grey Oyster Mushroom",
-    "category": "oyster",
-    "description": "A slightly firmer cousin of the classic oyster mushroom, with a deeper flavor profile. Excellent when pan-seared with garlic and butter.",
-    "price": 160,
-    "compareAtPrice": null,
-    "weight": "250g",
-    "images": [
-      "mushroom-farm/products/grey-oyster-mushroom-0",
-      "mushroom-farm/products/grey-oyster-mushroom-1"
-    ],
-    "tag": null,
-    "rating": 4.7,
-    "reviewCount": 54,
-    "highlights": [
-      "Firm texture",
-      "Deep savory notes",
-      "Great for searing",
-      "Freshly harvested"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 5
-  },
-  {
-    "id": "6",
-    "slug": "mushroom-pickle",
-    "name": "Mushroom Pickle",
-    "category": "value-added",
-    "description": "A tangy, spiced mushroom pickle made in small batches using traditional South Indian recipes. No preservatives, just farm-fresh mushrooms and cold-pressed oil.",
-    "price": 220,
-    "compareAtPrice": null,
-    "weight": "200g Jar",
-    "images": [
-      "mushroom-farm/products/mushroom-pickle"
-    ],
-    "tag": "New",
-    "rating": 4.5,
-    "reviewCount": 39,
-    "highlights": [
-      "Traditional recipe",
-      "No preservatives",
-      "6-month shelf life",
-      "Spicy & tangy"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 6
-  },
-  {
-    "id": "7",
-    "slug": "dried-shiitake",
-    "name": "Dried Shiitake Slices",
-    "category": "value-added",
-    "description": "Sun-dried shiitake slices with an intensified, concentrated flavor. Rehydrate for soups and broths, or grind into a natural umami seasoning powder.",
-    "price": 320,
-    "compareAtPrice": null,
-    "weight": "100g",
-    "images": [
-      "mushroom-farm/products/dried-shiitake",
-      "mushroom-farm/products/shiitake-mushrooms-BMfvtmoS"
-    ],
-    "tag": null,
-    "rating": 4.8,
-    "reviewCount": 21,
-    "highlights": [
-      "Long shelf life",
-      "Concentrated flavor",
-      "Great for broths",
-      "Zero additives"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 7
-  },
-  {
-    "id": "8",
-    "slug": "mixed-mushroom-combo",
-    "name": "Mixed Mushroom Combo Pack",
-    "category": "value-added",
-    "description": "Can't decide? Get a taste of everything with our combo pack featuring oyster, milky, button, and shiitake mushrooms — the perfect way to explore our full harvest.",
-    "price": 450,
-    "compareAtPrice": 520,
-    "weight": "4 x 200g",
-    "images": [
-      "mushroom-farm/products/mixed-mushrooms-CNX65Zqk",
-      "mushroom-farm/products/oyster-mushrooms-DUuUKbNY",
-      "mushroom-farm/products/button-mushrooms-Dj92oXDo"
-    ],
-    "tag": "Best Value",
-    "rating": 4.9,
-    "reviewCount": 63,
-    "highlights": [
-      "4 varieties in one pack",
-      "Best value per gram",
-      "Perfect for gifting",
-      "Free shipping"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 8
-  },
-  {
-    "id": "9",
-    "slug": "pink-oyster-mushroom",
-    "name": "Pink Oyster Mushroom",
-    "category": "oyster",
-    "description": "Vibrant pink oyster mushrooms with a mild, seafood-like flavor that fades to cream when cooked. A colorful addition to salads, tacos, and quick sautés.",
-    "price": 190,
-    "compareAtPrice": 220,
-    "weight": "200g",
-    "images": [
-      "mushroom-farm/products/oyster-mushrooms-DUuUKbNY",
-      "mushroom-farm/products/pink-oyster-mushroom-1"
-    ],
-    "tag": "New",
-    "rating": 4.8,
-    "reviewCount": 47,
-    "highlights": [
-      "Eye-catching color",
-      "Mild seafood notes",
-      "Cooks in minutes",
-      "Harvested same-day"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 9
-  },
-  {
-    "id": "10",
-    "slug": "king-oyster-mushroom",
-    "name": "King Oyster Mushroom",
-    "category": "oyster",
-    "description": "Thick-stemmed king oysters with a meaty bite that holds up to grilling, roasting, and shredding. A favorite for vegan steaks and mushroom 'scallops'.",
-    "price": 210,
-    "compareAtPrice": null,
-    "weight": "250g",
-    "images": [
-      "mushroom-farm/products/oyster-mushrooms-DUuUKbNY",
-      "mushroom-farm/products/king-oyster-mushroom-1"
-    ],
-    "tag": "Chef's Choice",
-    "rating": 4.9,
-    "reviewCount": 88,
-    "highlights": [
-      "Meaty texture",
-      "Grill-friendly",
-      "Excellent meat substitute",
-      "Restaurant grade"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 10
-  },
-  {
-    "id": "11",
-    "slug": "brown-button-mushroom",
-    "name": "Brown Button Mushroom",
-    "category": "button",
-    "description": "Cremini-style brown buttons with a deeper, earthier flavor than white buttons. Ideal for pastas, omelettes, and everyday Indian cooking.",
-    "price": 140,
-    "compareAtPrice": null,
-    "weight": "200g",
-    "images": [
-      "mushroom-farm/products/button-mushrooms-Dj92oXDo",
-      "mushroom-farm/products/brown-button-mushroom-1"
-    ],
-    "tag": null,
-    "rating": 4.7,
-    "reviewCount": 132,
-    "highlights": [
-      "Richer flavor",
-      "Everyday versatile",
-      "Farm-fresh",
-      "Low calorie"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 11
-  },
-  {
-    "id": "12",
-    "slug": "jumbo-button-mushroom",
-    "name": "Jumbo Button Mushroom",
-    "category": "button",
-    "description": "Oversized white button mushrooms perfect for stuffing, grilling, or slicing into thick steaks. Grown larger for fuller flavor and fewer prep cuts.",
-    "price": 160,
-    "compareAtPrice": null,
-    "weight": "300g",
-    "images": [
-      "mushroom-farm/products/button-mushrooms-Dj92oXDo"
-    ],
-    "tag": "Farmer's Pick",
-    "rating": 4.6,
-    "reviewCount": 64,
-    "highlights": [
-      "Stuffing size",
-      "Thick slices",
-      "Great for grilling",
-      "Family pack weight"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 12
-  },
-  {
-    "id": "13",
-    "slug": "milky-mushroom-family-pack",
-    "name": "Milky Mushroom Family Pack",
-    "category": "milky",
-    "description": "A half-kilo pack of firm milky mushrooms for weekly cooking — curries, pepper fries, and weekend biryanis. Better value than smaller packs.",
-    "price": 320,
-    "compareAtPrice": 360,
-    "weight": "500g",
-    "images": [
-      "mushroom-farm/products/mixed-mushrooms-CNX65Zqk"
-    ],
-    "tag": "Best Value",
-    "rating": 4.8,
-    "reviewCount": 41,
-    "highlights": [
-      "500g value pack",
-      "Ideal for families",
-      "Holds up in curries",
-      "Same-day harvest"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 13
-  },
-  {
-    "id": "14",
-    "slug": "fresh-shiitake-caps",
-    "name": "Fresh Shiitake Caps",
-    "category": "shiitake",
-    "description": "Hand-selected shiitake caps with stems trimmed — ready for soups, ramen, and high-heat stir-fries. Deep aroma and tender chew.",
-    "price": 280,
-    "compareAtPrice": null,
-    "weight": "200g",
-    "images": [
-      "mushroom-farm/products/shiitake-mushrooms-BMfvtmoS"
-    ],
-    "tag": null,
-    "rating": 4.9,
-    "reviewCount": 52,
-    "highlights": [
-      "Caps only",
-      "Ready to cook",
-      "Intense aroma",
-      "Limited harvest"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 14
-  },
-  {
-    "id": "15",
-    "slug": "mushroom-masala-powder",
-    "name": "Mushroom Masala Powder",
-    "category": "value-added",
-    "description": "A savory blend of dried mushroom powder and South Indian spices. Sprinkle into gravies, dosa fillings, and egg dishes for instant umami.",
-    "price": 180,
-    "compareAtPrice": null,
-    "weight": "100g Pack",
-    "images": [
-      "mushroom-farm/products/mushroom-masala-powder"
-    ],
-    "tag": "New",
-    "rating": 4.6,
-    "reviewCount": 73,
-    "highlights": [
-      "Instant umami",
-      "No preservatives",
-      "Long shelf life",
-      "Kitchen staple"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 15
-  },
-  {
-    "id": "16",
-    "slug": "mushroom-soup-mix",
-    "name": "Creamy Mushroom Soup Mix",
-    "category": "value-added",
-    "description": "A ready-to-cook soup base made from our dried oyster and button mushrooms. Just add milk or coconut milk and simmer for a cozy bowl.",
-    "price": 150,
-    "compareAtPrice": null,
-    "weight": "50g Pack",
-    "images": [
-      "mushroom-farm/products/creamy-mushroom-soup"
-    ],
-    "tag": "Quick Cook",
-    "rating": 4.5,
-    "reviewCount": 29,
-    "highlights": [
-      "Ready in 10 mins",
-      "Farm-sourced base",
-      "Comfort food",
-      "Vegetarian"
-    ],
-    "shelfLifeDays": null,
-    "inStock": true,
-    "isFeatured": false,
-    "sortOrder": 16
+    "sortOrder": 2
   }
 ]

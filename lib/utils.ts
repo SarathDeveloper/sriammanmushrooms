@@ -5,11 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(amount);
+/** "250g" -> "250g pack"; values that already say pack ("100g Pack") -> "100g pack". */
+export function packSizeLabel(weight: string) {
+  const trimmed = weight.trim();
+  return /\bpack\b/i.test(trimmed) ? trimmed.replace(/\bpack\b/i, "pack") : `${trimmed} pack`;
 }

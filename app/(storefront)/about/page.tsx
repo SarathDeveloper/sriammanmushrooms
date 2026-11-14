@@ -61,7 +61,7 @@ export default function AboutPage() {
                 Today, Sri Amman Mushroom Farms has many growing sheds. We sell to restaurants and shops across Tamil Nadu. We have taught hundreds of farmers how to grow mushrooms. And we still keep our promise: No chemicals, only natural farming.
               </p>
               <Button asChild size="lg" className="rounded-full px-8 mt-2">
-                <Link href="/shop">Try Our Mushrooms <ArrowRight className="ml-2" size={18} /></Link>
+                <Link href="/products">Try Our Mushrooms <ArrowRight className="ml-2" size={18} /></Link>
               </Button>
             </FadeIn>
           </div>

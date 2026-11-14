@@ -2,9 +2,9 @@
   {
     "badge": "Fresh From Kalvarayan Hills",
     "headline": "Fresh Mushrooms\nFrom Our Farm",
-    "subtitle": "We grow oyster, shiitake & button mushrooms. Picked today, delivered fresh. Direct from Kalvarayan Hills to your home.",
-    "primaryCtaLabel": "View Products",
-    "primaryCtaHref": "/shop",
+    "subtitle": "We grow oyster & button mushrooms. Picked today, delivered fresh. Direct from Kalvarayan Hills to your home.",
+    "primaryCtaLabel": "Explore Our Mushrooms",
+    "primaryCtaHref": "/products",
     "secondaryCtaLabel": "Book Early",
     "secondaryCtaHref": "/pre-order",
     "image": "/gallery/products/oyster-mushrooms-DUuUKbNY.jpg"
@@ -26,7 +26,7 @@
     "primaryCtaLabel": "Book Now",
     "primaryCtaHref": "/pre-order",
     "secondaryCtaLabel": "See All",
-    "secondaryCtaHref": "/shop",
+    "secondaryCtaHref": "/products",
     "image": "/gallery/farm/growing-shed-interior.png"
   }
 ]
