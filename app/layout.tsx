@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { serializeJsonLd } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { CONTACT_EMAIL, FARM_LOCATION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const effra = localFont({
   src: [
@@ -74,6 +74,7 @@ export default function RootLayout({
               description: "Fresh mushrooms grown and packed in the Kalvarayan Hills, Tamil Nadu",
               url: SITE_URL,
               telephone: "+919385526105",
+              email: CONTACT_EMAIL,
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "Vellimalai, Melsathanur",
@@ -84,8 +85,8 @@ export default function RootLayout({
               },
               geo: {
                 "@type": "GeoCoordinates",
-                latitude: "11.7480",
-                longitude: "78.5580",
+                latitude: FARM_LOCATION.lat,
+                longitude: FARM_LOCATION.lng,
               },
               openingHours: "Mo-Sa 08:00-18:00",
             }),

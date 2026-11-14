@@ -11,7 +11,7 @@ export const metadata = {
 const sections = [
   {
     title: "1. Order Cancellation",
-    body: "You may cancel an order before it has been dispatched by contacting us at hello@vellimalaifarms.in or +91 93855 26105. Once an order has been dispatched, it cannot be cancelled. For pre-orders, cancellation is allowed up to 24 hours before the scheduled harvest date.",
+    body: "You may cancel an order before it has been dispatched by contacting us at sriammanmushrooms@gmail.com or +91 93855 26105. Once an order has been dispatched, it cannot be cancelled. For pre-orders, cancellation is allowed up to 24 hours before the scheduled harvest date.",
   },
   {
     title: "2. Return Eligibility",
@@ -35,11 +35,11 @@ const sections = [
   },
   {
     title: "7. How to Request a Refund",
-    body: "To initiate a return or refund, email us at hello@vellimalaifarms.in or call +91 93855 26105 with your order number and photographs of the issue. Our team will review your request and respond within 24 hours.",
+    body: "To initiate a return or refund, email us at sriammanmushrooms@gmail.com or call +91 93855 26105 with your order number and photographs of the issue. Our team will review your request and respond within 24 hours.",
   },
   {
     title: "8. Contact Us",
-    body: "For any questions regarding this Refund & Cancellation Policy, please reach out to us at hello@vellimalaifarms.in or call +91 93855 26105. Our team is available Monday–Saturday, 8:00 AM – 6:00 PM.",
+    body: "For any questions regarding this Refund & Cancellation Policy, please reach out to us at sriammanmushrooms@gmail.com or call +91 93855 26105. Our team is available Monday–Saturday, 8:00 AM – 6:00 PM.",
   },
 ];
 

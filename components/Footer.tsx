@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -35,8 +36,8 @@ const contactItems = [
   {
     icon: Mail,
     label: "Email Us",
-    value: "hello@vellimalaifarms.in",
-    href: "mailto:hello@vellimalaifarms.in",
+    value: CONTACT_EMAIL,
+    href: `mailto:${CONTACT_EMAIL}`,
   },
   {
     icon: MapPin,

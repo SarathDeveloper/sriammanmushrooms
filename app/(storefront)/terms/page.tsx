@@ -46,7 +46,7 @@ const sections = [
   },
   {
     title: "10. Contact Us",
-    body: "For any questions regarding these Terms of Service, please contact us at hello@vellimalaifarms.in or +91 93855 26105.",
+    body: "For any questions regarding these Terms of Service, please contact us at sriammanmushrooms@gmail.com or +91 93855 26105.",
   },
 ];
 

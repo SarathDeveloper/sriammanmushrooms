@@ -5,6 +5,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { FadeIn } from "@/components/FadeIn";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { PageHero } from "@/components/PageHero";
+import { CONTACT_EMAIL, FARM_MAPS_EMBED_URL, FARM_MAPS_LINK } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -16,12 +17,10 @@ export const metadata: Metadata = {
 
 const PHONE = "+91 93855 26105";
 const ADDITIONAL_PHONES = ["+91 89031 56142", "+91 63833 61207"];
-const EMAIL = "hello@vellimalaifarms.in";
+const EMAIL = CONTACT_EMAIL;
 const ADDRESS_LINE = "Sari Amman Oyster Mushroom Farm, Vellimalai, Melsathanur, Kallakurichi - 606 209, Tamil Nadu, India";
-const LAT = 11.786746298281923;
-const LNG = 78.71029442669108;
-const MAPS_EMBED_URL = `https://www.google.com/maps?q=${LAT},${LNG}&z=14&output=embed`;
-const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
+const MAPS_EMBED_URL = FARM_MAPS_EMBED_URL;
+const MAPS_LINK = FARM_MAPS_LINK;
 
 export default function ContactPage() {
   return (
