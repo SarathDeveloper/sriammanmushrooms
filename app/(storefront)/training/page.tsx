@@ -1,6 +1,5 @@
 import {
   IndianRupee,
-  Landmark,
   Phone,
   Users,
   Award,
@@ -101,8 +100,14 @@ export default async function TrainingPage() {
 
             <FadeIn delay={0.1}>
               <div className="bg-card rounded-2xl border border-border overflow-hidden h-full flex flex-col shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 ease-out">
-                <div className="relative h-48 overflow-hidden bg-primary/5 flex items-center justify-center">
-                  <Landmark size={56} strokeWidth={1} className="text-primary/30" />
+                <div className="relative h-48 overflow-hidden">
+                  <SafeImage
+                    src="/gallery/recognition/collector-farm-visit.png"
+                    alt="District Collector inspecting a mushroom growing shed set up with the Horticulture Department"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-top"
+                  />
                 </div>
                 <div className="p-5 sm:p-6 flex-1 flex flex-col">
                   <h3 className="font-bold text-lg sm:text-xl text-foreground font-heading mb-1">District Horticulture Office</h3>
@@ -119,8 +124,14 @@ export default async function TrainingPage() {
 
             <FadeIn delay={0.2}>
               <div className="bg-card rounded-2xl border border-border overflow-hidden h-full flex flex-col shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 ease-out">
-                <div className="relative h-48 overflow-hidden bg-primary/5 flex items-center justify-center">
-                  <Users size={56} strokeWidth={1} className="text-primary/30" />
+                <div className="relative h-48 overflow-hidden">
+                  <SafeImage
+                    src="/gallery/recognition/community-meeting.png"
+                    alt="Local farmers and officials gathered at a village meeting in Kalvarayan Hills"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-center"
+                  />
                 </div>
                 <div className="p-5 sm:p-6 flex-1 flex flex-col">
                   <h3 className="font-bold text-lg sm:text-xl text-foreground font-heading mb-1">Farmer Network</h3>
