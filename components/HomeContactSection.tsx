@@ -74,8 +74,12 @@ export function HomeContactSection() {
                   href={`mailto:${EMAIL}`}
                   className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-base font-medium text-foreground hover:bg-secondary transition-colors"
                 >
-                  <Mail size={15} />
-                  {EMAIL}
+                  <Mail size={15} className="shrink-0" />
+                  {/* wrap only at the "@" on narrow screens */}
+                  <span className="min-w-0">
+                    {EMAIL.split("@")[0]}
+                    <wbr />@{EMAIL.split("@")[1]}
+                  </span>
                 </a>
 
                 <a

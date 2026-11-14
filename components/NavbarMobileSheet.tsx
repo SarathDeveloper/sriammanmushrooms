@@ -1,13 +1,15 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Mail, Menu, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
+import { CONTACT_EMAIL, CONTACT_PHONE, INSTAGRAM } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { whatsappLink } from "@/lib/whatsapp";
 
@@ -86,6 +88,36 @@ export default function NavbarMobileSheet() {
               >
                 <WhatsAppIcon className="size-4" />
                 Chat on WhatsApp
+              </a>
+            </div>
+
+            <div className="px-4 pt-4 space-y-1 text-base">
+              <a
+                href={`tel:${CONTACT_PHONE.e164}`}
+                className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-foreground hover:bg-secondary transition-colors"
+              >
+                <Phone size={17} className="text-primary shrink-0" />
+                {CONTACT_PHONE.display}
+              </a>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-foreground hover:bg-secondary transition-colors"
+              >
+                <Mail size={17} className="text-primary shrink-0" />
+                {/* wrap only at the "@" on narrow screens */}
+                <span className="min-w-0">
+                  {CONTACT_EMAIL.split("@")[0]}
+                  <wbr />@{CONTACT_EMAIL.split("@")[1]}
+                </span>
+              </a>
+              <a
+                href={INSTAGRAM.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-foreground hover:bg-secondary transition-colors"
+              >
+                <InstagramIcon className="size-[17px] text-[#E4405F] shrink-0" />
+                @{INSTAGRAM.handle}
               </a>
             </div>
           </div>

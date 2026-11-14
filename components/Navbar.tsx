@@ -62,7 +62,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => {
               const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
               return (
@@ -70,7 +70,7 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "text-base font-medium transition-colors hover:text-primary",
+                    "text-base font-medium whitespace-nowrap transition-colors hover:text-primary",
                     isActive ? "text-primary" : "text-muted-foreground"
                   )}
                 >
@@ -84,14 +84,14 @@ export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
           <div className="flex items-center gap-2 sm:gap-4">
             <SearchDialog items={searchItems} />
 
-            <div className="hidden md:flex">
+            <div className="hidden lg:flex">
               <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium">
                 <Link href="/contact">Enquire Now</Link>
               </Button>
             </div>
 
-            {/* Mobile Menu */}
-            <div className="md:hidden">
+            {/* Mobile / tablet menu (the full menu needs ~1024px) */}
+            <div className="lg:hidden">
               <MobileSheet />
             </div>
           </div>
