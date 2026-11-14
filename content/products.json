@@ -7,8 +7,8 @@
     "description": "Delicate, fan-shaped oyster mushrooms hand-picked at the peak of freshness. Prized for their subtle, savory flavor and tender texture, perfect for stir-fries, soups, and grilling.",
     "weight": "250g",
     "images": [
-      "mushroom-farm/products/premium-oyster-mushroom-0",
-      "mushroom-farm/products/premium-oyster-mushroom-1"
+      "/gallery/products/oyster-mushroom-farm.jpg",
+      "/gallery/farm/oyster-mushroom-growing.png"
     ],
     "tag": "Bestseller",
     "highlights": [
@@ -29,8 +29,8 @@
     "description": "Classic white button mushrooms with a mild, earthy flavor that works in nearly every dish. A pantry staple, delivered fresh from farm to doorstep within hours of harvest.",
     "weight": "200g",
     "images": [
-      "mushroom-farm/products/organic-button-mushroom",
-      "mushroom-farm/products/button-mushrooms-Dj92oXDo"
+      "/gallery/products/organic-button-mushroom.jpg",
+      "/gallery/products/button-mushrooms-Dj92oXDo.jpg"
     ],
     "tag": "Everyday Staple",
     "highlights": [
