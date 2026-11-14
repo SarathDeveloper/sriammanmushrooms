@@ -67,8 +67,8 @@ export const OPENING_HOURS_SCHEMA = "Mo-Su 06:00-20:00";
 
 /** Instagram profile, shown on the contact sections and in the footer. */
 export const INSTAGRAM = {
-  handle: "sriammanmushrooms",
-  url: "https://www.instagram.com/sriammanmushrooms/",
+  handle: "sri_amman_mushrooms",
+  url: "https://www.instagram.com/sri_amman_mushrooms/",
 } as const;
 
 /** Official social profiles (also linked in the footer); used as schema.org sameAs. */
