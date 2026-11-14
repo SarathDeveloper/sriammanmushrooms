@@ -11,10 +11,11 @@ const VARIETIES = [
     id: "oyster",
     name: "Oyster",
     href: "/products/premium-oyster-mushroom",
-    // Real oyster clusters on grow bags at the farm; the photo is wide, so the
-    // circle is centred on the left-hand cluster.
-    image: "/gallery/farm/oyster-mushroom-growing.png",
-    objectPosition: "45% center",
+    // Square crop of the farm's photo of oyster clusters on grow bags
+    // (public/gallery/farm/oyster-mushroom-growing.png). Pre-cropped so the
+    // small circle gets full resolution instead of a downscaled wide image.
+    image: "/gallery/products/oyster-mushroom-cluster.jpg",
+    objectPosition: "center",
   },
   {
     id: "button",
