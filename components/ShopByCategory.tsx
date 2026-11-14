@@ -11,13 +11,17 @@ const VARIETIES = [
     id: "oyster",
     name: "Oyster",
     href: "/products/premium-oyster-mushroom",
-    image: "/gallery/products/oyster-mushrooms-DUuUKbNY.jpg",
+    // Real oyster clusters on grow bags at the farm; the photo is wide, so the
+    // circle is centred on the left-hand cluster.
+    image: "/gallery/farm/oyster-mushroom-growing.png",
+    objectPosition: "45% center",
   },
   {
     id: "button",
     name: "Button",
     href: "/products/organic-button-mushroom",
     image: "/gallery/products/button-mushrooms-Dj92oXDo.jpg",
+    objectPosition: "center",
   },
 ] as const;
 
@@ -60,6 +64,7 @@ export function ShopByCategory() {
                     fill
                     sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    style={{ objectPosition: category.objectPosition }}
                   />
                 </div>
                 <span className="text-base sm:text-lg font-bold text-foreground text-center font-heading group-hover:text-primary transition-colors">
