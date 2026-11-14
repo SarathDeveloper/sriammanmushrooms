@@ -35,6 +35,7 @@ const stats = [
 ];
 
 export const metadata = {
+  alternates: { canonical: "/training" },
   title: "Mushroom Farming Support — From Setup to Earning",
   description:
     "We don't just teach mushroom farming. Mathesh helps you with setup, bags, customer orders, and understanding available government schemes.",

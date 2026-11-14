@@ -2,6 +2,7 @@ import { PageHero } from "@/components/PageHero";
 import { FadeIn } from "@/components/FadeIn";
 
 export const metadata = {
+  alternates: { canonical: "/shipping-policy" },
   title: "Shipping & Delivery Policy",
   description:
     "Shipping charges, delivery timelines, and delivery terms for Sri Amman Mushroom Farms.",

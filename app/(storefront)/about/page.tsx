@@ -8,6 +8,7 @@ import { PressAndRecognition } from "@/components/PressAndRecognition";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
+  alternates: { canonical: "/about" },
   title: "About Us",
   description: "Know about Sri Amman Mushroom Farms. We grow natural mushrooms in Kalvarayan Hills and teach farmers how to grow.",
 };

@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
-import { formatCurrency } from "@/lib/utils";
 import Providers from "@/components/Providers";
+import { serializeJsonLd } from "@/lib/seo";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { formatCurrency } from "@/lib/utils";
 
 const effra = localFont({
   src: [
@@ -31,17 +33,19 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Sri Amman Mushroom Farms | Fresh Farm Mushrooms",
     template: "%s | Sri Amman Mushroom Farms",
   },
   description: "Fresh mushrooms from the Kalvarayan Hills with delivery, pre-orders, and mushroom farming training.",
+  alternates: { canonical: "/" },
   keywords: ["fresh mushrooms delivery", "mushroom farming training", "mushroom pre-order", "oyster mushroom", "milky mushroom", "Salem", "Tamil Nadu"],
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://vellimalaifarms.in",
-    siteName: "Sri Amman Mushroom Farms",
+    url: "/",
+    siteName: SITE_NAME,
     title: "Sri Amman Mushroom Farms | Fresh Farm Mushrooms",
     description: "Fresh mushrooms from the Kalvarayan Hills with delivery, pre-orders, and farming training.",
   },
@@ -63,12 +67,12 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: serializeJsonLd({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "Sri Amman Mushroom Farms",
               description: "Fresh mushrooms grown and packed in the Kalvarayan Hills, Tamil Nadu",
-              url: "https://vellimalaifarms.in",
+              url: SITE_URL,
               telephone: "+919385526105",
               address: {
                 "@type": "PostalAddress",

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata = {
+  alternates: { canonical: "/compare" },
   title: "Compare Mushrooms — Nutrition Guide",
   description: "Compare the nutrition, health benefits, and best uses of Oyster, Milky, Button, and Shiitake mushrooms side by side.",
 };

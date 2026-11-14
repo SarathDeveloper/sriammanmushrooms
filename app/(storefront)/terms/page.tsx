@@ -2,6 +2,7 @@ import { PageHero } from "@/components/PageHero";
 import { FadeIn } from "@/components/FadeIn";
 
 export const metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms of Service",
   description: "The terms and conditions governing your use of the Sri Amman Mushroom Farms website and services.",
 };
